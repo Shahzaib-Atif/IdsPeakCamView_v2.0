@@ -1,0 +1,466 @@
+﻿using ImageProcessingLibrary.Helpers;
+using ImageProcessingLibrary.Models;
+using Newtonsoft.Json;
+using System.Data.SqlClient;
+using static ImageProcessingLibrary.Helpers.ImageFeaturesExtraction;
+using static ImageProcessingLibrary.ProjectSettings;
+
+namespace ImageProcessingLibrary.Services.Database
+{
+    public class DatabaseManager
+    {
+        public static readonly string MainReferenceTable = "Referências_bk";
+        public static readonly string ImageFeaturesTable = "ImageFeatures";
+        public static readonly string AccessoriesTable = "REG_AccessoriesSamples";
+        public static readonly string CordCONTable = "Cord_CON";
+
+        public static async Task<bool> SaveAccessoryDetails(string imagePath, AccessoryDetails _accessoryDetails)
+        {
+            if (DbConnectionString == string.Empty)
+            {
+                ExceptionHelper.DisplayErrorMessage("DB connection string cannot be empty!");
+                return false;
+            }
+
+            // is image valid?
+            if (!IsImagePathValid(imagePath)) return false;
+
+            var parameters = new Dictionary<string, object>
+            {
+                {"@tipo", _accessoryDetails.Tipo},
+                {"@connectorName", _accessoryDetails.ConnectorName },
+                {"@imagePath", imagePath },
+                {"@reference", _accessoryDetails.Reference },
+            };
+
+            // Construct the SQL INSERT query
+            string query = $@"
+            INSERT INTO {AccessoriesTable} 
+            ([AccessoryType], [ConnName], [AccImagePath], [RefClient])
+            VALUES 
+            (@tipo, @connectorName, @imagePath, @reference);";
+
+            int rowsAffected = await DbHelper.ExecuteNonQueryAsync(query, parameters);
+            return rowsAffected > 0;
+        }
+
+        public static async Task<bool> StoreImageFeatures(string imagePath, SampleDetail sampleDetails)
+        {
+            if (DbConnectionString == string.Empty)
+            {
+                ExceptionHelper.DisplayErrorMessage("DB connection string cannot be empty!");
+                return false;
+            }
+
+            // is image valid?
+            if (!IsImagePathValid(imagePath)) return false;
+
+            // extract features
+            var features = ExtractImageFeatures(imagePath) ?? throw new Exception("Failed to extract features for this image!");
+            try
+            {
+                // Delete existing record
+                //await DeleteExistingRecordAsync(features.FileName);
+
+                // Insert new features into the database
+                bool isSuccess = await InsertHandler.AddNewImageDataAsync(imagePath, features, sampleDetails);
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Database Error: {ex.Message}");
+            }
+        }
+
+        public static List<ExtractedImageFeatures> RetrieveAllImageFeatures(SampleDetail sampleDetails)
+        {
+            if (string.IsNullOrWhiteSpace(DbConnectionString))
+            {
+                ExceptionHelper.DisplayErrorMessage("DB connection string cannot be empty!");
+                return new List<ExtractedImageFeatures>();
+            }
+
+            try
+            {
+                // start reading image data and load the results in the 'results' list
+                var result = ReadHandler.Start(sampleDetails);
+                return result;
+            }
+            catch (SqlException ex)
+            {
+                ExceptionHelper.DisplayErrorMessage($"SQl Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.DisplayErrorMessage(ex.Message);
+            }
+
+            return new List<ExtractedImageFeatures>();
+        }
+
+        // Delete existing record from main table
+        public static async Task DeleteFromMainTableAsync(string fileName)
+        {
+            string query = $"DELETE FROM [ImageFeaturesDB].[dbo].[{MainReferenceTable}] WHERE CODIVMAC = @Name";
+            var parameters = new Dictionary<string, object>
+                {
+                    { "@Name", fileName }
+                };
+
+            await DbHelper.ExecuteNonQueryAsync(query, parameters);
+        }
+
+        // Delete existing record from features table
+        public static async Task DeleteFromFeaturesTableAsync(string codivmacRef)
+        {
+            string query = $"DELETE FROM [ImageFeaturesDB].[dbo].[{ImageFeaturesTable}] WHERE CodivmacRef = @codivmacRef";
+            var parameters = new Dictionary<string, object>
+                {
+                    { "@codivmacRef", codivmacRef }
+                };
+
+            await DbHelper.ExecuteNonQueryAsync(query, parameters);
+        }
+
+
+        /// <summary> Inserts new position data into the appropriate country-specific table.</summary>
+        public static async Task<bool> InsertNewPosID(NewPositionCoordinates newPosition)
+        {
+            string Vert_Column, Horiz_Column;
+            var username = Environment.UserName ?? "";
+            var lastChangeDate = DateTime.Now;
+
+            var parameters = new Dictionary<string, object>
+            {
+                {"@posId", newPosition.PosId},
+                {"@CV", newPosition.CV },
+                {"@CH", newPosition.CH },
+                {"@section", newPosition.SampleSection },
+                {"@user", username },
+                {"@lastChangeDate", lastChangeDate },
+            };
+
+            // select CV,CH OR CV_Ma,CH_Ma based on the Country
+            switch (newPosition.Country)
+            {
+                case "Portugal":
+                    Vert_Column = "[CV]"; Horiz_Column = "[CH]";
+                    break;
+                case "Morocco":
+                    Vert_Column = "[CV_Ma]"; Horiz_Column = "[CH_Ma]";
+                    break;
+                default:
+                    ExceptionHelper.ShowWarningMessage("Error: Unknown country selected!");
+                    return false;
+            }
+
+            // Check if the combination of CV and CH already exists
+            bool isAlreadyExist = await IsCoordinatesAlreadyExistsAsync(newPosition.CV, newPosition.CH, Vert_Column, Horiz_Column);
+            if (isAlreadyExist)
+            {
+                ExceptionHelper.ShowWarningMessage("Error: Duplicate CV and CH combination.");
+                return false;
+            }
+
+            // Construct the SQL INSERT query
+            string query = $@"
+            INSERT INTO {CordCONTable} 
+            ([CON], {Vert_Column}, {Horiz_Column}, [SampleSection], [LastChangeBy], [LastChangeDate], [ESTADO])
+            VALUES 
+            (@posId, @CV, @CH, @section, @user, @lastChangeDate, 1);";
+
+            int rowsAffected = await DbHelper.ExecuteNonQueryAsync(query, parameters);
+            return rowsAffected > 0;
+        }
+
+        /// <summary> Returns true if the combination of CV and CH already exists. </summary>
+        private static async Task<bool> IsCoordinatesAlreadyExistsAsync(string CV, string CH, string vert_Column, string horiz_Column)
+        {
+            // Check if the combination of CV and CH already exists
+            string query = $@"
+            SELECT COUNT(*) FROM {CordCONTable} 
+            WHERE {vert_Column} = @CV AND {horiz_Column} = @CH;";
+
+            var parameters = new Dictionary<string, object>
+            {
+                {"@CV", CV },
+                {"@CH", CH },
+            };
+
+            string existingCount = await DbHelper.ExecuteScalarAsync(query, parameters);
+
+            // return true if count>0
+            var count = int.Parse(existingCount);
+            return count > 0;
+        }
+
+        /// <summary> Check if this PosId already exists. Return true if it exists. </summary>
+        public static async Task<bool> CheckIfPosIdExists(string posId)
+        {
+            var parameters = new Dictionary<string, object>
+                {
+                    { "@PosId", posId }
+                };
+
+
+            // find a match in Cord_CON table
+            string query1 = $"SELECT TOP (1) [CON] FROM [ImageFeaturesDB].[dbo].{CordCONTable} WHERE [CON] = @PosId";
+            string result1 = await DbHelper.ExecuteScalarAsync(query1, parameters);
+
+            //return true if a match is found, otherwise false
+            return !string.IsNullOrWhiteSpace(result1);
+        }
+
+
+        #region -- SampleDetailsForm related functions
+
+        // Reads available cores from the database and returns them as a list of strings.
+        public static async Task<IEnumerable<KeyValue>> ReadAvailableTipo()
+        {
+            string query = "SELECT [Type], [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
+            return await DbHelper.ExecuteQueryAsyncTwoCols(query);
+        }
+
+        // Reads available Vias from the database and returns them as a list of strings.
+        public static async Task<IEnumerable<KeyValue>> ReadAvailableVias()
+        {
+            //string query = "SELECT [ContagemVias] FROM [ImageFeaturesDB].[dbo].[ContagemNumVias]";
+            //return await DbHelper.ExecuteQueryAsync(query);
+
+            string query = "SELECT  [QtdVias], [ContagemVias] FROM [ImageFeaturesDB].[dbo].[ContagemNumVias]";
+            return await DbHelper.ExecuteQueryAsyncTwoCols(query);
+        }
+
+        // Reads available cores from the database and returns them as a list of strings.
+        public static async Task<IEnumerable<KeyValue>> ReadAvailableCors()
+        {
+            //string query = "SELECT [Cor Id] FROM [ImageFeaturesDB].[dbo].[Cores]";
+            //return await DbHelper.ExecuteQueryAsync(query);
+
+            string query = "SELECT [Cores_UK], [Cor Id] FROM [ImageFeaturesDB].[dbo].[Cores]";
+            return await DbHelper.ExecuteQueryAsyncTwoCols(query);
+        }
+
+        // Method to get the CON entry with the least highest number based on alphabet prefixes
+        public static async Task<string> GetLeastHighestConAsync(string section)
+        {
+            // SQL query to find the CON entry with the least highest numeric suffix
+            string query = @$"
+                WITH MaxValues AS (
+                -- Select the alphabet and the maximum numeric value for each alphabet
+                SELECT 
+                    LEFT(CON, 1) AS Alphabet, -- Get the first character (alphabet) 
+                    MAX(CAST(SUBSTRING(CON, 2, LEN(CON) - 1) AS INT)) AS MaxValue -- Get the maximum numeric suffix as integer
+                FROM 
+                    [ImageFeaturesDB].[dbo].{CordCONTable}
+                    WHERE SampleSection LIKE '{section}%'
+                    AND LEFT(CON,1) != 'X' AND LEFT(CON,1) != 'Y' AND LEFT(CON,1) != 'Z'
+                GROUP BY 
+                    LEFT(CON, 1) -- Group by the alphabet
+                )
+
+                -- Select the actual CON entry that corresponds to the alphabet with the least highest number
+                SELECT TOP 1 
+                    c.CON
+                FROM 
+                    MaxValues mv -- CTE with maximum values
+                JOIN 
+                    [ImageFeaturesDB].[dbo].{CordCONTable} c ON 
+                    LEFT(c.CON, 1) = mv.Alphabet AND  -- Match the alphabet
+                    CAST(SUBSTRING(c.CON, 2, LEN(c.CON) - 1) AS INT) = mv.MaxValue -- Match the maximum numeric value
+                ORDER BY 
+                    mv.MaxValue ASC;  -- Order by MaxValue to get the alphabet with the least highest number
+            ";
+
+            // Execute the query and return the result
+            return await DbHelper.ExecuteScalarAsync(query);
+        }
+
+        #endregion
+
+        // Reads available accessory types from the database and returns them as a list of strings.
+        public static async Task<IEnumerable<string>> ReadAvailableSampleSection()
+        {
+            string query = "SELECT DISTINCT [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
+            return await DbHelper.ExecuteQueryAsync(query);
+        }
+
+        // Reads available accessory types from the database and returns them as a list of strings.
+        public static async Task<IEnumerable<string>> ReadAvailableAccessoryTypes()
+        {
+            string query = "SELECT [TypeDescription] FROM [ImageFeaturesDB].[dbo].[AccessoryTypes]";
+            return await DbHelper.ExecuteQueryAsync(query);
+        }
+
+        // Read available Codivmac from the database and return them as a list of strings.
+        public static async Task<IEnumerable<string>> ReadAvailableCodivmac()
+        {
+            string query = $"SELECT [CODIVMAC] FROM [ImageFeaturesDB].[dbo].{MainReferenceTable}";
+            return await DbHelper.ExecuteQueryAsync(query);
+        }
+
+        // Read available [Pos Id] from the database and return them as a list of strings.
+        public static async Task<IEnumerable<string>> ReadAvailablePosId()
+        {
+            string query = $"SELECT [Pos ID] FROM [ImageFeaturesDB].[dbo].{MainReferenceTable}";
+            return await DbHelper.ExecuteQueryAsync(query);
+        }
+
+
+        #region -- PRIVATE FUNCTIONS
+        private static bool IsImagePathValid(string imagePath)
+        {
+            if (string.IsNullOrEmpty(imagePath) || !File.Exists(imagePath))
+            {
+                ExceptionHelper.ShowWarningMessage("ExtractImageFeatures: Invalid image path!");
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+
+        public static async Task SaveFeatureVectorToDatabase(string imagePath, float[] vector1, float[] vector2)
+        {
+            string resnetJsonVector = JsonConvert.SerializeObject(vector1);
+            string dinov2JsonVector = JsonConvert.SerializeObject(vector2);
+
+            string query = "INSERT INTO ConnectorFeatures (Name, ResnetVector, Dinov2Vector) " +
+                "VALUES (@Name, @ResnetVector, @Dinov2Vector)";
+
+            var parameters = new Dictionary<string, object>
+                {
+                    { "@Name", imagePath },
+                    { "@ResnetVector", resnetJsonVector },
+                    { "@Dinov2Vector", dinov2JsonVector }
+                };
+
+            await DbHelper.ExecuteNonQueryAsync(query, parameters);
+        }
+
+
+        public static List<ConnectorFeature> LoadAllVectors()
+        {
+            var result = new List<ConnectorFeature>();
+
+            using (SqlConnection conn = new(DbConnectionString))
+            {
+                conn.Open();
+                using SqlCommand cmd = new("SELECT Id, Name, ResnetVector, Dinov2Vector FROM ConnectorFeatures", conn);
+                using SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var vectorJson1 = reader.GetString(2);
+                    var vectorJson2 = reader.GetString(3);
+
+                    // Ensure deserialization does not result in null values  
+                    var resnetVector = JsonConvert.DeserializeObject<float[]>(vectorJson1) ?? Array.Empty<float>();
+                    var dinov2Vector = JsonConvert.DeserializeObject<float[]>(vectorJson2) ?? Array.Empty<float>();
+
+                    result.Add(new ConnectorFeature
+                    {
+                        Id = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        ResnetVector = resnetVector,
+                        Dinov2Vector = dinov2Vector
+                    });
+                }
+            }
+
+            return result;
+        }
+
+
+
+        #region -- CREATE NEW DATABASE & TABLE (UNUSED FUNCTIONS)
+        /* 
+        public static void CreateNewTable()
+        {
+            try
+            {
+                if (DbConnectionString == string.Empty)
+                    return;
+
+                using var connection = new SqlConnection(DbConnectionString);
+                connection.Open();
+
+                string createTableQuery = @"
+                CREATE TABLE ImageRoot (
+                    Id INT IDENTITY(1,1) PRIMARY KEY,
+                    Name NVARCHAR(255) NOT NULL UNIQUE,
+                    UpdatedAt DATETIME DEFAULT GETDATE()
+                );";
+
+                string createImageFeatures = @"
+                CREATE TABLE ImageFeatures (
+                    Id INT IDENTITY(1,1) PRIMARY KEY,
+                    CodivmacRef NVARCHAR(8) NOT NULL UNIQUE,
+                    Histogram VARBINARY(MAX),
+                    Hash VARBINARY(MAX),
+                    ORBKeyPoints VARBINARY(MAX),
+                    ORBDescriptors VARBINARY(MAX),
+                    AkazeKeyPoints VARBINARY(MAX),
+                    AkazeDescriptors VARBINARY(MAX),
+                    FastKeyPoints VARBINARY(MAX),
+                    FastDescriptors VARBINARY(MAX),
+                    GFTTKeyPoints VARBINARY(MAX),
+                    GFTTDescriptors VARBINARY(MAX),
+                    UpdatedAt DATETIME DEFAULT GETDATE()
+                    FOREIGN KEY (CodivmacRef) REFERENCES {MainReferenceTable}(CODIVMAC) ON DELETE CASCADE
+                );";
+
+                string createImageDescription = @"
+                CREATE TABLE ImageDescription (
+                    Id INT IDENTITY(1,1) PRIMARY KEY,
+                    ImageRootId INT NOT NULL UNIQUE,
+                    Vias INT,
+                    Tipo NVARCHAR(255) NOT NULL,
+                    Cor NVARCHAR(255),
+	                InternalDiameter DECIMAL(5, 2),
+                    ExternalDiameter DECIMAL(5, 2),
+                    Thickness DECIMAL(5, 2),
+                    UpdatedAt DATETIME DEFAULT GETDATE()
+                    FOREIGN KEY (ImageRootId) REFERENCES ImageRoot(Id) ON DELETE CASCADE
+                );";
+
+                using var command = new SqlCommand(createTableQuery, connection);
+
+                command.ExecuteNonQuery();
+                ExceptionHelper.ShowSuccessMessage("Table created successfully.");
+            }
+            catch (SqlException ex)
+            {
+                ExceptionHelper.DisplayErrorMessage($"Error creating table: {ex.Message}");
+            }
+        }
+
+        public static void CreateNewDatabase()
+        {
+            string connectionStringForMaster = @"Server=(localdb)\MSSQLLocalDB;Database=master;Integrated Security=True;";
+            using var connection = new SqlConnection(connectionStringForMaster);
+            connection.Open();
+
+            string databaseName = "ImageFeaturesDB";
+            string createDatabaseQuery = $@"
+            IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '{databaseName}')
+            BEGIN
+                CREATE DATABASE {databaseName};
+            END";
+
+            using var command = new SqlCommand(createDatabaseQuery, connection);
+
+            try
+            {
+                command.ExecuteNonQuery();
+                Console.WriteLine($"Database '{databaseName}' created successfully or already exists.");
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"Error creating database: {ex.Message}");
+            }
+        }
+        */
+        #endregion
+    }
+}
