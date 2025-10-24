@@ -280,7 +280,7 @@ namespace simple_ids_cam_view.UI.Forms
         private async void LabelSuggest_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Determine Section from TipoList
-            string section = comboBoxTipo.SelectedValue.ToString() ?? "";
+            string section = comboBoxTipo.SelectedValue?.ToString() ?? "";
 
             // Retrieve the last position ID with the least highest number
             string lastPosId = await DatabaseManager.GetLeastHighestConAsync(section);

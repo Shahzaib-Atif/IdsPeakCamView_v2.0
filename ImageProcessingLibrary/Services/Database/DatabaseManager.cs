@@ -9,8 +9,9 @@ namespace ImageProcessingLibrary.Services.Database
 {
     public class DatabaseManager
     {
-        public static readonly string MainReferenceTable = "Referências_bk";
+        public static readonly string MainReferenceTable = "Referências_test";
         public static readonly string ImageFeaturesTable = "ImageFeatures";
+        public static readonly string ConnectorFeaturesTable = "ConnectorFeatures";
         public static readonly string AccessoriesTable = "REG_AccessoriesSamples";
         public static readonly string CordCONTable = "Cord_CON";
 
@@ -217,8 +218,16 @@ namespace ImageProcessingLibrary.Services.Database
         // Reads available cores from the database and returns them as a list of strings.
         public static async Task<IEnumerable<KeyValue>> ReadAvailableTipo()
         {
-            string query = "SELECT [Type], [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
-            return await DbHelper.ExecuteQueryAsyncTwoCols(query);
+            try
+            {
+                string query = "SELECT [Type], [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
+                return await DbHelper.ExecuteQueryAsyncTwoCols(query);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
+                return Enumerable.Empty<KeyValue>();
+            }
         }
 
         // Reads available Vias from the database and returns them as a list of strings.
@@ -326,7 +335,7 @@ namespace ImageProcessingLibrary.Services.Database
             string resnetJsonVector = JsonConvert.SerializeObject(vector1);
             string dinov2JsonVector = JsonConvert.SerializeObject(vector2);
 
-            string query = "INSERT INTO ConnectorFeatures (Name, ResnetVector, Dinov2Vector) " +
+            string query = $"INSERT INTO {ConnectorFeaturesTable} (Name, ResnetVector, Dinov2Vector) " +
                 "VALUES (@Name, @ResnetVector, @Dinov2Vector)";
 
             var parameters = new Dictionary<string, object>
@@ -346,25 +355,33 @@ namespace ImageProcessingLibrary.Services.Database
 
             using (SqlConnection conn = new(DbConnectionString))
             {
-                conn.Open();
-                using SqlCommand cmd = new("SELECT Id, Name, ResnetVector, Dinov2Vector FROM ConnectorFeatures", conn);
-                using SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                try
                 {
-                    var vectorJson1 = reader.GetString(2);
-                    var vectorJson2 = reader.GetString(3);
-
-                    // Ensure deserialization does not result in null values  
-                    var resnetVector = JsonConvert.DeserializeObject<float[]>(vectorJson1) ?? Array.Empty<float>();
-                    var dinov2Vector = JsonConvert.DeserializeObject<float[]>(vectorJson2) ?? Array.Empty<float>();
-
-                    result.Add(new ConnectorFeature
+                    conn.Open();
+                    string query = $"SELECT Id, Name, ResnetVector, Dinov2Vector FROM {ConnectorFeaturesTable}";
+                    using SqlCommand cmd = new(query, conn);
+                    using SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
                     {
-                        Id = reader.GetInt32(0),
-                        Name = reader.GetString(1),
-                        ResnetVector = resnetVector,
-                        Dinov2Vector = dinov2Vector
-                    });
+                        var vectorJson1 = reader.GetString(2);
+                        var vectorJson2 = reader.GetString(3);
+
+                        // Ensure deserialization does not result in null values  
+                        var resnetVector = JsonConvert.DeserializeObject<float[]>(vectorJson1) ?? Array.Empty<float>();
+                        var dinov2Vector = JsonConvert.DeserializeObject<float[]>(vectorJson2) ?? Array.Empty<float>();
+
+                        result.Add(new ConnectorFeature
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            ResnetVector = resnetVector,
+                            Dinov2Vector = dinov2Vector
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    ExceptionHelper.DisplayErrorMessage(e.Message);
                 }
             }
 

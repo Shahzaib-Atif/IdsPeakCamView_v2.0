@@ -1,6 +1,5 @@
 ﻿using ImageProcessingLibrary;
 using ImageProcessingLibrary.Helpers;
-using ImageProcessingLibrary.Models;
 using ImageProcessingLibrary.Services;
 using simple_ids_cam_view.Services;
 using simple_ids_cam_view.UI.Forms;
@@ -17,7 +16,6 @@ namespace simple_ids_cam_view
         private readonly ImageStorageService imageStorageService; // related to image storage
         private readonly ControlPanelManager controlPanelManager; // for toggling camera and modbus controls
 
-        private SampleDetail SampleDetails { get; set; }
         private bool IsRoiModified { get; set; } = false;
         private bool IsUsingCurrentImage { get; set; } = true;
         private RoiService previousImageCropService; // Keep a reference to the previous service
