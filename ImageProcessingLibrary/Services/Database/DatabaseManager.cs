@@ -358,7 +358,8 @@ namespace ImageProcessingLibrary.Services.Database
                 try
                 {
                     conn.Open();
-                    string query = $"SELECT Id, CodivmacRef, ResnetVector, Dinov2Vector FROM {ConnectorFeaturesTable}";
+                    string query = $"SELECT Id, CodivmacRef, ResnetVector, Dinov2Vector FROM {ConnectorFeaturesTable}" +
+                        $" WHERE ResnetVector IS NOT NULL";
                     using SqlCommand cmd = new(query, conn);
                     using SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
