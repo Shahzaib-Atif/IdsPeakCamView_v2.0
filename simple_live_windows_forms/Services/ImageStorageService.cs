@@ -196,10 +196,9 @@ namespace simple_ids_cam_view.Services
                     ImageProcessor.SaveCompressedImage(_temImage, filePath);
 
                     //return await DatabaseManager.StoreImageFeatures(filePath, SampleDetails).ConfigureAwait(false);
-                    //return await DatabaseManager.StoreImageFeatures(filePath, null).ConfigureAwait(false);
                     var (resnet, dino) = ExtractFeatures(filePath);
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
-                    await DatabaseManager.SaveFeatureVectorToDatabase(fileName, resnet, dino).ConfigureAwait(false);
+                    await DatabaseManager.SaveFeatures(fileName, resnet, dino).ConfigureAwait(false);
                     return true;
                 }).ConfigureAwait(false);
             }

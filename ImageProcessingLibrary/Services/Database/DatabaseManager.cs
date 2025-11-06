@@ -2,7 +2,6 @@
 using ImageProcessingLibrary.Models;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
-using static ImageProcessingLibrary.Helpers.ImageFeaturesExtraction;
 using static ImageProcessingLibrary.ProjectSettings;
 
 namespace ImageProcessingLibrary.Services.Database
@@ -45,60 +44,6 @@ namespace ImageProcessingLibrary.Services.Database
             return rowsAffected > 0;
         }
 
-        public static async Task<bool> StoreImageFeatures(string imagePath, SampleDetail sampleDetails)
-        {
-            if (DbConnectionString == string.Empty)
-            {
-                ExceptionHelper.DisplayErrorMessage("DB connection string cannot be empty!");
-                return false;
-            }
-
-            // is image valid?
-            if (!IsImagePathValid(imagePath)) return false;
-
-            // extract features
-            var features = ExtractImageFeatures(imagePath) ?? throw new Exception("Failed to extract features for this image!");
-            try
-            {
-                // Delete existing record
-                //await DeleteExistingRecordAsync(features.FileName);
-
-                // Insert new features into the database
-                bool isSuccess = await InsertHandler.AddNewImageDataAsync(imagePath, features, sampleDetails);
-                return isSuccess;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Database Error: {ex.Message}");
-            }
-        }
-
-        public static List<ExtractedImageFeatures> RetrieveAllImageFeatures(SampleDetail sampleDetails)
-        {
-            if (string.IsNullOrWhiteSpace(DbConnectionString))
-            {
-                ExceptionHelper.DisplayErrorMessage("DB connection string cannot be empty!");
-                return new List<ExtractedImageFeatures>();
-            }
-
-            try
-            {
-                // start reading image data and load the results in the 'results' list
-                var result = ReadHandler.Start(sampleDetails);
-                return result;
-            }
-            catch (SqlException ex)
-            {
-                ExceptionHelper.DisplayErrorMessage($"SQl Error: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper.DisplayErrorMessage(ex.Message);
-            }
-
-            return new List<ExtractedImageFeatures>();
-        }
-
         // Delete existing record from main table
         public static async Task DeleteFromMainTableAsync(string fileName)
         {
@@ -122,7 +67,6 @@ namespace ImageProcessingLibrary.Services.Database
 
             await DbHelper.ExecuteNonQueryAsync(query, parameters);
         }
-
 
         /// <summary> Inserts new position data into the appropriate country-specific table.</summary>
         public static async Task<bool> InsertNewPosID(NewPositionCoordinates newPosition)
@@ -330,13 +274,32 @@ namespace ImageProcessingLibrary.Services.Database
         #endregion
 
 
-        public static async Task SaveFeatureVectorToDatabase(string name, float[] vector1, float[] vector2)
+        public static async Task SaveFeatures(string name, float[] vector1, float[] vector2)
         {
             string resnetJsonVector = JsonConvert.SerializeObject(vector1);
             string dinov2JsonVector = JsonConvert.SerializeObject(vector2);
 
             string query = $"INSERT INTO {ConnectorFeaturesTable} (CodivmacRef, ResnetVector, Dinov2Vector) " +
                 "VALUES (@CodivmacRef, @ResnetVector, @Dinov2Vector)";
+
+            var parameters = new Dictionary<string, object>
+                {
+                    { "@CodivmacRef", name },
+                    { "@ResnetVector", resnetJsonVector },
+                    { "@Dinov2Vector", dinov2JsonVector }
+                };
+
+            await DbHelper.ExecuteNonQueryAsync(query, parameters);
+        }
+
+        public static async Task UpdateFeatures(string name, float[] vector1, float[] vector2)
+        {
+            string resnetJsonVector = JsonConvert.SerializeObject(vector1);
+            string dinov2JsonVector = JsonConvert.SerializeObject(vector2);
+
+            string query = $"UPDATE {ConnectorFeaturesTable} " +
+                "SET ResnetVector=@ResnetVector, Dinov2Vector=@Dinov2Vector " +
+                "WHERE CodivmacRef=@CodivmacRef";
 
             var parameters = new Dictionary<string, object>
                 {

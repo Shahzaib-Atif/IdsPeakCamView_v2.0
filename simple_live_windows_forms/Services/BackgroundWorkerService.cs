@@ -80,7 +80,7 @@ namespace simple_ids_cam_view.Services
         // Starts the background worker process if not already running
         public void Start(string sourceFilepath, SampleDetail sampleDetails, bool AddImagesToDbFromFolder = false)
         {
-            //DatabaseManager.SaveFeatureVectorToDatabase(sourceFilepath, vector);
+            //DatabaseManager.SaveFeatures(sourceFilepath, vector);
 
             if (string.IsNullOrEmpty(sourceFilepath) || BgWorker is null)
                 return;
@@ -228,7 +228,8 @@ namespace simple_ids_cam_view.Services
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
                     float[] resnetVector = resnetExtractor.ExtractFeatures(filePath);
                     float[] dinov2Vector = dinov2Extractor.ExtractFeatures(filePath);
-                    await DatabaseManager.SaveFeatureVectorToDatabase(fileName, resnetVector, dinov2Vector);
+                    await DatabaseManager.SaveFeatures(fileName, resnetVector, dinov2Vector);
+                    //await DatabaseManager.UpdateFeatures(fileName, resnetVector, dinov2Vector); // use this line if you are updating
                 }
                 catch (Exception ex)
                 {
