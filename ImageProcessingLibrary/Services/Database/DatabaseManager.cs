@@ -330,17 +330,17 @@ namespace ImageProcessingLibrary.Services.Database
         #endregion
 
 
-        public static async Task SaveFeatureVectorToDatabase(string imagePath, float[] vector1, float[] vector2)
+        public static async Task SaveFeatureVectorToDatabase(string name, float[] vector1, float[] vector2)
         {
             string resnetJsonVector = JsonConvert.SerializeObject(vector1);
             string dinov2JsonVector = JsonConvert.SerializeObject(vector2);
 
-            string query = $"INSERT INTO {ConnectorFeaturesTable} (Name, ResnetVector, Dinov2Vector) " +
-                "VALUES (@Name, @ResnetVector, @Dinov2Vector)";
+            string query = $"INSERT INTO {ConnectorFeaturesTable} (CodivmacRef, ResnetVector, Dinov2Vector) " +
+                "VALUES (@CodivmacRef, @ResnetVector, @Dinov2Vector)";
 
             var parameters = new Dictionary<string, object>
                 {
-                    { "@Name", imagePath },
+                    { "@CodivmacRef", name },
                     { "@ResnetVector", resnetJsonVector },
                     { "@Dinov2Vector", dinov2JsonVector }
                 };
@@ -358,7 +358,7 @@ namespace ImageProcessingLibrary.Services.Database
                 try
                 {
                     conn.Open();
-                    string query = $"SELECT Id, Name, ResnetVector, Dinov2Vector FROM {ConnectorFeaturesTable}";
+                    string query = $"SELECT Id, CodivmacRef, ResnetVector, Dinov2Vector FROM {ConnectorFeaturesTable}";
                     using SqlCommand cmd = new(query, conn);
                     using SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -387,97 +387,5 @@ namespace ImageProcessingLibrary.Services.Database
 
             return result;
         }
-
-
-
-        #region -- CREATE NEW DATABASE & TABLE (UNUSED FUNCTIONS)
-        /* 
-        public static void CreateNewTable()
-        {
-            try
-            {
-                if (DbConnectionString == string.Empty)
-                    return;
-
-                using var connection = new SqlConnection(DbConnectionString);
-                connection.Open();
-
-                string createTableQuery = @"
-                CREATE TABLE ImageRoot (
-                    Id INT IDENTITY(1,1) PRIMARY KEY,
-                    Name NVARCHAR(255) NOT NULL UNIQUE,
-                    UpdatedAt DATETIME DEFAULT GETDATE()
-                );";
-
-                string createImageFeatures = @"
-                CREATE TABLE ImageFeatures (
-                    Id INT IDENTITY(1,1) PRIMARY KEY,
-                    CodivmacRef NVARCHAR(8) NOT NULL UNIQUE,
-                    Histogram VARBINARY(MAX),
-                    Hash VARBINARY(MAX),
-                    ORBKeyPoints VARBINARY(MAX),
-                    ORBDescriptors VARBINARY(MAX),
-                    AkazeKeyPoints VARBINARY(MAX),
-                    AkazeDescriptors VARBINARY(MAX),
-                    FastKeyPoints VARBINARY(MAX),
-                    FastDescriptors VARBINARY(MAX),
-                    GFTTKeyPoints VARBINARY(MAX),
-                    GFTTDescriptors VARBINARY(MAX),
-                    UpdatedAt DATETIME DEFAULT GETDATE()
-                    FOREIGN KEY (CodivmacRef) REFERENCES {MainReferenceTable}(CODIVMAC) ON DELETE CASCADE
-                );";
-
-                string createImageDescription = @"
-                CREATE TABLE ImageDescription (
-                    Id INT IDENTITY(1,1) PRIMARY KEY,
-                    ImageRootId INT NOT NULL UNIQUE,
-                    Vias INT,
-                    Tipo NVARCHAR(255) NOT NULL,
-                    Cor NVARCHAR(255),
-	                InternalDiameter DECIMAL(5, 2),
-                    ExternalDiameter DECIMAL(5, 2),
-                    Thickness DECIMAL(5, 2),
-                    UpdatedAt DATETIME DEFAULT GETDATE()
-                    FOREIGN KEY (ImageRootId) REFERENCES ImageRoot(Id) ON DELETE CASCADE
-                );";
-
-                using var command = new SqlCommand(createTableQuery, connection);
-
-                command.ExecuteNonQuery();
-                ExceptionHelper.ShowSuccessMessage("Table created successfully.");
-            }
-            catch (SqlException ex)
-            {
-                ExceptionHelper.DisplayErrorMessage($"Error creating table: {ex.Message}");
-            }
-        }
-
-        public static void CreateNewDatabase()
-        {
-            string connectionStringForMaster = @"Server=(localdb)\MSSQLLocalDB;Database=master;Integrated Security=True;";
-            using var connection = new SqlConnection(connectionStringForMaster);
-            connection.Open();
-
-            string databaseName = "ImageFeaturesDB";
-            string createDatabaseQuery = $@"
-            IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '{databaseName}')
-            BEGIN
-                CREATE DATABASE {databaseName};
-            END";
-
-            using var command = new SqlCommand(createDatabaseQuery, connection);
-
-            try
-            {
-                command.ExecuteNonQuery();
-                Console.WriteLine($"Database '{databaseName}' created successfully or already exists.");
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine($"Error creating database: {ex.Message}");
-            }
-        }
-        */
-        #endregion
     }
 }

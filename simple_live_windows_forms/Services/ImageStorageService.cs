@@ -29,7 +29,8 @@ namespace simple_ids_cam_view.Services
             PerformInitalChecks();
 
             // Get connector details from the user.
-            string connectorName = GetConnectorDetails();
+            //string connectorName = GetConnectorDetails(); //TODO
+            string connectorName = "A000BR";
             if (string.IsNullOrEmpty(connectorName)) return false;
 
             // show loading status
@@ -194,9 +195,12 @@ namespace simple_ids_cam_view.Services
                     using var _temImage = new Bitmap(customPictureBox.Image);
                     ImageProcessor.SaveCompressedImage(_temImage, filePath);
 
-                    // save in 
                     //return await DatabaseManager.StoreImageFeatures(filePath, SampleDetails).ConfigureAwait(false);
-                    return await DatabaseManager.StoreImageFeatures(filePath, null).ConfigureAwait(false);
+                    //return await DatabaseManager.StoreImageFeatures(filePath, null).ConfigureAwait(false);
+                    var (resnet, dino) = ExtractFeatures(filePath);
+                    string fileName = Path.GetFileNameWithoutExtension(filePath);
+                    await DatabaseManager.SaveFeatureVectorToDatabase(fileName, resnet, dino).ConfigureAwait(false);
+                    return true;
                 }).ConfigureAwait(false);
             }
             catch
@@ -209,6 +213,25 @@ namespace simple_ids_cam_view.Services
                 throw;
             }
         }
+
+        private (float[], float[]) ExtractFeatures(string filePath)
+        {
+            using var resnetExtractor = new FeatureExtractorResnet50();
+            using var dinov2Extractor = new FeatureExtractorDINOv2();
+
+            try
+            {
+                float[] resnetVector = resnetExtractor.ExtractFeatures(filePath);
+                float[] dinov2Vector = dinov2Extractor.ExtractFeatures(filePath);
+                return (resnetVector, dinov2Vector);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error while adding {filePath}: {ex.Message}");
+                return (Array.Empty<float>(), Array.Empty<float>());
+            }
+        }
+
 
         // Ask the user if they want to open the image in File Explorer
         private void PromptUserForOpeningImage(string savePath)
