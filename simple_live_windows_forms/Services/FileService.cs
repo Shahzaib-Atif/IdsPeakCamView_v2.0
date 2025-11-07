@@ -22,5 +22,10 @@ namespace simple_ids_cam_view.Services
             }
             return true;
         }
+
+        public string GetFilePath(string name)
+        {
+            return Path.Combine(ProjectSettings.DefaultFolder, name);
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace simple_ids_cam_view.Services
         private SampleDetail SampleDetails { get; set; }
         private List<ConnectorMatch> TopMatches { get; set; }
         private readonly ImageStorageService _imageStorage;
+        private readonly FeatureRepository _featureRepo;
+        private readonly OnnxService _onnxService;
 
         // use these two fields for uploading images from some folder to the DB
         private bool _AddImagesToDbFromFolder = false;
@@ -46,8 +48,9 @@ namespace simple_ids_cam_view.Services
             BgWorker.WorkerReportsProgress = true;
             BgWorker.WorkerSupportsCancellation = true;
 
-            // initialize image storage service
+            // initialize services
             _imageStorage = new ImageStorageService(customPictureBox, null, null);
+            _onnxService = new OnnxService();
         }
 
         /// <summary> find similar images from database based on their features </summary>
@@ -132,7 +135,7 @@ namespace simple_ids_cam_view.Services
             }
             else
             {
-                var topMatches = OnnxService.FindMatchingImages(this.SourceImageFilepath);
+                var topMatches = _onnxService.FindMatchingImages(this.SourceImageFilepath);
                 ImageCompareService.AssignListOfSimilarImages(topMatches);
             }
 
@@ -216,8 +219,8 @@ namespace simple_ids_cam_view.Services
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
                     float[] resnetVector = resnetExtractor.ExtractFeatures(filePath);
                     float[] dinov2Vector = dinov2Extractor.ExtractFeatures(filePath);
-                    //await DatabaseManager.SaveFeatures(fileName, resnetVector, dinov2Vector);
-                    await DatabaseManager.UpdateFeatures(fileName, resnetVector, dinov2Vector); // use this line if you are updating
+                    //await _featureRepo.SaveFeatures(fileName, resnetVector, dinov2Vector);
+                    await _featureRepo.UpdateFeatures(fileName, resnetVector, dinov2Vector); // use this line if you are updating
                 }
                 catch (Exception ex)
                 {
@@ -252,10 +255,11 @@ namespace simple_ids_cam_view.Services
         // select filePath path based on the flag IsUsingCurrentImage
         private string SelectFilePath(bool IsUsingCurrentImage)
         {
-            string filePath =
-                IsUsingCurrentImage ?
-                _imageStorage.SaveTempImage("temp.jpeg") :
-                FileHelper.SelectImageFilePath();
+            string filePath;
+            if (IsUsingCurrentImage)
+                filePath = _imageStorage.SaveTempImage("temp.jpeg");
+            else
+                filePath = FileHelper.SelectImageFilePath();
 
             if (string.IsNullOrEmpty(filePath))
                 ExceptionHelper.ShowWarningMessage("No image selected or the filePath path is empty. Process cancelled!");

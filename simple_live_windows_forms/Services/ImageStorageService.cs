@@ -18,6 +18,8 @@ namespace simple_ids_cam_view.Services
         private readonly ImageProcessorService _imageProcessor;
         private readonly FileService _fileService;
         private readonly PromptService _promptService;
+        private readonly FeatureRepository _featureRepo;
+
 
         public ImageStorageService(SimplePictureBox customPictureBox, GroupBox gbxShowLoading, Label labelConnectorName)
         {
@@ -30,6 +32,7 @@ namespace simple_ids_cam_view.Services
             _imageProcessor = new ImageProcessorService();
             _fileService = new FileService();
             _promptService = new PromptService();
+            _featureRepo = new FeatureRepository();
         }
 
         /// <summary> store connector in local folder and database </summary>
@@ -81,8 +84,7 @@ namespace simple_ids_cam_view.Services
             if (!IsImageAvailable()) return; // Exit if Image is NOT available.
 
             using var f = new AddAccessoryForm();
-            if (f.ShowDialog() != DialogResult.OK)
-                return;
+            if (f.ShowDialog() != DialogResult.OK) return;
 
             var accessoryDetails = f.AccessoryDetails;
 
@@ -137,14 +139,8 @@ namespace simple_ids_cam_view.Services
         // Saves the processed image with a pre-defined name, and returns a filepath
         public string SaveTempImage(string name)
         {
-            // get default save location
-            string filePath = Path.Combine(ProjectSettings.DefaultFolder, name);
-
-            // get image
             using var _image = new Bitmap(customPictureBox.Image);
-            if (_image is null) return null;
-
-            // save image after processing
+            string filePath = _fileService.GetFilePath(name);
             _imageProcessor.SaveCompressedImage(_image, filePath);
 
             return filePath;
@@ -204,7 +200,7 @@ namespace simple_ids_cam_view.Services
                     // then save features in database
                     var (resnet, dino) = ExtractFeatures(filePath);
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
-                    await DatabaseManager.SaveFeatures(fileName, resnet, dino).ConfigureAwait(false);
+                    await _featureRepo.SaveFeatures(fileName, resnet, dino).ConfigureAwait(false);
 
                     // save in referencias table
                     await InsertHandler.InsertReferenceDataAsync(filePath, newSample).ConfigureAwait(false);
@@ -226,7 +222,7 @@ namespace simple_ids_cam_view.Services
             }
         }
 
-        private (float[], float[]) ExtractFeatures(string filePath)
+        private static (float[], float[]) ExtractFeatures(string filePath)
         {
             using var resnetExtractor = new FeatureExtractorResnet50();
             using var dinov2Extractor = new FeatureExtractorDINOv2();
@@ -243,7 +239,5 @@ namespace simple_ids_cam_view.Services
                 return (Array.Empty<float>(), Array.Empty<float>());
             }
         }
-
-
     }
 }

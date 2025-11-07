@@ -7,8 +7,14 @@ namespace simple_ids_cam_view.Services
     internal class OnnxService
     {
         private const int MAX_RESULT_LENGTH = 50;
+        private readonly FeatureRepository _featureRepo;
 
-        internal static List<ConnectorMatch> FindMatchingImages(string sourceFilepath)
+        public OnnxService()
+        {
+            _featureRepo = new FeatureRepository();
+        }
+
+        internal List<ConnectorMatch> FindMatchingImages(string sourceFilepath)
         {
             // get vector from both onnx models for the given image
             // resnet
@@ -19,13 +25,13 @@ namespace simple_ids_cam_view.Services
             using var dinov2Extractor = new FeatureExtractorDINOv2();
             float[] dinov2Vector = dinov2Extractor.ExtractFeatures(sourceFilepath);
 
-            var storedVectors = DatabaseManager.LoadAllVectors(); // load values from database
+            var storedVectors = _featureRepo.LoadAllVectors(); // load values from database
             var topMatches = FindTopScores(resnetVector, dinov2Vector, storedVectors);
 
             return topMatches;
         }
 
-        //
+        // Find top matching scores based on cosine similarity
         private static List<ConnectorMatch> FindTopScores(float[] resnetVector, float[] dinov2Vector, List<ConnectorFeature> storedVectors)
         {
             return storedVectors.Select(v => new ConnectorMatch

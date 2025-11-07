@@ -2,7 +2,7 @@
 using ImageProcessingLibrary.Helpers;
 using ImageProcessingLibrary.Models;
 using System.Data.SqlClient;
-using static ImageProcessingLibrary.Services.Database.DatabaseManager;
+using static ImageProcessingLibrary.Services.Database.DbHelper;
 using static ImageProcessingLibrary.Services.SerializationHandler;
 
 namespace ImageProcessingLibrary.Services.Database

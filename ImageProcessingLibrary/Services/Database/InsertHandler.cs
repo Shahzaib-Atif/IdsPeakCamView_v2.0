@@ -1,5 +1,5 @@
 ﻿using ImageProcessingLibrary.Models;
-using static ImageProcessingLibrary.Services.Database.DatabaseManager;
+using static ImageProcessingLibrary.Services.Database.DbHelper;
 
 namespace ImageProcessingLibrary.Services.Database
 {
