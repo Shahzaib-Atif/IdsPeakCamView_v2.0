@@ -14,6 +14,7 @@ namespace simple_ids_cam_view
         private readonly BackEnd backEnd; // for handling camera related functionality
         private readonly BackgroundWorkerService backgroundWorkerService; // related to image comparison
         private readonly ImageStorageService imageStorageService; // related to image storage
+        private readonly ImageProcessorService imageProcessorService;
         private readonly ControlPanelManager controlPanelManager; // for toggling camera and modbus controls
 
         private bool IsRoiModified { get; set; } = false;
@@ -34,6 +35,7 @@ namespace simple_ids_cam_view
 
             backgroundWorkerService = new(customPictureBox, progressBar, gbxProgress);
             imageStorageService = new(customPictureBox, GbxShowLoading, LabelConnectorName);
+            imageProcessorService = new ImageProcessorService();
             controlPanelManager = new(CameraSettingsPanel, ModbusControlsPanel);
             backEnd = new();
             SettingsManager.LoadInitialSettings();
@@ -249,7 +251,7 @@ namespace simple_ids_cam_view
             this.controlPanelManager.ToggleCameraControlsPanel();
         }
 
-        private void DeleteImageMenuItem_Click(object s, EventArgs e) => ImageStorageService.DeleteImage();
+        private void DeleteImageMenuItem_Click(object s, EventArgs e) => this.imageStorageService.DeleteImage();
 
         private void ModbusConfigMenuItem_Click(object sender, EventArgs e)
         {

@@ -1,4 +1,4 @@
-﻿using ImageProcessingLibrary.Services;
+﻿using ImageProcessingLibrary;
 
 namespace TriCamPylonView.UI.Forms
 {
@@ -9,7 +9,7 @@ namespace TriCamPylonView.UI.Forms
             InitializeComponent();
 
             // update value in UI
-            this.ResizeFactor.Value = (decimal)ImageProcessor.ResizeFactor;
+            this.ResizeFactor.Value = (decimal)ProjectSettings.ResizeFactor;
         }
 
         private void BtnSave_Click(object sender, EventArgs e) => SaveAndCloseForm();
@@ -23,7 +23,7 @@ namespace TriCamPylonView.UI.Forms
         private void SaveAndCloseForm()
         {
             // update static value in ImageProcessing 
-            ImageProcessor.ResizeFactor = (double)this.ResizeFactor.Value;
+            ProjectSettings.ResizeFactor = (double)this.ResizeFactor.Value;
             this.Close();
         }
     }

@@ -15,12 +15,17 @@ namespace simple_ids_cam_view.Services
         private readonly SimplePictureBox customPictureBox;
         private readonly GroupBox GbxShowLoading;
         private readonly Label LabelConnectorName;
+        private readonly ImageProcessorService _imageProcessor;
 
         public ImageStorageService(SimplePictureBox customPictureBox, GroupBox gbxShowLoading, Label labelConnectorName)
         {
+            // initialize UI components references
             this.customPictureBox = customPictureBox;
             this.GbxShowLoading = gbxShowLoading;
             this.LabelConnectorName = labelConnectorName;
+
+            // initialize services
+            _imageProcessor = new ImageProcessorService();
         }
 
         /// <summary> store connector in local folder and database </summary>
@@ -64,7 +69,7 @@ namespace simple_ids_cam_view.Services
             await Task.Run(() =>
             {
                 Image _image = customPictureBox.GetProcessedImage();
-                ImageProcessor.SaveCompressedImage(_image, filePath);
+                _imageProcessor.SaveCompressedImage(_image, filePath);
             });
 
             // ask user if he wants to open the image
@@ -111,7 +116,7 @@ namespace simple_ids_cam_view.Services
             await Task.Run(() =>
             {
                 Image _image = customPictureBox.GetProcessedImage();
-                ImageProcessor.SaveCompressedImage(_image, filePath);
+                _imageProcessor.SaveCompressedImage(_image, filePath);
             });
 
             // add the image in the database
@@ -121,7 +126,7 @@ namespace simple_ids_cam_view.Services
             PromptUserForOpeningImage(filePath);
         }
 
-        public static void DeleteImage()
+        public void DeleteImage()
         {
             string filePath = FileHelper.SelectImageFilePath("Select the image you want to delete");
             if (string.IsNullOrEmpty(filePath))
@@ -137,7 +142,21 @@ namespace simple_ids_cam_view.Services
             ExceptionHelper.ShowInformationMessage($"{fileName} deleted successfully!");
         }
 
+        // Saves the processed image with a pre-defined name, and returns a filepath
+        public string SaveTempImage(string name)
+        {
+            // get default save location
+            string filePath = Path.Combine(ProjectSettings.DefaultFolder, name);
 
+            // get image
+            using var _image = new Bitmap(customPictureBox.Image);
+            if (_image is null) return null;
+
+            // save image after processing
+            _imageProcessor.SaveCompressedImage(_image, filePath);
+
+            return filePath;
+        }
 
         /// <summary> Open SampleDetailsForm to get connector details from user. </summary>
         private static SampleDetail GetConnectorDetails()
@@ -204,7 +223,7 @@ namespace simple_ids_cam_view.Services
                 {
                     // first save in local folder
                     using var _temImage = new Bitmap(customPictureBox.Image);
-                    ImageProcessor.SaveCompressedImage(_temImage, filePath);
+                    _imageProcessor.SaveCompressedImage(_temImage, filePath);
 
                     // then save features in database
                     var (resnet, dino) = ExtractFeatures(filePath);

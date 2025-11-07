@@ -107,7 +107,7 @@ namespace simple_ids_cam_view
             using var _image = new Bitmap(customPictureBox.Image);
 
             // save image after processing
-            ImageProcessor.SaveBackgroundImage(_image, filePath);
+            imageProcessorService.SaveBackgroundImage(_image, filePath);
 
             return filePath;
         }

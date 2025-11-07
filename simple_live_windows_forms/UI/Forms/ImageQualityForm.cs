@@ -1,15 +1,18 @@
-﻿using ImageProcessingLibrary.Services;
+﻿using ImageProcessingLibrary;
+using ImageProcessingLibrary.Services;
 
 namespace TriCamPylonView.UI
 {
     public partial class ImageQualityForm : Form
     {
+        private readonly ImageProcessorService _imageProcessor;
+
         public ImageQualityForm()
         {
             InitializeComponent();
 
             // update value in UI
-            this.QualityIndex.Value = ImageProcessor.QualityIndex;
+            this.QualityIndex.Value = ProjectSettings.QualityIndex;
 
             // Select the numeric value
             this.QualityIndex.Focus();
@@ -27,7 +30,7 @@ namespace TriCamPylonView.UI
         private void SaveAndCloseForm()
         {
             // update static value in ImageProcessing 
-            ImageProcessor.QualityIndex = (long)this.QualityIndex.Value;
+            ProjectSettings.QualityIndex = (long)this.QualityIndex.Value;
             this.Close();
         }
     }

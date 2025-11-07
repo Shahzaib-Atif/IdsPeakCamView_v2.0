@@ -1,19 +1,19 @@
-﻿using ImageProcessingLibrary.Helpers;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using static ImageProcessingLibrary.ProjectSettings;
 
 namespace ImageProcessingLibrary.Services
 {
-    public class ImageProcessor
+    public class ImageProcessorService
     {
-        // incease or decrease the quality index to change image size (min 0, max 100)
-        public static long QualityIndex { get; set; } = 73;
-        public static double ResizeFactor { get; set; } = 0.5;
+        public ImageProcessorService()
+        {
 
+        }
 
         // Save image after compressing and prompt user to open in File Explorer.
-        public static void SaveCompressedImage(Image image, string savePath)
+        public void SaveCompressedImage(Image image, string savePath)
         {
             // Set up the parameters for JPEG compression
             ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
@@ -34,7 +34,7 @@ namespace ImageProcessingLibrary.Services
 
 
         // it saves a background image with low quality to be used later in cropping
-        public static void SaveBackgroundImage(Image originalImage, string savePath)
+        public void SaveBackgroundImage(Image originalImage, string savePath)
         {
             double resize_factor = 0.2; long quality_index = 50;
 
@@ -74,27 +74,6 @@ namespace ImageProcessingLibrary.Services
 
         // --------------------- //
         #region Private functions
-        // Ask the user if they want to open the image in File Explorer
-        private static void PromptUserForOpeningImage(string savePath)
-        {
-            try
-            {
-                DialogResult result = MessageBox.Show("Image saved successfully! Do you want to open it in File Explorer?",
-                                                      "Open Image", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                // If the user clicks 'Yes', open the folder and highlight the image
-                if (result == DialogResult.Yes)
-                {
-                    string argument = "/select, \"" + Path.GetFullPath(savePath) + "\"";
-                    Process.Start("explorer.exe", argument);
-                }
-            }
-            catch
-            {
-                ExceptionHelper.DisplayErrorMessage($"Error occured while trying to open file location:\n{savePath}");
-            }
-        }
-
         // Get the JPEG encoder
         private static ImageCodecInfo GetEncoder(ImageFormat format)
         {

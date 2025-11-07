@@ -24,6 +24,7 @@ namespace simple_ids_cam_view.Services
         private string SourceImageFilepath { get; set; }
         private SampleDetail SampleDetails { get; set; }
         private List<ConnectorMatch> TopMatches { get; set; }
+        private readonly ImageStorageService _imageStorage;
 
         // use these two fields for uploading images from some folder to the DB
         private bool _AddImagesToDbFromFolder = false;
@@ -44,6 +45,9 @@ namespace simple_ids_cam_view.Services
             BgWorker.DoWork += new DoWorkEventHandler(BackgroundWorker_DoWork);
             BgWorker.WorkerReportsProgress = true;
             BgWorker.WorkerSupportsCancellation = true;
+
+            // initialize image storage service
+            _imageStorage = new ImageStorageService(customPictureBox, null, null);
         }
 
         /// <summary> find similar images from database based on their features </summary>
@@ -112,22 +116,6 @@ namespace simple_ids_cam_view.Services
             // Start background processing
             if (!BgWorker.IsBusy)
                 BgWorker.RunWorkerAsync();
-        }
-
-        // Saves the processed image with a pre-defined name, and returns a filepath
-        private string SaveTempImage(string name)
-        {
-            // get default save location
-            string filePath = Path.Combine(ProjectSettings.DefaultFolder, name);
-
-            // get image
-            using var _image = new Bitmap(this.CustomPictureBox.Image);
-            if (_image is null) return null;
-
-            // save image after processing
-            ImageProcessor.SaveCompressedImage(_image, filePath);
-
-            return filePath;
         }
 
 
@@ -266,7 +254,7 @@ namespace simple_ids_cam_view.Services
         {
             string filePath =
                 IsUsingCurrentImage ?
-                SaveTempImage("temp.jpeg") :
+                _imageStorage.SaveTempImage("temp.jpeg") :
                 FileHelper.SelectImageFilePath();
 
             if (string.IsNullOrEmpty(filePath))
