@@ -117,7 +117,7 @@ namespace simple_ids_cam_view
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Padding = new Padding(4, 4, 0, 4);
             toolStrip1.RenderMode = ToolStripRenderMode.System;
-            toolStrip1.Size = new Size(799, 34);
+            toolStrip1.Size = new Size(697, 34);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -624,7 +624,6 @@ namespace simple_ids_cam_view
             Controls.Add(Flp_Main);
             Controls.Add(toolStrip1);
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             MaximizeBox = false;

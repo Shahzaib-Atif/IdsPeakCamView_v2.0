@@ -295,16 +295,16 @@ namespace simple_ids_cam_view
         }
 
         // Remove the Close button while keeping the title bar
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                const int CS_NOCLOSE = 0x200;
-                cp.ClassStyle |= CS_NOCLOSE;
-                return cp;
-            }
-        }
+        //protected override CreateParams CreateParams
+        //{
+        //    get
+        //    {
+        //        CreateParams cp = base.CreateParams;
+        //        const int CS_NOCLOSE = 0x200;
+        //        cp.ClassStyle |= CS_NOCLOSE;
+        //        return cp;
+        //    }
+        //}
 
         /// <summary> Return true if image exists; otherwise show warning </summary>
         private bool IsImageAvailable()

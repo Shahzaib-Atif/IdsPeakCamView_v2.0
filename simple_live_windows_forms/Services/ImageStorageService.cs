@@ -1,11 +1,12 @@
 ﻿using ImageProcessingLibrary;
 using ImageProcessingLibrary.Helpers;
+using ImageProcessingLibrary.Models;
 using ImageProcessingLibrary.Services;
 using ImageProcessingLibrary.Services.Database;
 using simple_ids_cam_view.UI.Controls;
 using simple_ids_cam_view.UI.Forms;
+using System.Data.SqlClient;
 using System.Diagnostics;
-using static ImageProcessingLibrary.Helpers.ExceptionHelper;
 
 namespace simple_ids_cam_view.Services
 {
@@ -29,9 +30,26 @@ namespace simple_ids_cam_view.Services
             PerformInitalChecks();
 
             // Get connector details from the user.
-            //string connectorName = GetConnectorDetails(); //TODO
-            string connectorName = "A000BR";
-            if (string.IsNullOrEmpty(connectorName)) return false;
+            //var connectorName = GetConnectorDetails(); //TODO
+            SampleDetail newSample = new()
+            {
+                BasicDetails = new BasicSampleDetails
+                {
+                    PosId = "A000",
+                    Cor = "B",
+                    Vias = "R",
+                    Codivmac = "A000BR",
+                    Tipo = "Conector"
+                },
+                Dimensions = new SampleDimensions
+                {
+                    InternalDiameter = 1,
+                    ExternalDiameter = 2,
+                    Thickness = 5
+                }
+            };
+            string connectorName = newSample.BasicDetails.Codivmac;
+            //if (string.IsNullOrEmpty(connectorName)) return false;
 
             // show loading status
             this.GbxShowLoading.Visible = true;
@@ -39,9 +57,8 @@ namespace simple_ids_cam_view.Services
             // Generate file path using connector name.
             string filePath = GetDefaultConnectorPath(connectorName);
 
-            bool isSaveSuccessful = await SaveOriginalImage(filePath);
-            if (!isSaveSuccessful)
-                DeleteImageAndThrowException(filePath);
+            // Save image in local folder and database
+            if (!await SaveImage(filePath, newSample)) return false;
 
             // Overwrite original image in local folder with the processed image containing text.
             await Task.Run(() =>
@@ -123,17 +140,10 @@ namespace simple_ids_cam_view.Services
 
 
         /// <summary> Open SampleDetailsForm to get connector details from user. </summary>
-        private static string GetConnectorDetails()
+        private static SampleDetail GetConnectorDetails()
         {
-            using var f = new SampleDetailsForm(); //f.TopMost = true;
-
-            if (f.ShowDialog() == DialogResult.OK)
-            {
-                //this.SampleDetails = f.SampleDetails;
-                return (f.SampleDetails.BasicDetails.Codivmac);
-            }
-            else
-                return string.Empty;
+            using var f = new SampleDetailsForm();
+            return f.ShowDialog() == DialogResult.OK ? f.SampleDetails : null;
         }
 
         private void PerformInitalChecks()
@@ -185,7 +195,8 @@ namespace simple_ids_cam_view.Services
             return filePath;
         }
 
-        private async Task<bool> SaveOriginalImage(string filePath)
+        /// <summary> Save image in local folder and database. </summary>
+        private async Task<bool> SaveImage(string filePath, SampleDetail newSample)
         {
             try
             {
@@ -195,21 +206,28 @@ namespace simple_ids_cam_view.Services
                     using var _temImage = new Bitmap(customPictureBox.Image);
                     ImageProcessor.SaveCompressedImage(_temImage, filePath);
 
-                    //return await DatabaseManager.StoreImageFeatures(filePath, SampleDetails).ConfigureAwait(false);
+                    // then save features in database
                     var (resnet, dino) = ExtractFeatures(filePath);
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
                     await DatabaseManager.SaveFeatures(fileName, resnet, dino).ConfigureAwait(false);
+
+                    // save in referencias table
+                    await InsertHandler.InsertReferenceDataAsync(filePath, newSample).ConfigureAwait(false);
+                    //return await DatabaseManager.StoreImageFeatures(filePath, SampleDetails).ConfigureAwait(false);
                     return true;
                 }).ConfigureAwait(false);
             }
-            catch
+            catch (Exception ex)
             {
                 // in case of error, delete the file from the local folder
                 if (File.Exists(filePath))
                     File.Delete(filePath);
 
-                // re-throw the original error
-                throw;
+                // Handle UNIQUE KEY violation (duplicate entry)
+                if (ex is SqlException sqlx && (sqlx.Number == 2627 || sqlx.Number == 2601))
+                    throw new Exception($"An entry with the same key {newSample.BasicDetails.Codivmac} already exists in the database! Process cancelled.");
+                else
+                    throw; // re-throw the original error
             }
         }
 

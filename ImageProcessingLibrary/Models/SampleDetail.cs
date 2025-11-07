@@ -12,6 +12,10 @@ namespace ImageProcessingLibrary.Models
             BasicDetails = basicDetails;
             Dimensions = dimensions;
         }
+
+        public SampleDetail()
+        {
+        }
     }
 
     public struct BasicSampleDetails

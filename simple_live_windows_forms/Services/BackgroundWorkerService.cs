@@ -228,8 +228,8 @@ namespace simple_ids_cam_view.Services
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
                     float[] resnetVector = resnetExtractor.ExtractFeatures(filePath);
                     float[] dinov2Vector = dinov2Extractor.ExtractFeatures(filePath);
-                    await DatabaseManager.SaveFeatures(fileName, resnetVector, dinov2Vector);
-                    //await DatabaseManager.UpdateFeatures(fileName, resnetVector, dinov2Vector); // use this line if you are updating
+                    //await DatabaseManager.SaveFeatures(fileName, resnetVector, dinov2Vector);
+                    await DatabaseManager.UpdateFeatures(fileName, resnetVector, dinov2Vector); // use this line if you are updating
                 }
                 catch (Exception ex)
                 {

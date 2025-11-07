@@ -1,33 +1,12 @@
 ﻿using ImageProcessingLibrary.Models;
-using System.Data.SqlClient;
-using static ImageProcessingLibrary.ProjectSettings;
 using static ImageProcessingLibrary.Services.Database.DatabaseManager;
 
 namespace ImageProcessingLibrary.Services.Database
 {
-    internal class InsertHandler
+    public class InsertHandler
     {
-        // Insert image features in the DB
-        internal static async Task<bool> AddNewImageDataAsync(string imagePath, ImageFeaturesStruct features, SampleDetail sampleDetails)
-        {
-            // open connection
-            using var connection = new SqlConnection(DbConnectionString);
-            await connection.OpenAsync();
-
-            // insert data in main table
-            bool referenceInserted = await InsertReferenceDataAsync(imagePath, sampleDetails);
-            if (!referenceInserted) return false;
-
-
-            // insert data in image features table
-            string codivmac = sampleDetails.BasicDetails.Codivmac;
-            await DeleteFromFeaturesTableAsync(codivmac); // Remove existing features with same codivmacRef
-            return await InsertImageFeaturesAsync(codivmac, features); // add new features
-        }
-
-
         /// <summary> Inserts basic reference data into the database. </summary>
-        private static async Task<bool> InsertReferenceDataAsync(string imagePath, SampleDetail sampleDetails)
+        public static async Task<bool> InsertReferenceDataAsync(string imagePath, SampleDetail sampleDetails)
         {
             // include tipo
             string query = @$"
