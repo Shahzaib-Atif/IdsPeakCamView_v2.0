@@ -16,6 +16,8 @@ namespace simple_ids_cam_view.Services
         private readonly GroupBox GbxShowLoading;
         private readonly Label LabelConnectorName;
         private readonly ImageProcessorService _imageProcessor;
+        private readonly FileService _fileService;
+        private readonly PromptService _promptService;
 
         public ImageStorageService(SimplePictureBox customPictureBox, GroupBox gbxShowLoading, Label labelConnectorName)
         {
@@ -26,6 +28,8 @@ namespace simple_ids_cam_view.Services
 
             // initialize services
             _imageProcessor = new ImageProcessorService();
+            _fileService = new FileService();
+            _promptService = new PromptService();
         }
 
         /// <summary> store connector in local folder and database </summary>
@@ -34,27 +38,10 @@ namespace simple_ids_cam_view.Services
             // check image availability and default folder
             PerformInitalChecks();
 
-            // Get connector details from the user.
-            //var connectorName = GetConnectorDetails(); //TODO
-            SampleDetail newSample = new()
-            {
-                BasicDetails = new BasicSampleDetails
-                {
-                    PosId = "A000",
-                    Cor = "B",
-                    Vias = "R",
-                    Codivmac = "A000BR",
-                    Tipo = "Conector"
-                },
-                Dimensions = new SampleDimensions
-                {
-                    InternalDiameter = 1,
-                    ExternalDiameter = 2,
-                    Thickness = 5
-                }
-            };
+            // Get connector details
+            //var connectorName = GetConnectorDetails();
+            SampleDetail newSample = SampleDetail.Default(); // TODO: remove this line when GetConnectorDetails is implemented
             string connectorName = newSample.BasicDetails.Codivmac;
-            //if (string.IsNullOrEmpty(connectorName)) return false;
 
             // show loading status
             this.GbxShowLoading.Visible = true;
@@ -72,8 +59,11 @@ namespace simple_ids_cam_view.Services
                 _imageProcessor.SaveCompressedImage(_image, filePath);
             });
 
+            // hide the loading status
+            this.GbxShowLoading.Visible = false;
+
             // ask user if he wants to open the image
-            PromptUserForOpeningImage(filePath);
+            _promptService.PromptUserForOpeningImage(filePath);
 
             // update Label which shows ConnectorName
             LabelConnectorName.Text = connectorName;
@@ -91,7 +81,6 @@ namespace simple_ids_cam_view.Services
             if (!IsImageAvailable()) return; // Exit if Image is NOT available.
 
             using var f = new AddAccessoryForm();
-            //f.TopMost = true;
             if (f.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -122,8 +111,11 @@ namespace simple_ids_cam_view.Services
             // add the image in the database
             await DatabaseManager.SaveAccessoryDetails(filePath, f.AccessoryDetails);
 
+            // hide the loading status
+            this.GbxShowLoading.Visible = false;
+
             // ask user if he wants to open the image
-            PromptUserForOpeningImage(filePath);
+            _promptService.PromptUserForOpeningImage(filePath);
         }
 
         public void DeleteImage()
@@ -172,7 +164,7 @@ namespace simple_ids_cam_view.Services
                 throw new Exception("No image available from the camera!");
 
             // Validate default folder or prompt user to update it.
-            if (!EnsureDefaultFolderIsValid())
+            if (!_fileService.EnsureDefaultFolderIsValid())
                 throw new Exception("The default local folder does not exist! \n Process cancelled!");
         }
 
@@ -182,22 +174,6 @@ namespace simple_ids_cam_view.Services
             if (customPictureBox.Image is null)
             {
                 ExceptionHelper.ShowWarningMessage("No Image Found!");
-                return false;
-            }
-            return true;
-        }
-
-        private static bool EnsureDefaultFolderIsValid()
-        {
-            if (FileHelper.IsDefaultFolderUpdateRequired())
-            {
-                using var f = new DefaultFolderForm();    //f.TopMost = true;            
-                f.ShowDialog();
-            }
-
-            if (!Directory.Exists(ProjectSettings.DefaultFolder))
-            {
-                ExceptionHelper.ShowDefaultFolderNotFoundWarning();
                 return false;
             }
             return true;
@@ -269,28 +245,5 @@ namespace simple_ids_cam_view.Services
         }
 
 
-        // Ask the user if they want to open the image in File Explorer
-        private void PromptUserForOpeningImage(string savePath)
-        {
-            // hide the loading status
-            this.GbxShowLoading.Visible = false;
-
-            try
-            {
-                DialogResult result = MessageBox.Show("Image saved successfully! Do you want to open it in File Explorer?",
-                                                      "Open Image", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                // If the user clicks 'Yes', open the folder and highlight the image
-                if (result == DialogResult.Yes)
-                {
-                    string argument = "/select, \"" + Path.GetFullPath(savePath) + "\"";
-                    Process.Start("explorer.exe", argument);
-                }
-            }
-            catch
-            {
-                ExceptionHelper.DisplayErrorMessage($"Error occured while trying to open file location:\n{savePath}");
-            }
-        }
     }
 }

@@ -16,6 +16,27 @@ namespace ImageProcessingLibrary.Models
         public SampleDetail()
         {
         }
+
+        public static SampleDetail Default()
+        {
+            return new()
+            {
+                BasicDetails = new BasicSampleDetails
+                {
+                    PosId = "A000",
+                    Cor = "B",
+                    Vias = "R",
+                    Codivmac = "A000BR",
+                    Tipo = "Conector"
+                },
+                Dimensions = new SampleDimensions
+                {
+                    InternalDiameter = 1,
+                    ExternalDiameter = 2,
+                    Thickness = 5
+                }
+            };
+        }
     }
 
     public struct BasicSampleDetails
@@ -51,4 +72,5 @@ namespace ImageProcessingLibrary.Models
             Thickness = thickness;
         }
     }
+
 }
