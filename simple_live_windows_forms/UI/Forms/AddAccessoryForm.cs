@@ -6,12 +6,16 @@ namespace simple_ids_cam_view.UI.Forms
 {
     public partial class AddAccessoryForm : Form
     {
-        private static AutoCompleteStringCollection myCollection;
         public AccessoryDetails AccessoryDetails { get; set; }
+        private static AutoCompleteStringCollection myCollection;
+        private readonly AccessoryRepository _accessoryRepo;
 
         public AddAccessoryForm()
         {
             InitializeComponent();
+
+            // initialize repository
+            _accessoryRepo = new AccessoryRepository();
 
             // initial setup
             ConfigureAutoCompleteForConnectorNames();
@@ -25,7 +29,7 @@ namespace simple_ids_cam_view.UI.Forms
             try
             {
                 comboBoxTipo.Items.Clear();
-                var items = await DatabaseManager.ReadAvailableAccessoryTypes();
+                var items = await _accessoryRepo.ReadAvailableAccessoryTypes();
                 comboBoxTipo.Items.AddRange(items.ToArray());
             }
             catch (Exception ex)

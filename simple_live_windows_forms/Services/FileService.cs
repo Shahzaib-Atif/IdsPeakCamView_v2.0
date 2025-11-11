@@ -27,5 +27,15 @@ namespace simple_ids_cam_view.Services
         {
             return Path.Combine(ProjectSettings.DefaultFolder, name);
         }
+
+        public bool IsValidPath(string imagePath)
+        {
+            if (string.IsNullOrEmpty(imagePath) || !File.Exists(imagePath))
+            {
+                ExceptionHelper.ShowWarningMessage("ExtractImageFeatures: Invalid image path!");
+                return false;
+            }
+            return true;
+        }
     }
 }

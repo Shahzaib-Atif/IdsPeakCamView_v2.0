@@ -19,6 +19,7 @@ namespace simple_ids_cam_view.Services
         private readonly FileService _fileService;
         private readonly PromptService _promptService;
         private readonly FeatureRepository _featureRepo;
+        private readonly AccessoryRepository _accessoryRepo;
 
 
         public ImageStorageService(SimplePictureBox customPictureBox, GroupBox gbxShowLoading, Label labelConnectorName)
@@ -33,6 +34,7 @@ namespace simple_ids_cam_view.Services
             _fileService = new FileService();
             _promptService = new PromptService();
             _featureRepo = new FeatureRepository();
+            _accessoryRepo = new AccessoryRepository();
         }
 
         /// <summary> store connector in local folder and database </summary>
@@ -110,8 +112,15 @@ namespace simple_ids_cam_view.Services
                 _imageProcessor.SaveCompressedImage(_image, filePath);
             });
 
+            // validate the file path
+            if (!_fileService.IsValidPath(filePath))
+            {
+                this.GbxShowLoading.Visible = false;
+                return;
+            }
+
             // add the image in the database
-            await DatabaseManager.SaveAccessoryDetails(filePath, f.AccessoryDetails);
+            await _accessoryRepo.SaveAccessoryDetails(filePath, f.AccessoryDetails);
 
             // hide the loading status
             this.GbxShowLoading.Visible = false;
@@ -239,5 +248,7 @@ namespace simple_ids_cam_view.Services
                 return (Array.Empty<float>(), Array.Empty<float>());
             }
         }
+
+
     }
 }

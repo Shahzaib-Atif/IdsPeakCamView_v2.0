@@ -1,42 +1,11 @@
 ﻿using ImageProcessingLibrary.Helpers;
 using ImageProcessingLibrary.Models;
-using static ImageProcessingLibrary.ProjectSettings;
 using static ImageProcessingLibrary.Services.Database.DbHelper;
 
 namespace ImageProcessingLibrary.Services.Database
 {
     public class DatabaseManager
     {
-        public static async Task<bool> SaveAccessoryDetails(string imagePath, AccessoryDetails _accessoryDetails)
-        {
-            if (DbConnectionString == string.Empty)
-            {
-                ExceptionHelper.DisplayErrorMessage("DB connection string cannot be empty!");
-                return false;
-            }
-
-            // is image valid?
-            if (!IsImagePathValid(imagePath)) return false;
-
-            var parameters = new Dictionary<string, object>
-            {
-                {"@tipo", _accessoryDetails.Tipo},
-                {"@connectorName", _accessoryDetails.ConnectorName },
-                {"@imagePath", imagePath },
-                {"@reference", _accessoryDetails.Reference },
-            };
-
-            // Construct the SQL INSERT query
-            string query = $@"
-            INSERT INTO {AccessoriesTable} 
-            ([AccessoryType], [ConnName], [AccImagePath], [RefClient])
-            VALUES 
-            (@tipo, @connectorName, @imagePath, @reference);";
-
-            int rowsAffected = await DbHelper.ExecuteNonQueryAsync(query, parameters);
-            return rowsAffected > 0;
-        }
-
         // Delete existing record from main table
         public static async Task DeleteFromMainTableAsync(string fileName)
         {
@@ -224,17 +193,9 @@ namespace ImageProcessingLibrary.Services.Database
 
         #endregion
 
-        // Reads available accessory types from the database and returns them as a list of strings.
         public static async Task<IEnumerable<string>> ReadAvailableSampleSection()
         {
             string query = "SELECT DISTINCT [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
-            return await DbHelper.ExecuteQueryAsync(query);
-        }
-
-        // Reads available accessory types from the database and returns them as a list of strings.
-        public static async Task<IEnumerable<string>> ReadAvailableAccessoryTypes()
-        {
-            string query = "SELECT [TypeDescription] FROM [ImageFeaturesDB].[dbo].[AccessoryTypes]";
             return await DbHelper.ExecuteQueryAsync(query);
         }
 
@@ -252,19 +213,6 @@ namespace ImageProcessingLibrary.Services.Database
             return await DbHelper.ExecuteQueryAsync(query);
         }
 
-
-        #region -- PRIVATE FUNCTIONS
-        private static bool IsImagePathValid(string imagePath)
-        {
-            if (string.IsNullOrEmpty(imagePath) || !File.Exists(imagePath))
-            {
-                ExceptionHelper.ShowWarningMessage("ExtractImageFeatures: Invalid image path!");
-                return false;
-            }
-            return true;
-        }
-
-        #endregion
 
     }
 }

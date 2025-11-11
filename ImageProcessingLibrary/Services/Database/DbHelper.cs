@@ -11,7 +11,6 @@
     {
         public static readonly string MainReferenceTable = "Referências_test";
         public static readonly string ImageFeaturesTable = "ImageFeatures";
-        public static readonly string AccessoriesTable = "REG_AccessoriesSamples";
         public static readonly string CordCONTable = "Cord_CON";
 
         /// <summary> Executes a query and returns the first column of the first row as a scalar value. </summary>
