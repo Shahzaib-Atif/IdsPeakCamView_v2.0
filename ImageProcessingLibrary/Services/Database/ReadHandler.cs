@@ -2,7 +2,6 @@
 using ImageProcessingLibrary.Helpers;
 using ImageProcessingLibrary.Models;
 using System.Data.SqlClient;
-using static ImageProcessingLibrary.Services.Database.DbHelper;
 using static ImageProcessingLibrary.Services.SerializationHandler;
 
 namespace ImageProcessingLibrary.Services.Database
@@ -93,7 +92,7 @@ namespace ImageProcessingLibrary.Services.Database
             // TODO
             string searchQuery =
                 $"SELECT * FROM [ImageFeaturesDB].[dbo].[{"MainReferenceTable"}] " +
-                $"INNER JOIN {ImageFeaturesTable} ON {"MainReferenceTable"}.CODIVMAC = {ImageFeaturesTable}.CodivmacRef";
+                $"INNER JOIN {"ImageFeaturesTable"} ON {"MainReferenceTable"}.CODIVMAC = {"ImageFeaturesTable"}.CodivmacRef";
 
             List<string> conditions = new();
             var command = new SqlCommand();
