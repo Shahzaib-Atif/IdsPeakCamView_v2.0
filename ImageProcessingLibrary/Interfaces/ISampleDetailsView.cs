@@ -1,77 +1,57 @@
-﻿using Emgu.CV;
-using Emgu.CV.Structure;
-using ImageProcessingLibrary.Helpers;
+﻿
+using ImageProcessingLibrary.Models;
 
+/// <summary>
+/// View interface for Sample Details form
+/// Defines contract between View and Presenter
+/// </summary>
 namespace ImageProcessingLibrary.Interfaces
 {
-    public interface IImagePreviewView
+    public interface ISampleDetailsView
     {
         #region Events (View -> Presenter)
+
         event EventHandler ViewLoaded;
-        event EventHandler ImageSelected;
-        event EventHandler OpenFileRequested;
-        event EventHandler ViewInExplorerRequested;
-        event EventHandler CopyFilepathRequested;
-        event EventHandler<SortingTypeEventArgs> SortingChanged;
-        event EventHandler ViewClosed;
+        event EventHandler SaveRequested;
+        event EventHandler TipoChanged;
+        event EventHandler PosIdTextChanged;
+
         #endregion
 
-        #region Methods (Presenter -> View)
+        #region Properties (Presenter reads from View)
 
-        /// <summary>
-        /// Add an image item to the list view
-        /// </summary>
-        //void AddImageToList(ImageItem item);
+        string PosId { get; }
+        string Tipo { get; }
+        string CorValue { get; }
+        string ViasValue { get; }
+        decimal InternalDiameter { get; }
+        decimal ExternalDiameter { get; }
+        decimal Thickness { get; }
 
-        /// <summary>
-        /// Display the full-size image in the image box
-        /// </summary>
-        void DisplayImage(Image<Bgr, byte> image);
+        #endregion
 
-        /// <summary>
-        /// Update the description label text
-        /// </summary>
-        void UpdateDescription(string description);
+        #region Methods (Presenter calls View)
 
-        /// <summary>
-        /// Show the description label
-        /// </summary>
-        void ShowDescriptionLabel();
+        // AutoComplete configuration
+        void SetPosIdAutoComplete(IEnumerable<string> posIds);
 
-        /// <summary>
-        /// Hide the description label
-        /// </summary>
-        void HideDescriptionLabel();
+        // ComboBox population
+        void PopulateTipoComboBox(List<KeyValue> items);
+        void PopulateCorComboBox(List<KeyValue> items);
+        void PopulateViasComboBox(List<KeyValue> items);
 
-        /// <summary>
-        /// Clear all images from the view
-        /// </summary>
-        void ClearAllImages();
+        // UI State
+        void ShowDiameterSection();
+        void HideDiameterSection();
+        void SetPosIdBackColorNormal();
+        void SetTipoBackColorNormal();
+        void ShowWaitCursor();
+        void ShowDefaultCursor();
 
-        /// <summary>
-        /// Clear the currently selected/displayed image
-        /// </summary>
-        void ClearSelectedImage();
-
-        /// <summary>
-        /// Get the file path of the currently selected image
-        /// </summary>
-        string GetSelectedImagePath();
-
-        /// <summary>
-        /// Get the file name of the currently selected image
-        /// </summary>
-        string GetSelectedFileName();
-
-        /// <summary>
-        /// Show the form as a dialog
-        /// </summary>
-        void ShowDialog();
-
-        /// <summary>
-        /// Close the form
-        /// </summary>
-        void Close();
+        // Dialog operations
+        DialogResult ShowYesNoDialog(string message, string title);
+        DialogResult ShowNewPositionForm(string posId);
+        void CloseFormWithSuccess(SampleDetail sampleDetails);
 
         #endregion
     }

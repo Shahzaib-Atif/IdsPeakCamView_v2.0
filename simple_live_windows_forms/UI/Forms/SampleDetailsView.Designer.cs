@@ -106,7 +106,7 @@
             btnSave.TabIndex = 0;
             btnSave.Text = "OK";
             btnSave.UseVisualStyleBackColor = false;
-            btnSave.Click += BtnSave_ClickAsync;
+            btnSave.Click += BtnSave_Click;
             // 
             // gbxVias
             // 

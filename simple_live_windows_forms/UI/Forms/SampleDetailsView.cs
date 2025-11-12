@@ -1,254 +1,167 @@
 ﻿using ImageProcessingLibrary.Helpers;
+using ImageProcessingLibrary.Interfaces;
 using ImageProcessingLibrary.Models;
-using ImageProcessingLibrary.Services.Database;
-using System.Diagnostics;
 
 namespace simple_ids_cam_view.UI.Forms
 {
-    public partial class SampleDetailsView : Form
+    public partial class SampleDetailsView : Form, ISampleDetailsView
     {
-        #region -- VARIABLES
-        private static AutoCompleteStringCollection myCollection;
-        private static List<KeyValue> TipoList;
-        private static List<KeyValue> CorsList;
-        private static List<KeyValue> ViasList;
-        private readonly ReferenciasRepository _referenciasRepo;
-        private readonly CordConRepository _cordConRepo;
-        private readonly MetadataRepository _metadataRepo;
+        #region Events (View -> Presenter)
 
+        public event EventHandler ViewLoaded;
+        public event EventHandler SaveRequested;
+        public event EventHandler TipoChanged;
+        public event EventHandler PosIdTextChanged;
 
-        public SampleDetail SampleDetails { get; private set; }
-        // Disable validation for search; enable for adding a new sample
+        #endregion
+
+        #region Properties (Presenter reads from View)
+
+        public string PosId => textBoxPosId.Text;
+        public string Tipo => comboBoxTipo.Text;
+        public string CorValue => comboBoxCor.SelectedValue?.ToString();
+        public string ViasValue => comboBoxVias.SelectedValue?.ToString();
+        public decimal InternalDiameter => numericIntDia.Value;
+        public decimal ExternalDiameter => numericExtDia.Value;
+        public decimal Thickness => numericThickness.Value;
+
         #endregion
 
         public SampleDetailsView()
         {
             InitializeComponent();
-
-            // initialize repository
-            _referenciasRepo = new ReferenciasRepository();
-            _cordConRepo = new CordConRepository();
-            _metadataRepo = new MetadataRepository();
-
-            // hide the diameters and thickness initially
-            gbxDiameter.Visible = false;
-
-            ConfigureAutoCompleteForPosId();
-
-            // configure all combobox
-            _ = ConfigureTipoCorsVias();
+            InitializeView();
+        }
+        private void InitializeView()
+        {
+            // Hook up form events
+            this.Load += SampleDetailsView_Load;
         }
 
+        #region ISampleDetailsView Implementation (Presenter -> View)
 
-        #region -- CONFIGURE AUTOCOMPLETE FOR POS ID
-        private void ConfigureAutoCompleteForPosId()
+        public void SetPosIdAutoComplete(IEnumerable<string> posIds)
         {
-            InitializeMyCollection();
+            var myCollection = new AutoCompleteStringCollection();
+            myCollection.AddRange(posIds.ToArray());
 
             textBoxPosId.AutoCompleteCustomSource = myCollection;
             textBoxPosId.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textBoxPosId.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        private async void InitializeMyCollection()
+
+        public void PopulateTipoComboBox(List<KeyValue> items)
         {
-            try
-            {
-                myCollection ??= new(); // initialize only first time
-                myCollection.Clear(); // clear the list
-
-                var items = await _referenciasRepo.ReadAvailablePosId(); // fetch data from db
-                myCollection.AddRange(items.ToArray()); // add to collection
-            }
-            catch (Exception ex)
-            {
-                //ExceptionHelper.ShowWarningMessage($"Error while trying to read available posId. {ex.Message}");
-                Debug.WriteLine($"Error while trying to read available posId. {ex.Message}");
-            }
-        }
-
-        #endregion
-
-
-        #region -- CONFIGURE TIPO, CORS, AND VIAS
-        private async Task ConfigureTipoCorsVias()
-        {
-            // run three tasks in parallel
-            await Task.WhenAll(ConfigureTipo(), ConfigureCors(), ConfigureVias());
-        }
-
-        // fetch colors from the DB and add in the combobox
-        private async Task ConfigureTipo()
-        {
-            // only execute first time if list is null
-            if (TipoList is null) await PopulateTipoList();
-
-            // add data to combobox
             comboBoxTipo.Items.Clear();
-            comboBoxTipo.DisplayMember = "Key";    // --> What the user sees
-            comboBoxTipo.ValueMember = "Value";    // --> The actual identifier 
-            comboBoxTipo.DataSource = TipoList;
+            comboBoxTipo.DisplayMember = "Key";
+            comboBoxTipo.ValueMember = "Value";
+            comboBoxTipo.DataSource = items;
         }
 
-        // fetch colors from the DB and add in the combobox
-        private async Task ConfigureCors()
+        public void PopulateCorComboBox(List<KeyValue> items)
         {
-            // only execute first time if list is null
-            if (CorsList is null) await PopulateCorsList();
-
-            // add data to combobox
             comboBoxCor.Items.Clear();
-            comboBoxCor.DisplayMember = "Key";    // --> What the user sees
-            comboBoxCor.ValueMember = "Value";    // --> The actual identifier 
-            comboBoxCor.DataSource = CorsList;
+            comboBoxCor.DisplayMember = "Key";
+            comboBoxCor.ValueMember = "Value";
+            comboBoxCor.DataSource = items;
         }
 
-        // fetch vias from the DB and add in the combobox
-        private async Task ConfigureVias()
+        public void PopulateViasComboBox(List<KeyValue> items)
         {
-            // only execute first time if list is null
-            if (ViasList is null) await PopulateViasList();
-
-            // add data to combobox
             comboBoxVias.Items.Clear();
-            comboBoxVias.DisplayMember = "Key";  // --> What the user sees
-            comboBoxVias.ValueMember = "Value";  // --> The actual identifier 
-            comboBoxVias.DataSource = ViasList;
+            comboBoxVias.DisplayMember = "Key";
+            comboBoxVias.ValueMember = "Value";
+            comboBoxVias.DataSource = items;
         }
 
-        private async Task PopulateTipoList()
+        public void ShowDiameterSection()
         {
-            try
-            {
-                TipoList = (await _metadataRepo.ReadAvailableTipo()).ToList();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
-                TipoList = new List<KeyValue>();
-            }
-
-            // Insert an empty option at the start
-            TipoList.Insert(0, new KeyValue { Key = "", Value = "" });
+            gbxDiameter.Visible = true;
         }
 
-        private async Task PopulateCorsList()
+        public void HideDiameterSection()
         {
-            // get the values from database (in the form of KEY,VALUE pairs)
-            CorsList = (await _metadataRepo.ReadAvailableCors()).ToList(); // fetch from db
-
-            // let the user see color and its equivalent code
-            foreach (var item in CorsList)
-                item.Key = item.Key + $"  ({item.Value})";
-
-            // Insert an empty option at the start
-            CorsList.Insert(0, new KeyValue { Key = "", Value = "" });
+            gbxDiameter.Visible = false;
         }
 
-        private async Task PopulateViasList()
+        public void SetPosIdBackColorNormal()
         {
-            // get the values from database (in the form of KEY,VALUE pairs)
-            ViasList = (await _metadataRepo.ReadAvailableVias()).ToList();
-
-            // let the user see vias number and its equivalent code (for numbers greater than 9)
-            foreach (var item in ViasList)
-            {
-                if (int.Parse(item.Key) > 9)
-                    item.Key = item.Key + $"  ({item.Value})";
-            }
-
-            // Insert an empty option at the start
-            ViasList.Insert(0, new KeyValue { Key = "", Value = "" });
+            textBoxPosId.BackColor = SystemColors.Window;
         }
 
+        public void SetTipoBackColorNormal()
+        {
+            comboBoxTipo.BackColor = SystemColors.Window;
+        }
+
+        public void ShowWaitCursor()
+        {
+            this.Cursor = Cursors.WaitCursor;
+        }
+
+        public void ShowDefaultCursor()
+        {
+            this.Cursor = Cursors.Default;
+        }
+
+        public DialogResult ShowYesNoDialog(string message, string title)
+        {
+            return DialogHelper.ShowYesNoDialog(message, title);
+        }
+
+        public DialogResult ShowNewPositionForm(string posId)
+        {
+            using var saveForm = new NewPositionForm(posId);
+            return saveForm.ShowDialog();
+        }
+
+        public void CloseFormWithSuccess(SampleDetail sampleDetails)
+        {
+            // Store the result (needed for caller to access)
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
         #endregion
 
 
-        #region -- EVENT HANDLERS
-        private async void BtnSave_ClickAsync(object sender, EventArgs e)
+        #region UI Event Handlers (View -> Presenter)
+
+        private void SampleDetailsView_Load(object sender, EventArgs e)
         {
-            // create a new basicDetails object
-            var basicDetails = new BasicSampleDetails
-            {
-                PosId = textBoxPosId.Text.ToUpper(),
-                Tipo = comboBoxTipo.Text,
-                Cor = comboBoxCor.SelectedValue?.ToString() ?? "",
-                Vias = comboBoxVias.SelectedValue?.ToString() ?? "",
-            };
-
-            // check basic model validation
-            if (!ModelDataValidation.Validate(basicDetails)) return;
-
-            // if this [Pos Id] does not exist, then we need to save in DB along with CV, CH
-            this.Cursor = Cursors.WaitCursor;
-            bool isSuccess = await HandlePosIdAsync(basicDetails.PosId);
-            this.Cursor = Cursors.Default;
-            if (!isSuccess) return;
-
-            // create SampleDimensions object (convert value of 0 to null)
-            var dimensions = new SampleDimensions
-            {
-                InternalDiameter = numericIntDia.Value == 0 ? null : numericIntDia.Value,
-                ExternalDiameter = numericExtDia.Value == 0 ? null : numericExtDia.Value,
-                Thickness = numericThickness.Value == 0 ? null : numericThickness.Value
-            };
-
-            // Join PosId, Tipo & Cor to make CODIVMAC
-            basicDetails.Codivmac = ($"{basicDetails.PosId}{basicDetails.Cor}{basicDetails.Vias}");
-
-            // configure sample details & close the form
-            this.SampleDetails = new SampleDetail(basicDetails, dimensions);
-            this.DialogResult = DialogResult.OK;
+            // Notify presenter that view is loaded
+            ViewLoaded?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary> Returns true if posId exists or is successfully saved, otherwise false. </summary>
-        private async Task<bool> HandlePosIdAsync(string posId)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Check if the PosId already exists in the database
-                if (await _cordConRepo.CheckIfPosIdExists(posId))
-                {
-                    return true; // No action needed if PosId exists
-                }
-                else
-                {
-                    // Prompt the user to save new coordinates for the new PosId
-                    string message = "A new position has been entered.\n" +
-                                     "Do you want to save new coordinates for this position?";
-                    var dialogResult = DialogHelper.ShowYesNoDialog(message, "");
-
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        // Show the form to save the new coordinates
-                        using var saveForm = new NewPositionForm(posId);
-                        //saveForm.TopMost = true;
-
-                        // return true if user saves new position successfully
-                        return (saveForm.ShowDialog() == DialogResult.OK);
-                    }
-                    else
-                        return false; // Return false if user cancels or insertion fails
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper.DisplayErrorMessage(ex.Message);
-                return false;
-            }
+            // Just raise event - presenter handles logic
+            SaveRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void ComboBoxTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var tipo = comboBoxTipo.Text;
+            // Just raise event - presenter handles logic
+            TipoChanged?.Invoke(this, EventArgs.Empty);
+        }
 
-            // make the ComboBoxTipo color normal again
-            if (!string.IsNullOrWhiteSpace(tipo))
-                comboBoxTipo.BackColor = SystemColors.Window;
+        private void TextBoxPosId_Leave(object sender, EventArgs e)
+        {
+            // Just raise event - presenter handles logic
+            PosIdTextChanged?.Invoke(this, EventArgs.Empty);
+        }
 
-            // show diameters & thickness in case Olhal is selected
-            gbxDiameter.Visible = (tipo.ToLower() == "olhal");
+        private void TextBoxPosId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Prevent default beep sound
+                this.SelectNextControl((Control)sender, true, true, true, true);
+            }
+            else
+            {
+                e.SuppressKeyPress = false;
+            }
         }
 
         private void NumericDimensionBox_KeyDown(object sender, KeyEventArgs e)
@@ -262,25 +175,6 @@ namespace simple_ids_cam_view.UI.Forms
             }
         }
 
-        private void TextBoxPosId_Leave(object sender, EventArgs e)
-        {
-            // make the TextBoxName color normal again
-            if (!string.IsNullOrWhiteSpace(textBoxPosId.Text))
-                textBoxPosId.BackColor = SystemColors.Window;
-        }
-
-        private void TextBoxPosId_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true; // Prevent default beep sound
-                this.SelectNextControl((Control)sender, true, true, true, true);
-            }
-            else
-                e.SuppressKeyPress = false;
-        }
-
         #endregion
-
     }
 }

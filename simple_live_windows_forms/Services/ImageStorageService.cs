@@ -3,6 +3,7 @@ using ImageProcessingLibrary.Helpers;
 using ImageProcessingLibrary.Models;
 using ImageProcessingLibrary.Services;
 using ImageProcessingLibrary.Services.Database;
+using simple_ids_cam_view.Presenters;
 using simple_ids_cam_view.UI.Controls;
 using simple_ids_cam_view.UI.Forms;
 using System.Data.SqlClient;
@@ -161,8 +162,36 @@ namespace simple_ids_cam_view.Services
         /// <summary> Open SampleDetailsForm to get connector details from user. </summary>
         private static SampleDetail GetConnectorDetails()
         {
-            using var f = new SampleDetailsView();
-            return f.ShowDialog() == DialogResult.OK ? f.SampleDetails : null;
+            //using var f = new SampleDetailsView();
+            //return f.ShowDialog() == DialogResult.OK ? f.SampleDetails : null;
+
+            // Create the view
+            using var view = new SampleDetailsView();
+
+            // Create repositories
+            var referenciasRepo = new ReferenciasRepository();
+            var cordConRepo = new CordConRepository();
+            var metadataRepo = new MetadataRepository();
+
+            // Create presenter (connects view and repositories)
+            var presenter = new SampleDetailsPresenter(
+                view,
+                referenciasRepo,
+                cordConRepo,
+                metadataRepo
+            );
+
+            // Show the view
+            if (view.ShowDialog() == DialogResult.OK)
+            {
+                var sampleDetails = presenter.SampleDetails;
+                Console.WriteLine($"PosId: {sampleDetails.BasicDetails.PosId}");
+                Console.WriteLine($"Codivmac: {sampleDetails.BasicDetails.Codivmac}");
+            }
+
+            // Clean up
+            presenter.UnsubscribeFromViewEvents();
+            return presenter.SampleDetails;
         }
 
         private void PerformInitalChecks()
