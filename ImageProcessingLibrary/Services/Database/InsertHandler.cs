@@ -5,39 +5,6 @@ namespace ImageProcessingLibrary.Services.Database
 {
     public class InsertHandler
     {
-        /// <summary> Inserts basic reference data into the database. </summary>
-        public static async Task<bool> InsertReferenceDataAsync(string imagePath, SampleDetail sampleDetails)
-        {
-            // include tipo
-            string query = @$"
-                INSERT INTO [ImageFeaturesDB].[dbo].[{MainReferenceTable}] 
-                ([Pos ID], Cor, Vias, CODIVMAC, ESTADO, ConnType, InternalDiameter, ExternalDiameter, Thickness, Imagem,
-                [Clip] ,[Spacer] ,[Vedante] ,[Tampa] ,[Mola] ,[Moldagem] ,[Travão] ,[Abracadeira] ,[Linguetes] ,[Outros] ,[Amostra])
-                VALUES 
-                (@PosId, @Cor, @Vias, @Codivmac, 1, @ConnType, @InternalDiameter, @ExternalDiameter, @Thickness, @ImagePath,
-                0,0,0,0,0,0,0,0,0,0,0);";
-
-            var basicDetails = sampleDetails.BasicDetails;
-            var dimensions = sampleDetails.Dimensions;
-
-            var parameters = new Dictionary<string, object>
-            {
-                {"@posId", basicDetails.PosId },
-                {"@Cor", basicDetails.Cor },
-                {"@Vias", basicDetails.Vias },
-                {"@CODIVMAC", basicDetails.Codivmac },
-                {"@ConnType", basicDetails.Tipo},
-                {"@InternalDiameter", dimensions.InternalDiameter ?? (object)DBNull.Value},
-                {"@ExternalDiameter", dimensions.ExternalDiameter?? (object)DBNull.Value},
-                {"@Thickness", dimensions.Thickness?? (object)DBNull.Value },
-                {"@ImagePath", imagePath },
-            };
-
-            int rowsAffected = await DbHelper.ExecuteNonQueryAsync(query, parameters);
-            return rowsAffected > 0;
-        }
-
-
         /// <summary> Inserts extracted image features into the database. </summary>       
         private static async Task<bool> InsertImageFeaturesAsync(string codivmacRef, ImageFeaturesStruct features)
         {

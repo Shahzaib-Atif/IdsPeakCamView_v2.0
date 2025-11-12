@@ -33,8 +33,16 @@ namespace ImageProcessingLibrary.Services.Database
             string resnetJsonVector = JsonConvert.SerializeObject(vector1);
             string dinov2JsonVector = JsonConvert.SerializeObject(vector2);
 
-            string query = $"INSERT INTO {_tableName} (CodivmacRef, ResnetVector, Dinov2Vector) " +
-                "VALUES (@CodivmacRef, @ResnetVector, @Dinov2Vector)";
+            string query = $@"
+                        IF EXISTS (SELECT 1 FROM {_tableName} WHERE CodivmacRef = @CodivmacRef)
+                            UPDATE {_tableName}
+                            SET ResnetVector = @ResnetVector,
+                                Dinov2Vector = @Dinov2Vector
+                        WHERE CodivmacRef = @CodivmacRef
+                        ELSE
+                            INSERT INTO {_tableName} (CodivmacRef, ResnetVector, Dinov2Vector)
+                            VALUES (@CodivmacRef, @ResnetVector, @Dinov2Vector);
+                        ";
 
             var parameters = new Dictionary<string, object>
                 {
@@ -46,6 +54,18 @@ namespace ImageProcessingLibrary.Services.Database
             await DbHelper.ExecuteNonQueryAsync(query, parameters);
         }
 
+
+        // Delete existing record from features table
+        public async Task DeleteFromFeaturesTableAsync(string codivmacRef)
+        {
+            string query = $"DELETE FROM [ImageFeaturesDB].[dbo].[{_tableName}] WHERE CodivmacRef = @codivmacRef";
+            var parameters = new Dictionary<string, object>
+                {
+                    { "@codivmacRef", codivmacRef }
+                };
+
+            await DbHelper.ExecuteNonQueryAsync(query, parameters);
+        }
 
         public List<ConnectorFeature> LoadAllVectors()
         {

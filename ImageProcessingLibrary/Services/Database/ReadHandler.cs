@@ -90,13 +90,10 @@ namespace ImageProcessingLibrary.Services.Database
 
         private static SqlCommand BuildSearchCommand(SampleDetail sampleDetails, SqlConnection connection)
         {
-            //string searchQuery =
-            //    "SELECT * FROM ImageRoot" +
-            //    " INNER JOIN ImageDescription ON ImageRoot.Id = ImageDescription.ImageRootId" +
-            //    " INNER JOIN ImageFeatures ON ImageRoot.Id = ImageFeatures.ImageRootId";    
+            // TODO
             string searchQuery =
-                $"SELECT * FROM [ImageFeaturesDB].[dbo].[{MainReferenceTable}] " +
-                $"INNER JOIN {ImageFeaturesTable} ON {MainReferenceTable}.CODIVMAC = {ImageFeaturesTable}.CodivmacRef";
+                $"SELECT * FROM [ImageFeaturesDB].[dbo].[{"MainReferenceTable"}] " +
+                $"INNER JOIN {ImageFeaturesTable} ON {"MainReferenceTable"}.CODIVMAC = {ImageFeaturesTable}.CodivmacRef";
 
             List<string> conditions = new();
             var command = new SqlCommand();

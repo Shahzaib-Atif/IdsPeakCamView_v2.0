@@ -9,7 +9,6 @@
 
     public static class DbHelper
     {
-        public static readonly string MainReferenceTable = "Referências_test";
         public static readonly string ImageFeaturesTable = "ImageFeatures";
         public static readonly string CordCONTable = "Cord_CON";
 

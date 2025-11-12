@@ -20,6 +20,7 @@ namespace simple_ids_cam_view.Services
         private readonly PromptService _promptService;
         private readonly FeatureRepository _featureRepo;
         private readonly AccessoryRepository _accessoryRepo;
+        private readonly ReferenciasRepository _referenciasRepo;
 
 
         public ImageStorageService(SimplePictureBox customPictureBox, GroupBox gbxShowLoading, Label labelConnectorName)
@@ -35,6 +36,7 @@ namespace simple_ids_cam_view.Services
             _promptService = new PromptService();
             _featureRepo = new FeatureRepository();
             _accessoryRepo = new AccessoryRepository();
+            _referenciasRepo = new ReferenciasRepository();
         }
 
         /// <summary> store connector in local folder and database </summary>
@@ -140,7 +142,7 @@ namespace simple_ids_cam_view.Services
 
             // delete from db
             string fileName = Path.GetFileName(filePath);
-            _ = DatabaseManager.DeleteFromMainTableAsync(fileName);
+            _ = _referenciasRepo.DeleteDataAsync(fileName);
 
             ExceptionHelper.ShowInformationMessage($"{fileName} deleted successfully!");
         }
@@ -212,8 +214,7 @@ namespace simple_ids_cam_view.Services
                     await _featureRepo.SaveFeatures(fileName, resnet, dino).ConfigureAwait(false);
 
                     // save in referencias table
-                    await InsertHandler.InsertReferenceDataAsync(filePath, newSample).ConfigureAwait(false);
-                    //return await DatabaseManager.StoreImageFeatures(filePath, SampleDetails).ConfigureAwait(false);
+                    await _referenciasRepo.InsertDataAsync(filePath, newSample).ConfigureAwait(false);
                     return true;
                 }).ConfigureAwait(false);
             }
@@ -225,7 +226,7 @@ namespace simple_ids_cam_view.Services
 
                 // Handle UNIQUE KEY violation (duplicate entry)
                 if (ex is SqlException sqlx && (sqlx.Number == 2627 || sqlx.Number == 2601))
-                    throw new Exception($"An entry with the same key {newSample.BasicDetails.Codivmac} already exists in the database! Process cancelled.");
+                    throw new Exception($"{newSample.BasicDetails.Codivmac} already exists in the database! Process cancelled.");
                 else
                     throw; // re-throw the original error
             }

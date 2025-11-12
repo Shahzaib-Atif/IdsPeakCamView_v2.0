@@ -6,30 +6,6 @@ namespace ImageProcessingLibrary.Services.Database
 {
     public class DatabaseManager
     {
-        // Delete existing record from main table
-        public static async Task DeleteFromMainTableAsync(string fileName)
-        {
-            string query = $"DELETE FROM [ImageFeaturesDB].[dbo].[{MainReferenceTable}] WHERE CODIVMAC = @Name";
-            var parameters = new Dictionary<string, object>
-                {
-                    { "@Name", fileName }
-                };
-
-            await DbHelper.ExecuteNonQueryAsync(query, parameters);
-        }
-
-        // Delete existing record from features table
-        public static async Task DeleteFromFeaturesTableAsync(string codivmacRef)
-        {
-            string query = $"DELETE FROM [ImageFeaturesDB].[dbo].[{ImageFeaturesTable}] WHERE CodivmacRef = @codivmacRef";
-            var parameters = new Dictionary<string, object>
-                {
-                    { "@codivmacRef", codivmacRef }
-                };
-
-            await DbHelper.ExecuteNonQueryAsync(query, parameters);
-        }
-
         /// <summary> Inserts new position data into the appropriate country-specific table.</summary>
         public static async Task<bool> InsertNewPosID(NewPositionCoordinates newPosition)
         {
@@ -199,19 +175,7 @@ namespace ImageProcessingLibrary.Services.Database
             return await DbHelper.ExecuteQueryAsync(query);
         }
 
-        // Read available Codivmac from the database and return them as a list of strings.
-        public static async Task<IEnumerable<string>> ReadAvailableCodivmac()
-        {
-            string query = $"SELECT [CODIVMAC] FROM [ImageFeaturesDB].[dbo].{MainReferenceTable}";
-            return await DbHelper.ExecuteQueryAsync(query);
-        }
 
-        // Read available [Pos Id] from the database and return them as a list of strings.
-        public static async Task<IEnumerable<string>> ReadAvailablePosId()
-        {
-            string query = $"SELECT [Pos ID] FROM [ImageFeaturesDB].[dbo].{MainReferenceTable}";
-            return await DbHelper.ExecuteQueryAsync(query);
-        }
 
 
     }

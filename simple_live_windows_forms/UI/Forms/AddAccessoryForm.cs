@@ -9,6 +9,7 @@ namespace simple_ids_cam_view.UI.Forms
         public AccessoryDetails AccessoryDetails { get; set; }
         private static AutoCompleteStringCollection myCollection;
         private readonly AccessoryRepository _accessoryRepo;
+        private readonly ReferenciasRepository _referenciasRepo;
 
         public AddAccessoryForm()
         {
@@ -16,6 +17,7 @@ namespace simple_ids_cam_view.UI.Forms
 
             // initialize repository
             _accessoryRepo = new AccessoryRepository();
+            _referenciasRepo = new ReferenciasRepository();
 
             // initial setup
             ConfigureAutoCompleteForConnectorNames();
@@ -48,14 +50,14 @@ namespace simple_ids_cam_view.UI.Forms
             textBoxName.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        private static async void InitializeMyCollection()
+        private async void InitializeMyCollection()
         {
             try
             {
                 myCollection ??= new(); // initialize only first time
                 myCollection.Clear(); // clear the list
 
-                var items = await DatabaseManager.ReadAvailableCodivmac(); // fetch data from db
+                var items = await _referenciasRepo.ReadAvailableCodivmac(); // fetch data from db
                 myCollection.AddRange(items.ToArray()); // add to collection
             }
             catch (Exception ex)

@@ -12,6 +12,9 @@ namespace simple_ids_cam_view.UI.Forms
         private static List<KeyValue> TipoList;
         private static List<KeyValue> CorsList;
         private static List<KeyValue> ViasList;
+        private readonly ReferenciasRepository _referenciasRepo;
+
+
         public SampleDetail SampleDetails { get; private set; }
         // Disable validation for search; enable for adding a new sample
         private bool IsSaveMode { get; set; }
@@ -20,6 +23,9 @@ namespace simple_ids_cam_view.UI.Forms
         public SampleDetailsForm(bool isSaveMode = true)
         {
             InitializeComponent();
+
+            // initialize repository
+            _referenciasRepo = new ReferenciasRepository();
 
             // initialize form
             this.IsSaveMode = isSaveMode;
@@ -61,14 +67,14 @@ namespace simple_ids_cam_view.UI.Forms
             textBoxPosId.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        private static async void InitializeMyCollection()
+        private async void InitializeMyCollection()
         {
             try
             {
                 myCollection ??= new(); // initialize only first time
                 myCollection.Clear(); // clear the list
 
-                var items = await DatabaseManager.ReadAvailablePosId(); // fetch data from db
+                var items = await _referenciasRepo.ReadAvailablePosId(); // fetch data from db
                 myCollection.AddRange(items.ToArray()); // add to collection
             }
             catch (Exception ex)
@@ -77,22 +83,6 @@ namespace simple_ids_cam_view.UI.Forms
                 Debug.WriteLine($"Error while trying to read available posId. {ex.Message}");
             }
         }
-
-        /*
-        private static void AddFilenamesToMyCollection(string folderPath)
-        {
-            try
-            {
-                // Get all file names without extensions (truncated to 4 chars)
-                var fileNamesWithoutExtension = Directory.GetFiles(folderPath)
-                                                         .Select(file => Path.GetFileNameWithoutExtension(file))
-                                                         .Select(name => name.Length > 4 ? name.Substring(0, 4) : name)
-                                                         .ToArray();
-                // add to collection
-                myCollection.AddRange(fileNamesWithoutExtension);
-            }
-            catch (Exception ex) { Debug.WriteLine($"An error occurred: {ex.Message}"); }
-        }*/
 
         #endregion
 
