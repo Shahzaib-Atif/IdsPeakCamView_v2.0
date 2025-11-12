@@ -6,10 +6,15 @@ namespace simple_ids_cam_view.UI.Forms
 {
     public partial class NewPositionForm : Form
     {
+        private readonly CordConRepository _cordConRepository;
+
         public NewPositionForm(string posId)
         {
             InitializeComponent();
             textBoxPosId.Text = posId;
+
+            // initialize repository
+            _cordConRepository = new CordConRepository();
 
             // select the first option as a default
             comboBoxCountry.SelectedIndex = 0;
@@ -45,14 +50,32 @@ namespace simple_ids_cam_view.UI.Forms
                 SampleSection = comboBoxSampleSection.Text,
             };
 
-            bool isDataValid = ModelDataValidation.Validate(coordinates);
-            if (!isDataValid) return;
+            // select the correct columns based on the country
+            var (vertColumn, horizColumn) = SelectCountry(coordinates);
+            if (vertColumn is null || horizColumn is null) return;
 
-            bool isInsertSuccessful = await DatabaseManager.InsertNewPosID(coordinates);
+            if (!ModelDataValidation.Validate(coordinates)) return;
+
+            bool isInsertSuccessful = await _cordConRepository.InsertNewPosID(coordinates, vertColumn, horizColumn);
             if (!isInsertSuccessful) return;
 
             // if all good then close the form
             this.DialogResult = DialogResult.OK;
+        }
+
+        // select (CV,CH) OR (CV_Ma,CH_Ma) based on the country
+        private (string, string) SelectCountry(NewPositionCoordinates newPosition)
+        {
+            switch (newPosition.Country)
+            {
+                case "Portugal":
+                    return ("[CV]", "[CH]");
+                case "Morocco":
+                    return ("[CV_Ma]", "[CH_Ma]");
+                default:
+                    ExceptionHelper.ShowWarningMessage("Error: Unknown country selected!");
+                    return (null, null);
+            }
         }
 
         private void FLP_Main_Click(object sender, EventArgs e)

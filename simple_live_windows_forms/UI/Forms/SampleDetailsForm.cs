@@ -13,6 +13,7 @@ namespace simple_ids_cam_view.UI.Forms
         private static List<KeyValue> CorsList;
         private static List<KeyValue> ViasList;
         private readonly ReferenciasRepository _referenciasRepo;
+        private readonly CordConRepository _cordConRepository;
 
 
         public SampleDetail SampleDetails { get; private set; }
@@ -26,6 +27,7 @@ namespace simple_ids_cam_view.UI.Forms
 
             // initialize repository
             _referenciasRepo = new ReferenciasRepository();
+            _cordConRepository = new CordConRepository();
 
             // initialize form
             this.IsSaveMode = isSaveMode;
@@ -215,12 +217,12 @@ namespace simple_ids_cam_view.UI.Forms
         }
 
         /// <summary> Returns true if posId exists or is successfully saved, otherwise false. </summary>
-        private static async Task<bool> HandlePosIdAsync(string posId)
+        private async Task<bool> HandlePosIdAsync(string posId)
         {
             try
             {
                 // Check if the PosId already exists in the database
-                if (await DatabaseManager.CheckIfPosIdExists(posId))
+                if (await _cordConRepository.CheckIfPosIdExists(posId))
                 {
                     return true; // No action needed if PosId exists
                 }
@@ -273,7 +275,7 @@ namespace simple_ids_cam_view.UI.Forms
             string section = comboBoxTipo.SelectedValue?.ToString() ?? "";
 
             // Retrieve the last position ID with the least highest number
-            string lastPosId = await DatabaseManager.GetLeastHighestConAsync(section);
+            string lastPosId = await _cordConRepository.GetLeastHighestConAsync(section);
 
             // show warning if the retrieval was successful
             if (string.IsNullOrWhiteSpace(lastPosId))
