@@ -165,7 +165,7 @@ namespace simple_ids_cam_view.UI.Forms
 
 
         #region -- EVENT HANDLERS
-        private async void BtnSave_ClickAsync(object sender, EventArgs e)
+        private void BtnSave_ClickAsync(object sender, EventArgs e)
         {
             // create a new basicDetails object
             var basicDetails = new BasicSampleDetails
@@ -192,44 +192,6 @@ namespace simple_ids_cam_view.UI.Forms
             this.DialogResult = DialogResult.OK;
         }
 
-        /// <summary> Returns true if posId exists or is successfully saved, otherwise false. </summary>
-        private async Task<bool> HandlePosIdAsync(string posId)
-        {
-            try
-            {
-                // Check if the PosId already exists in the database
-                if (await _cordConRepo.CheckIfPosIdExists(posId))
-                {
-                    return true; // No action needed if PosId exists
-                }
-                else
-                {
-                    // Prompt the user to save new coordinates for the new PosId
-                    string message = "A new position has been entered.\n" +
-                                     "Do you want to save new coordinates for this position?";
-                    var dialogResult = DialogHelper.ShowYesNoDialog(message, "");
-
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        // Show the form to save the new coordinates
-                        using var saveForm = new NewPositionForm(posId);
-                        //saveForm.TopMost = true;
-
-                        // return true if user saves new position successfully
-                        return (saveForm.ShowDialog() == DialogResult.OK);
-                    }
-                    else
-                        return false; // Return false if user cancels or insertion fails
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper.DisplayErrorMessage(ex.Message);
-                return false;
-            }
-        }
-
         private void ComboBoxTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
             var tipo = comboBoxTipo.Text;
@@ -240,22 +202,6 @@ namespace simple_ids_cam_view.UI.Forms
 
             // show diameters & thickness in case Olhal is selected
             gbxDiameter.Visible = (tipo.ToLower() == "olhal");
-        }
-
-        private async void LabelSuggest_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            // Determine Section from TipoList
-            string section = comboBoxTipo.SelectedValue?.ToString() ?? "";
-
-            // Retrieve the last position ID with the least highest number
-            string lastPosId = await _cordConRepo.GetLeastHighestConAsync(section);
-
-            // show warning if the retrieval was successful
-            if (string.IsNullOrWhiteSpace(lastPosId))
-                ExceptionHelper.ShowWarningMessage("Sorry, something went wrong!");
-            else
-                // Update the text box with the next position ID
-                textBoxPosId.Text = ReturnNextPosId(lastPosId);
         }
 
         private void NumericDimensionBox_KeyDown(object sender, KeyEventArgs e)
@@ -287,32 +233,6 @@ namespace simple_ids_cam_view.UI.Forms
                 e.SuppressKeyPress = false;
         }
 
-        #endregion
-
-
-        #region -- SUGGEST NEXT AVAILABLE POS ID
-
-        // Return next available name based on input string
-        private static string ReturnNextPosId(string lastCellValue)
-        {
-            if (string.IsNullOrWhiteSpace(lastCellValue))
-                return string.Empty;
-            else
-            {
-                // Extract the alphabetic prefix and numeric suffix.
-                string prefix = new(lastCellValue.TakeWhile(char.IsLetter).ToArray());
-                string numberPart = new(lastCellValue.SkipWhile(char.IsLetter).ToArray());
-
-                if (int.TryParse(numberPart, out int num))
-                {
-                    // Increment the numeric part and format it with leading zeros.
-                    string nextNumber = (num + 1).ToString($"D{numberPart.Length}");
-                    return $"{prefix}{nextNumber}";
-                }
-
-                return string.Empty;
-            }
-        }
         #endregion
 
     }
