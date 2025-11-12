@@ -6,7 +6,8 @@ namespace simple_ids_cam_view.UI.Forms
 {
     public partial class NewPositionForm : Form
     {
-        private readonly CordConRepository _cordConRepository;
+        private readonly CordConRepository _cordConRepo;
+        private readonly MetadataRepository _metadataRepo;
 
         public NewPositionForm(string posId)
         {
@@ -14,7 +15,8 @@ namespace simple_ids_cam_view.UI.Forms
             textBoxPosId.Text = posId;
 
             // initialize repository
-            _cordConRepository = new CordConRepository();
+            _cordConRepo = new CordConRepository();
+            _metadataRepo = new MetadataRepository();
 
             // select the first option as a default
             comboBoxCountry.SelectedIndex = 0;
@@ -29,7 +31,7 @@ namespace simple_ids_cam_view.UI.Forms
             try
             {
                 comboBoxSampleSection.Items.Clear();
-                var items = await DatabaseManager.ReadAvailableSampleSection();
+                var items = await _metadataRepo.ReadAvailableSampleSection();
                 comboBoxSampleSection.Items.AddRange(items.ToArray());
                 comboBoxSampleSection.Text = "CONECTORES";
             }
@@ -56,15 +58,23 @@ namespace simple_ids_cam_view.UI.Forms
 
             if (!ModelDataValidation.Validate(coordinates)) return;
 
-            bool isInsertSuccessful = await _cordConRepository.InsertNewPosID(coordinates, vertColumn, horizColumn);
-            if (!isInsertSuccessful) return;
+            try
+            {
+                bool isInsertSuccessful = await _cordConRepo.InsertNewPosID(coordinates, vertColumn, horizColumn);
+                if (!isInsertSuccessful) return;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.ShowWarningMessage(ex.Message);
+                return;
+            }
 
             // if all good then close the form
             this.DialogResult = DialogResult.OK;
         }
 
         // select (CV,CH) OR (CV_Ma,CH_Ma) based on the country
-        private (string, string) SelectCountry(NewPositionCoordinates newPosition)
+        private static (string, string) SelectCountry(NewPositionCoordinates newPosition)
         {
             switch (newPosition.Country)
             {

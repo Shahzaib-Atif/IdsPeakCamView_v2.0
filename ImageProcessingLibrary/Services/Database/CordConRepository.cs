@@ -1,5 +1,4 @@
-﻿using ImageProcessingLibrary.Helpers;
-using ImageProcessingLibrary.Models;
+﻿using ImageProcessingLibrary.Models;
 
 namespace ImageProcessingLibrary.Services.Database
 {
@@ -68,10 +67,7 @@ namespace ImageProcessingLibrary.Services.Database
             // Check if the combination of CV and CH already exists
             bool isAlreadyExist = await IsCoordinatesAlreadyExistsAsync(newPosition.CV, newPosition.CH, vertColumn, horizColumn);
             if (isAlreadyExist)
-            {
-                ExceptionHelper.ShowWarningMessage("Error: Duplicate CV and CH combination.");
-                return false;
-            }
+                throw new Exception("Error: Duplicate CV and CH combination.");
 
             // Construct the SQL INSERT query
             string query = $@"

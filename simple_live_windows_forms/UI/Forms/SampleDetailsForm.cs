@@ -13,7 +13,8 @@ namespace simple_ids_cam_view.UI.Forms
         private static List<KeyValue> CorsList;
         private static List<KeyValue> ViasList;
         private readonly ReferenciasRepository _referenciasRepo;
-        private readonly CordConRepository _cordConRepository;
+        private readonly CordConRepository _cordConRepo;
+        private readonly MetadataRepository _metadataRepo;
 
 
         public SampleDetail SampleDetails { get; private set; }
@@ -27,7 +28,8 @@ namespace simple_ids_cam_view.UI.Forms
 
             // initialize repository
             _referenciasRepo = new ReferenciasRepository();
-            _cordConRepository = new CordConRepository();
+            _cordConRepo = new CordConRepository();
+            _metadataRepo = new MetadataRepository();
 
             // initialize form
             this.IsSaveMode = isSaveMode;
@@ -135,18 +137,26 @@ namespace simple_ids_cam_view.UI.Forms
             comboBoxVias.DataSource = ViasList;
         }
 
-        private static async Task PopulateTipoList()
+        private async Task PopulateTipoList()
         {
-            TipoList = (await DatabaseManager.ReadAvailableTipo()).ToList();
+            try
+            {
+                TipoList = (await _metadataRepo.ReadAvailableTipo()).ToList();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
+                TipoList = new List<KeyValue>();
+            }
 
             // Insert an empty option at the start
             TipoList.Insert(0, new KeyValue { Key = "", Value = "" });
         }
 
-        private static async Task PopulateCorsList()
+        private async Task PopulateCorsList()
         {
             // get the values from database (in the form of KEY,VALUE pairs)
-            CorsList = (await DatabaseManager.ReadAvailableCors()).ToList(); // fetch from db
+            CorsList = (await _metadataRepo.ReadAvailableCors()).ToList(); // fetch from db
 
             // let the user see color and its equivalent code
             foreach (var item in CorsList)
@@ -156,10 +166,10 @@ namespace simple_ids_cam_view.UI.Forms
             CorsList.Insert(0, new KeyValue { Key = "", Value = "" });
         }
 
-        private static async Task PopulateViasList()
+        private async Task PopulateViasList()
         {
             // get the values from database (in the form of KEY,VALUE pairs)
-            ViasList = (await DatabaseManager.ReadAvailableVias()).ToList();
+            ViasList = (await _metadataRepo.ReadAvailableVias()).ToList();
 
             // let the user see vias number and its equivalent code (for numbers greater than 9)
             foreach (var item in ViasList)
@@ -222,7 +232,7 @@ namespace simple_ids_cam_view.UI.Forms
             try
             {
                 // Check if the PosId already exists in the database
-                if (await _cordConRepository.CheckIfPosIdExists(posId))
+                if (await _cordConRepo.CheckIfPosIdExists(posId))
                 {
                     return true; // No action needed if PosId exists
                 }
@@ -275,7 +285,7 @@ namespace simple_ids_cam_view.UI.Forms
             string section = comboBoxTipo.SelectedValue?.ToString() ?? "";
 
             // Retrieve the last position ID with the least highest number
-            string lastPosId = await _cordConRepository.GetLeastHighestConAsync(section);
+            string lastPosId = await _cordConRepo.GetLeastHighestConAsync(section);
 
             // show warning if the retrieval was successful
             if (string.IsNullOrWhiteSpace(lastPosId))

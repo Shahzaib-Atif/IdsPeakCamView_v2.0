@@ -1,5 +1,4 @@
-﻿using ImageProcessingLibrary.Helpers;
-using ImageProcessingLibrary.Models;
+﻿using ImageProcessingLibrary.Models;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
 
@@ -100,7 +99,7 @@ namespace ImageProcessingLibrary.Services.Database
                 }
                 catch (Exception e)
                 {
-                    ExceptionHelper.DisplayErrorMessage(e.Message);
+                    throw new Exception("Database error: " + e.Message);
                 }
             }
 

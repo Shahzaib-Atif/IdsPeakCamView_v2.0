@@ -1,4 +1,5 @@
-﻿using ImageProcessingLibrary.Models;
+﻿using ImageProcessingLibrary.Helpers;
+using ImageProcessingLibrary.Models;
 using ImageProcessingLibrary.Services;
 using ImageProcessingLibrary.Services.Database;
 
@@ -14,21 +15,29 @@ namespace simple_ids_cam_view.Services
             _featureRepo = new FeatureRepository();
         }
 
+        // Find matching images based on extracted features
         internal List<ConnectorMatch> FindMatchingImages(string sourceFilepath)
         {
-            // get vector from both onnx models for the given image
-            // resnet
-            using var resnetExtractor = new FeatureExtractorResnet50();
-            float[] resnetVector = resnetExtractor.ExtractFeatures(sourceFilepath);
+            try
+            {
+                // resnet
+                using var resnetExtractor = new FeatureExtractorResnet50();
+                float[] resnetVector = resnetExtractor.ExtractFeatures(sourceFilepath);
 
-            // dinov2
-            using var dinov2Extractor = new FeatureExtractorDINOv2();
-            float[] dinov2Vector = dinov2Extractor.ExtractFeatures(sourceFilepath);
+                // dinov2
+                using var dinov2Extractor = new FeatureExtractorDINOv2();
+                float[] dinov2Vector = dinov2Extractor.ExtractFeatures(sourceFilepath);
 
-            var storedVectors = _featureRepo.LoadAllVectors(); // load values from database
-            var topMatches = FindTopScores(resnetVector, dinov2Vector, storedVectors);
+                var storedVectors = _featureRepo.LoadAllVectors(); // load values from database
+                var topMatches = FindTopScores(resnetVector, dinov2Vector, storedVectors);
 
-            return topMatches;
+                return topMatches;
+            }
+            catch (Exception e)
+            {
+                ExceptionHelper.DisplayErrorMessage(e.Message);
+                return new List<ConnectorMatch>();
+            }
         }
 
         // Find top matching scores based on cosine similarity

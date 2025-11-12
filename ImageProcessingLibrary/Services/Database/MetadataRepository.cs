@@ -1,34 +1,19 @@
-﻿using ImageProcessingLibrary.Helpers;
-using ImageProcessingLibrary.Models;
+﻿using ImageProcessingLibrary.Models;
 
 namespace ImageProcessingLibrary.Services.Database
 {
-    public class DatabaseManager
+    public class MetadataRepository
     {
 
-
-
-
-
-        #region -- SampleDetailsForm related functions
-
         // Reads available cores from the database and returns them as a list of strings.
-        public static async Task<IEnumerable<KeyValue>> ReadAvailableTipo()
+        public async Task<IEnumerable<KeyValue>> ReadAvailableTipo()
         {
-            try
-            {
-                string query = "SELECT [Type], [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
-                return await DbHelper.ExecuteQueryAsyncTwoCols(query);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
-                return Enumerable.Empty<KeyValue>();
-            }
+            string query = "SELECT [Type], [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
+            return await DbHelper.ExecuteQueryAsyncTwoCols(query);
         }
 
         // Reads available Vias from the database and returns them as a list of strings.
-        public static async Task<IEnumerable<KeyValue>> ReadAvailableVias()
+        public async Task<IEnumerable<KeyValue>> ReadAvailableVias()
         {
             //string query = "SELECT [ContagemVias] FROM [ImageFeaturesDB].[dbo].[ContagemNumVias]";
             //return await DbHelper.ExecuteQueryAsync(query);
@@ -38,7 +23,7 @@ namespace ImageProcessingLibrary.Services.Database
         }
 
         // Reads available cores from the database and returns them as a list of strings.
-        public static async Task<IEnumerable<KeyValue>> ReadAvailableCors()
+        public async Task<IEnumerable<KeyValue>> ReadAvailableCors()
         {
             //string query = "SELECT [Cor Id] FROM [ImageFeaturesDB].[dbo].[Cores]";
             //return await DbHelper.ExecuteQueryAsync(query);
@@ -47,17 +32,10 @@ namespace ImageProcessingLibrary.Services.Database
             return await DbHelper.ExecuteQueryAsyncTwoCols(query);
         }
 
-
-        #endregion
-
-        public static async Task<IEnumerable<string>> ReadAvailableSampleSection()
+        public async Task<IEnumerable<string>> ReadAvailableSampleSection()
         {
             string query = "SELECT DISTINCT [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
             return await DbHelper.ExecuteQueryAsync(query);
         }
-
-
-
-
     }
 }
