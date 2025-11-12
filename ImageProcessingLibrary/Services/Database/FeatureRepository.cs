@@ -112,12 +112,16 @@ namespace ImageProcessingLibrary.Services.Database
 
         private SqlCommand BuildSearchCommand(SampleDetail sampleDetails, SqlConnection connection)
         {
-            // TODO
-            string searchQuery =
-                $"SELECT Id, CodivmacRef, ResnetVector, Dinov2Vector FROM {_tableName} cf " +
-                $"INNER JOIN {MainReferenceTable} rt " +
-                $"ON rt.CODIVMAC = cf.CodivmacRef " +
-                $"WHERE cf.ResnetVector IS NOT NULL";
+            string searchQuery = $@"
+                    SELECT Id, CodivmacRef, ResnetVector, Dinov2Vector 
+                    FROM
+	                    {_tableName} cf
+                    INNER JOIN {MainReferenceTable} rt 
+                        ON
+	                    rt.CODIVMAC = cf.CodivmacRef
+                    WHERE
+	                    cf.ResnetVector IS NOT NULL
+                    ";
 
             List<string> conditions = new();
             var command = new SqlCommand();
