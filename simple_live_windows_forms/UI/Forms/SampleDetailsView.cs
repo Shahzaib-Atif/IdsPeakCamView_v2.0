@@ -247,27 +247,8 @@ namespace simple_ids_cam_view.UI.Forms
             if (!string.IsNullOrWhiteSpace(tipo))
                 comboBoxTipo.BackColor = SystemColors.Window;
 
-            // only show suggest label once the tipo is selected
-            LabelSuggest.Enabled = !string.IsNullOrWhiteSpace(tipo);
-
             // show diameters & thickness in case Olhal is selected
             gbxDiameter.Visible = (tipo.ToLower() == "olhal");
-        }
-
-        private async void LabelSuggest_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            // Determine Section from TipoList
-            string section = comboBoxTipo.SelectedValue?.ToString() ?? "";
-
-            // Retrieve the last position ID with the least highest number
-            string lastPosId = await _cordConRepo.GetLeastHighestConAsync(section);
-
-            // show warning if the retrieval was successful
-            if (string.IsNullOrWhiteSpace(lastPosId))
-                ExceptionHelper.ShowWarningMessage("Sorry, something went wrong!");
-            else
-                // Update the text box with the next position ID
-                textBoxPosId.Text = ReturnNextPosId(lastPosId);
         }
 
         private void NumericDimensionBox_KeyDown(object sender, KeyEventArgs e)
@@ -299,32 +280,6 @@ namespace simple_ids_cam_view.UI.Forms
                 e.SuppressKeyPress = false;
         }
 
-        #endregion
-
-
-        #region -- SUGGEST NEXT AVAILABLE POS ID
-
-        // Return next available name based on input string
-        private static string ReturnNextPosId(string lastCellValue)
-        {
-            if (string.IsNullOrWhiteSpace(lastCellValue))
-                return string.Empty;
-            else
-            {
-                // Extract the alphabetic prefix and numeric suffix.
-                string prefix = new(lastCellValue.TakeWhile(char.IsLetter).ToArray());
-                string numberPart = new(lastCellValue.SkipWhile(char.IsLetter).ToArray());
-
-                if (int.TryParse(numberPart, out int num))
-                {
-                    // Increment the numeric part and format it with leading zeros.
-                    string nextNumber = (num + 1).ToString($"D{numberPart.Length}");
-                    return $"{prefix}{nextNumber}";
-                }
-
-                return string.Empty;
-            }
-        }
         #endregion
 
     }
