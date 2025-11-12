@@ -5,14 +5,14 @@ namespace ImageProcessingLibrary.Services.Database
     public class ReferenciasRepository
 
     {
-        private readonly string _tableName = "Referências_test";
+        public static readonly string MainReferenceTable = "Referências_test";
 
         /// <summary> Inserts basic reference data into the database. </summary>
         public async Task<bool> InsertDataAsync(string imagePath, SampleDetail sampleDetails)
         {
             // include tipo
             string query = @$"
-                INSERT INTO [ImageFeaturesDB].[dbo].[{_tableName}] 
+                INSERT INTO [ImageFeaturesDB].[dbo].[{MainReferenceTable}] 
                 ([Pos ID], Cor, Vias, CODIVMAC, ESTADO, ConnType, InternalDiameter, ExternalDiameter, Thickness, Imagem,
                 [Clip] ,[Spacer] ,[Vedante] ,[Tampa] ,[Mola] ,[Moldagem] ,[Travão] ,[Abracadeira] ,[Linguetes] ,[Outros] ,[Amostra])
                 VALUES 
@@ -42,7 +42,7 @@ namespace ImageProcessingLibrary.Services.Database
         // Delete existing record from main referencias table
         public async Task DeleteDataAsync(string fileName)
         {
-            string query = $"DELETE FROM [ImageFeaturesDB].[dbo].[{_tableName}] WHERE CODIVMAC = @Name";
+            string query = $"DELETE FROM [ImageFeaturesDB].[dbo].[{MainReferenceTable}] WHERE CODIVMAC = @Name";
             var parameters = new Dictionary<string, object>
                 {
                     { "@Name", fileName }
@@ -54,14 +54,14 @@ namespace ImageProcessingLibrary.Services.Database
         // Read available Codivmac from the database and return them as a list of strings.
         public async Task<IEnumerable<string>> ReadAvailableCodivmac()
         {
-            string query = $"SELECT [CODIVMAC] FROM [ImageFeaturesDB].[dbo].{_tableName}";
+            string query = $"SELECT [CODIVMAC] FROM [ImageFeaturesDB].[dbo].{MainReferenceTable}";
             return await DbHelper.ExecuteQueryAsync(query);
         }
 
         // Read available [Pos Id] from the database and return them as a list of strings.
         public async Task<IEnumerable<string>> ReadAvailablePosId()
         {
-            string query = $"SELECT [Pos ID] FROM [ImageFeaturesDB].[dbo].{_tableName}";
+            string query = $"SELECT [Pos ID] FROM [ImageFeaturesDB].[dbo].{MainReferenceTable}";
             return await DbHelper.ExecuteQueryAsync(query);
         }
     }

@@ -135,7 +135,7 @@ namespace simple_ids_cam_view.Services
             }
             else
             {
-                var topMatches = _onnxService.FindMatchingImages(this.SourceImageFilepath);
+                var topMatches = _onnxService.FindMatchingImages(this.SourceImageFilepath, this.SampleDetails);
                 ImageCompareService.AssignListOfSimilarImages(topMatches);
             }
 

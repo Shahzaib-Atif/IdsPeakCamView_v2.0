@@ -16,7 +16,7 @@ namespace simple_ids_cam_view.Services
         }
 
         // Find matching images based on extracted features
-        internal List<ConnectorMatch> FindMatchingImages(string sourceFilepath)
+        internal List<ConnectorMatch> FindMatchingImages(string sourceFilepath, SampleDetail sampleDetails)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace simple_ids_cam_view.Services
                 using var dinov2Extractor = new FeatureExtractorDINOv2();
                 float[] dinov2Vector = dinov2Extractor.ExtractFeatures(sourceFilepath);
 
-                var storedVectors = _featureRepo.LoadAllVectors(); // load values from database
+                var storedVectors = _featureRepo.LoadAllVectors(sampleDetails); // load values from database
                 var topMatches = FindTopScores(resnetVector, dinov2Vector, storedVectors);
 
                 return topMatches;

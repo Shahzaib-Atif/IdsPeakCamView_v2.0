@@ -1,6 +1,7 @@
 ﻿using ImageProcessingLibrary.Models;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
+using static ImageProcessingLibrary.Services.Database.ReferenciasRepository;
 
 namespace ImageProcessingLibrary.Services.Database
 {
@@ -66,7 +67,7 @@ namespace ImageProcessingLibrary.Services.Database
             await DbHelper.ExecuteNonQueryAsync(query, parameters);
         }
 
-        public List<ConnectorFeature> LoadAllVectors()
+        public List<ConnectorFeature> LoadAllVectors(SampleDetail sampleDetails)
         {
             var result = new List<ConnectorFeature>();
 
@@ -75,9 +76,11 @@ namespace ImageProcessingLibrary.Services.Database
                 try
                 {
                     conn.Open();
-                    string query = $"SELECT Id, CodivmacRef, ResnetVector, Dinov2Vector FROM {_tableName}" +
-                        $" WHERE ResnetVector IS NOT NULL";
-                    using SqlCommand cmd = new(query, conn);
+                    //string query = $"SELECT Id, CodivmacRef, ResnetVector, Dinov2Vector FROM {_tableName}" +
+                    //    $" WHERE ResnetVector IS NOT NULL";
+                    using SqlCommand cmd = BuildSearchCommand(sampleDetails, conn);
+
+                    // Read data from the database
                     using SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -88,6 +91,7 @@ namespace ImageProcessingLibrary.Services.Database
                         var resnetVector = JsonConvert.DeserializeObject<float[]>(vectorJson1) ?? Array.Empty<float>();
                         var dinov2Vector = JsonConvert.DeserializeObject<float[]>(vectorJson2) ?? Array.Empty<float>();
 
+                        // Add to result list
                         result.Add(new ConnectorFeature
                         {
                             Id = reader.GetInt32(0),
@@ -105,5 +109,76 @@ namespace ImageProcessingLibrary.Services.Database
 
             return result;
         }
+
+        private SqlCommand BuildSearchCommand(SampleDetail sampleDetails, SqlConnection connection)
+        {
+            // TODO
+            string searchQuery =
+                $"SELECT Id, CodivmacRef, ResnetVector, Dinov2Vector FROM {_tableName} cf " +
+                $"INNER JOIN {MainReferenceTable} rt " +
+                $"ON rt.CODIVMAC = cf.CodivmacRef " +
+                $"WHERE cf.ResnetVector IS NOT NULL";
+
+            List<string> conditions = new();
+            var command = new SqlCommand();
+
+            var basicDetails = sampleDetails.BasicDetails;
+            var dimensions = sampleDetails.Dimensions;
+
+            // Add conditions dynamically
+            if (!string.IsNullOrWhiteSpace(basicDetails.PosId))
+            {
+                conditions.Add("[Pos ID] LIKE @posId");
+                command.Parameters.AddWithValue("@posId", "%" + basicDetails.PosId + "%");
+            }
+
+            if (!string.IsNullOrWhiteSpace(basicDetails.Vias))
+            {
+                conditions.Add("Vias = @Vias");
+                command.Parameters.AddWithValue("@Vias", basicDetails.Vias);
+            }
+
+            if (!string.IsNullOrWhiteSpace(basicDetails.Tipo))
+            {
+                conditions.Add("ConnType = @Tipo");
+                command.Parameters.AddWithValue("@Tipo", basicDetails.Tipo);
+            }
+
+            if (!string.IsNullOrWhiteSpace(basicDetails.Cor))
+            {
+                conditions.Add("Cor = @Cor");
+                command.Parameters.AddWithValue("@Cor", basicDetails.Cor);
+            }
+
+            if (dimensions.InternalDiameter is not null)
+            {
+                conditions.Add("InternalDiameter = @InternalDiameter");
+                command.Parameters.AddWithValue("@InternalDiameter", dimensions.InternalDiameter);
+            }
+
+            if (dimensions.ExternalDiameter is not null)
+            {
+                conditions.Add("ExternalDiameter = @ExternalDiameter");
+                command.Parameters.AddWithValue("@ExternalDiameter", dimensions.ExternalDiameter);
+            }
+
+            if (dimensions.Thickness is not null)
+            {
+                conditions.Add("Thickness = @Thickness");
+                command.Parameters.AddWithValue("@Thickness", dimensions.Thickness);
+            }
+
+            // Add conditions to the query
+            if (conditions.Any())
+            {
+                searchQuery += " AND " + string.Join(" AND ", conditions);
+            }
+
+            command.CommandText = searchQuery;
+            command.Connection = connection;
+
+            return command;
+        }
+
     }
 }
