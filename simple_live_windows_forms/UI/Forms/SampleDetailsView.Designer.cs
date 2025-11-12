@@ -119,7 +119,7 @@
             gbxVias.Size = new Size(211, 61);
             gbxVias.TabIndex = 5;
             gbxVias.TabStop = false;
-            gbxVias.Text = "Vias";
+            gbxVias.Text = "Vias *";
             // 
             // comboBoxVias
             // 
@@ -141,7 +141,7 @@
             gbxCor.Size = new Size(211, 61);
             gbxCor.TabIndex = 4;
             gbxCor.TabStop = false;
-            gbxCor.Text = "Cor";
+            gbxCor.Text = "Cor *";
             // 
             // comboBoxCor
             // 
@@ -358,7 +358,7 @@
             toolTip1.SetToolTip(LabelSuggest, "suggest position Id");
             LabelSuggest.LinkClicked += LabelSuggest_LinkClicked;
             // 
-            // SampleDetailsForm
+            // SampleDetailsView
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -370,7 +370,7 @@
             Controls.Add(FLP_Main);
             Font = new Font("Segoe UI", 9.5F);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            Name = "SampleDetailsForm";
+            Name = "SampleDetailsView";
             Padding = new Padding(0, 0, 5, 0);
             StartPosition = FormStartPosition.CenterParent;
             Text = "Enter connector details";

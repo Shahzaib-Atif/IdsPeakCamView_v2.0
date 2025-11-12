@@ -19,10 +19,9 @@ namespace simple_ids_cam_view.UI.Forms
 
         public SampleDetail SampleDetails { get; private set; }
         // Disable validation for search; enable for adding a new sample
-        private bool IsSaveMode { get; set; }
         #endregion
 
-        public SampleDetailsForm(bool isSaveMode = true)
+        public SampleDetailsForm()
         {
             InitializeComponent();
 
@@ -31,33 +30,13 @@ namespace simple_ids_cam_view.UI.Forms
             _cordConRepo = new CordConRepository();
             _metadataRepo = new MetadataRepository();
 
-            // initialize form
-            this.IsSaveMode = isSaveMode;
-
             // hide the diameters and thickness initially
             gbxDiameter.Visible = false;
-
-            // hide the suggestLabel in case of search mode
-            if (!isSaveMode) LabelSuggest.Visible = false;
-
-            // assign titles to groupboxes
-            AssignTitlesToGroupBoxes();
 
             ConfigureAutoCompleteForPosId();
 
             // configure all combobox
             _ = ConfigureTipoCorsVias();
-        }
-
-        // add '*' if this is in 'Save' mode
-        private void AssignTitlesToGroupBoxes()
-        {
-            gbxName.Text = IsSaveMode ? "Pos Id *" : "Pos Id";
-            gbxType.Text = IsSaveMode ? "Tipo *" : "Tipo";
-            gbxCor.Text = IsSaveMode ? "Cor *" : "Cor";
-            gbxVias.Text = IsSaveMode ? "Vias *" : "Vias";
-
-            //gbxType.Text = "Tipo";
         }
 
 
@@ -197,19 +176,6 @@ namespace simple_ids_cam_view.UI.Forms
                 Vias = comboBoxVias.SelectedValue?.ToString() ?? "",
             };
 
-            // This code block only executes when user is in the Save Mode
-            if (IsSaveMode)
-            {
-                // check basic model validation
-                if (!ModelDataValidation.Validate(basicDetails)) return;
-
-                // if this [Pos Id] does not exist, then we need to save in DB along with CV, CH
-                this.Cursor = Cursors.WaitCursor;
-                bool isSuccess = await HandlePosIdAsync(basicDetails.PosId);
-                this.Cursor = Cursors.Default;
-                if (!isSuccess) return;
-            }
-
             // create SampleDimensions object (convert value of 0 to null)
             var dimensions = new SampleDimensions
             {
@@ -271,9 +237,6 @@ namespace simple_ids_cam_view.UI.Forms
             // make the ComboBoxTipo color normal again
             if (!string.IsNullOrWhiteSpace(tipo))
                 comboBoxTipo.BackColor = SystemColors.Window;
-
-            // only show suggest label once the tipo is selected
-            LabelSuggest.Enabled = !string.IsNullOrWhiteSpace(tipo);
 
             // show diameters & thickness in case Olhal is selected
             gbxDiameter.Visible = (tipo.ToLower() == "olhal");

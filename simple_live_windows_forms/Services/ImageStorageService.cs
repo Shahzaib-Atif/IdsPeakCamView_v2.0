@@ -161,7 +161,7 @@ namespace simple_ids_cam_view.Services
         /// <summary> Open SampleDetailsForm to get connector details from user. </summary>
         private static SampleDetail GetConnectorDetails()
         {
-            using var f = new SampleDetailsForm();
+            using var f = new SampleDetailsView();
             return f.ShowDialog() == DialogResult.OK ? f.SampleDetails : null;
         }
 

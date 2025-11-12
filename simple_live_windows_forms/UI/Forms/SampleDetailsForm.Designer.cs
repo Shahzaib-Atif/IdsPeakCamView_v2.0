@@ -51,7 +51,6 @@
             textBoxPosId = new TextBox();
             labelTitle = new Label();
             FLP_Main = new FlowLayoutPanel();
-            LabelSuggest = new LinkLabel();
             toolTip1 = new ToolTip(components);
             panel1.SuspendLayout();
             gbxVias.SuspendLayout();
@@ -258,7 +257,7 @@
             gbxType.Size = new Size(211, 61);
             gbxType.TabIndex = 2;
             gbxType.TabStop = false;
-            gbxType.Text = "Tipo *";
+            gbxType.Text = "Tipo";
             // 
             // comboBoxTipo
             // 
@@ -285,7 +284,7 @@
             gbxName.Size = new Size(214, 66);
             gbxName.TabIndex = 1;
             gbxName.TabStop = false;
-            gbxName.Text = "Pos Id *";
+            gbxName.Text = "Pos Id";
             // 
             // flowLayoutPanel1
             // 
@@ -341,23 +340,6 @@
             FLP_Main.TabIndex = 0;
             FLP_Main.WrapContents = false;
             // 
-            // LabelSuggest
-            // 
-            LabelSuggest.ActiveLinkColor = Color.RosyBrown;
-            LabelSuggest.AutoSize = true;
-            LabelSuggest.Enabled = false;
-            LabelSuggest.Font = new Font("Segoe UI", 9F);
-            LabelSuggest.LinkColor = SystemColors.HotTrack;
-            LabelSuggest.Location = new Point(248, 97);
-            LabelSuggest.Name = "LabelSuggest";
-            LabelSuggest.Size = new Size(48, 15);
-            LabelSuggest.TabIndex = 1;
-            LabelSuggest.TabStop = true;
-            LabelSuggest.Text = "suggest";
-            LabelSuggest.TextAlign = ContentAlignment.MiddleCenter;
-            toolTip1.SetToolTip(LabelSuggest, "suggest position Id");
-            LabelSuggest.LinkClicked += LabelSuggest_LinkClicked;
-            // 
             // SampleDetailsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -366,7 +348,6 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             CancelButton = btnCancel;
             ClientSize = new Size(324, 568);
-            Controls.Add(LabelSuggest);
             Controls.Add(FLP_Main);
             Font = new Font("Segoe UI", 9.5F);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
@@ -420,7 +401,6 @@
         private TextBox textBoxPosId;
         private Label labelTitle;
         private FlowLayoutPanel FLP_Main;
-        private LinkLabel LabelSuggest;
         private ToolTip toolTip1;
     }
 }

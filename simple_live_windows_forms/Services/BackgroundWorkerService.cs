@@ -75,7 +75,7 @@ namespace simple_ids_cam_view.Services
             if (!string.IsNullOrEmpty(filePath))
             {
                 // get otpional connector details for a filtered search
-                using var f = new SampleDetailsView(isSaveMode: false);
+                using var f = new SampleDetailsForm();
                 if (f.ShowDialog() != DialogResult.OK) return; // return if user has cancelled the process
 
                 // start the process
