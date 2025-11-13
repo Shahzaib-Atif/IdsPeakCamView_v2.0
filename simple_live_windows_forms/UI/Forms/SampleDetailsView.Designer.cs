@@ -470,7 +470,7 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(FLP_Main);
             groupBox1.FlatStyle = FlatStyle.System;
-            groupBox1.Location = new Point(15, 13);
+            groupBox1.Location = new Point(25, 13);
             groupBox1.Margin = new Padding(15, 3, 15, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.RightToLeft = RightToLeft.No;
@@ -497,7 +497,7 @@
             groupBox7.Controls.Add(label2);
             groupBox7.Controls.Add(flowLayoutPanel4);
             groupBox7.FlatStyle = FlatStyle.System;
-            groupBox7.Location = new Point(343, 13);
+            groupBox7.Location = new Point(353, 13);
             groupBox7.Margin = new Padding(15, 3, 15, 3);
             groupBox7.Name = "groupBox7";
             groupBox7.RightToLeft = RightToLeft.No;
@@ -583,7 +583,7 @@
             flowLayoutPanel6.Dock = DockStyle.Fill;
             flowLayoutPanel6.Location = new Point(0, 0);
             flowLayoutPanel6.Name = "flowLayoutPanel6";
-            flowLayoutPanel6.Padding = new Padding(0, 10, 0, 10);
+            flowLayoutPanel6.Padding = new Padding(10);
             flowLayoutPanel6.Size = new Size(1035, 495);
             flowLayoutPanel6.TabIndex = 7;
             // 
@@ -594,7 +594,7 @@
             groupBox9.Controls.Add(label3);
             groupBox9.Controls.Add(flowLayoutPanel7);
             groupBox9.FlatStyle = FlatStyle.System;
-            groupBox9.Location = new Point(686, 13);
+            groupBox9.Location = new Point(696, 13);
             groupBox9.Margin = new Padding(15, 3, 15, 3);
             groupBox9.Name = "groupBox9";
             groupBox9.RightToLeft = RightToLeft.No;

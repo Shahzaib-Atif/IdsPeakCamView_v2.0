@@ -7,9 +7,12 @@ namespace simple_ids_cam_view.UI.Forms
     public partial class AddAccessoryForm : Form
     {
         public AccessoryDetails AccessoryDetails { get; set; }
-        private static AutoCompleteStringCollection myCollection;
+        private static AutoCompleteStringCollection codivmacCollection;
+        private static AutoCompleteStringCollection posIdCollection;
         private readonly AccessoryRepository _accessoryRepo;
         private readonly ReferenciasRepository _referenciasRepo;
+        public bool ColorAssociated => checkBoxColorAssociated.Checked;
+
 
         public AddAccessoryForm()
         {
@@ -43,22 +46,39 @@ namespace simple_ids_cam_view.UI.Forms
         #region -- AUTO COMPLETE CONNECTOR NAMES
         private void ConfigureAutoCompleteForConnectorNames()
         {
-            InitializeMyCollection();
+            InitializeCodivmacCollection();
+            InitializePosIdCollection();
 
-            textBoxName.AutoCompleteCustomSource = myCollection;
+            textBoxName.AutoCompleteCustomSource = codivmacCollection;
             textBoxName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textBoxName.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        private async void InitializeMyCollection()
+        private async void InitializeCodivmacCollection()
         {
             try
             {
-                myCollection ??= new(); // initialize only first time
-                myCollection.Clear(); // clear the list
+                codivmacCollection ??= new(); // initialize only first time
+                codivmacCollection.Clear(); // clear the list
 
                 var items = await _referenciasRepo.ReadAvailableCodivmac(); // fetch data from db
-                myCollection.AddRange(items.ToArray()); // add to collection
+                codivmacCollection.AddRange(items.ToArray()); // add to collection
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.ShowWarningMessage(ex.Message);
+            }
+        }
+
+        private async void InitializePosIdCollection()
+        {
+            try
+            {
+                posIdCollection ??= new(); // initialize only first time
+                posIdCollection.Clear();
+
+                var items = await _referenciasRepo.ReadAvailablePosId(); // fetch data from db
+                posIdCollection.AddRange(items.ToArray()); // add to collection
             }
             catch (Exception ex)
             {
@@ -84,15 +104,31 @@ namespace simple_ids_cam_view.UI.Forms
             if (!ModelDataValidation.Validate(details)) return;
 
             // if the Connector does not exist, then we cannot proceed
-            if (myCollection is null || !myCollection.Contains(details.ConnectorName))
+            if (ColorAssociated)
             {
-                ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
-                return;
+                if (posIdCollection is null || !posIdCollection.Contains(details.ConnectorName))
+                {
+                    ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
+                    return;
+                }
+            }
+            else
+            {
+                if (codivmacCollection is null || !codivmacCollection.Contains(details.ConnectorName))
+                {
+                    ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
+                    return;
+                }
             }
 
             // configure sample details & close the form
             this.AccessoryDetails = details;
             this.DialogResult = DialogResult.OK;
+        }
+
+        private void checkBoxColorAssociated_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxName.AutoCompleteCustomSource = ColorAssociated ? posIdCollection : codivmacCollection;
         }
     }
 }

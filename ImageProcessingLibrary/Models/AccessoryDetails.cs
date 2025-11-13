@@ -5,7 +5,7 @@ namespace ImageProcessingLibrary.Models
     public struct AccessoryDetails
     {
         [Required(ErrorMessage = "{0} is required")]
-        [StringLength(maximumLength: 6, MinimumLength = 6, ErrorMessage = "{0} should consist of {1} chars")]
+        [StringLength(maximumLength: 6, MinimumLength = 4, ErrorMessage = "{0} should consist of {2} or {1} chars")]
         public string ConnectorName { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]

@@ -29,56 +29,55 @@
         private void InitializeComponent()
         {
             FLP_Main = new FlowLayoutPanel();
-            labelTitle = new Label();
             GbxConnName = new GroupBox();
             textBoxName = new TextBox();
-            GbxType = new GroupBox();
-            comboBoxTipo = new ComboBox();
+            groupBox1 = new GroupBox();
+            textBoxRefDV = new TextBox();
+            checkBoxColorAssociated = new CheckBox();
+            groupBox2 = new GroupBox();
+            numUpDownQty = new NumericUpDown();
             gbxCor = new GroupBox();
             textBoxReference = new TextBox();
             panel1 = new Panel();
             btnCancel = new Button();
             btnSave = new Button();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            groupBox4 = new GroupBox();
+            comboBoxTipo = new ComboBox();
+            flowLayoutPanel2 = new FlowLayoutPanel();
             FLP_Main.SuspendLayout();
             GbxConnName.SuspendLayout();
-            GbxType.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numUpDownQty).BeginInit();
             gbxCor.SuspendLayout();
             panel1.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
+            groupBox4.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // FLP_Main
             // 
             FLP_Main.AutoSize = true;
             FLP_Main.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            FLP_Main.Controls.Add(labelTitle);
             FLP_Main.Controls.Add(GbxConnName);
-            FLP_Main.Controls.Add(GbxType);
-            FLP_Main.Controls.Add(gbxCor);
-            FLP_Main.Controls.Add(panel1);
-            FLP_Main.Dock = DockStyle.Fill;
+            FLP_Main.Controls.Add(groupBox1);
+            FLP_Main.Controls.Add(checkBoxColorAssociated);
+            FLP_Main.Controls.Add(groupBox2);
             FLP_Main.FlowDirection = FlowDirection.TopDown;
-            FLP_Main.Location = new Point(0, 0);
+            FLP_Main.Location = new Point(13, 13);
+            FLP_Main.MinimumSize = new Size(200, 0);
             FLP_Main.Name = "FLP_Main";
             FLP_Main.Padding = new Padding(20, 6, 20, 6);
-            FLP_Main.Size = new Size(272, 393);
+            FLP_Main.Size = new Size(241, 278);
             FLP_Main.TabIndex = 1;
             FLP_Main.WrapContents = false;
-            // 
-            // labelTitle
-            // 
-            labelTitle.AutoSize = true;
-            labelTitle.Font = new Font("Segoe UI", 9.5F, FontStyle.Underline);
-            labelTitle.Location = new Point(25, 17);
-            labelTitle.Margin = new Padding(5, 11, 10, 23);
-            labelTitle.Name = "labelTitle";
-            labelTitle.Size = new Size(203, 17);
-            labelTitle.TabIndex = 0;
-            labelTitle.Text = "Please enter the following details:";
             // 
             // GbxConnName
             // 
             GbxConnName.Controls.Add(textBoxName);
-            GbxConnName.Location = new Point(27, 63);
+            GbxConnName.Location = new Point(27, 12);
             GbxConnName.Margin = new Padding(7, 6, 5, 6);
             GbxConnName.Name = "GbxConnName";
             GbxConnName.Padding = new Padding(7, 8, 7, 8);
@@ -97,35 +96,66 @@
             textBoxName.Size = new Size(175, 24);
             textBoxName.TabIndex = 2;
             // 
-            // GbxType
+            // groupBox1
             // 
-            GbxType.Controls.Add(comboBoxTipo);
-            GbxType.Location = new Point(27, 136);
-            GbxType.Margin = new Padding(7, 6, 5, 6);
-            GbxType.Name = "GbxType";
-            GbxType.Padding = new Padding(7, 8, 7, 8);
-            GbxType.Size = new Size(189, 61);
-            GbxType.TabIndex = 2;
-            GbxType.TabStop = false;
-            GbxType.Text = "Accessory Type *";
+            groupBox1.Controls.Add(textBoxRefDV);
+            groupBox1.Location = new Point(27, 85);
+            groupBox1.Margin = new Padding(7, 6, 5, 6);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new Padding(7, 8, 7, 8);
+            groupBox1.Size = new Size(189, 61);
+            groupBox1.TabIndex = 8;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Ref DV";
             // 
-            // comboBoxTipo
+            // textBoxRefDV
             // 
-            comboBoxTipo.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            comboBoxTipo.AutoCompleteSource = AutoCompleteSource.ListItems;
-            comboBoxTipo.Dock = DockStyle.Fill;
-            comboBoxTipo.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxTipo.FormattingEnabled = true;
-            comboBoxTipo.Items.AddRange(new object[] { "conector", "clip", "olhal", "grommet" });
-            comboBoxTipo.Location = new Point(7, 25);
-            comboBoxTipo.Name = "comboBoxTipo";
-            comboBoxTipo.Size = new Size(175, 25);
-            comboBoxTipo.TabIndex = 0;
+            textBoxRefDV.Dock = DockStyle.Fill;
+            textBoxRefDV.Location = new Point(7, 25);
+            textBoxRefDV.Margin = new Padding(3, 6, 3, 3);
+            textBoxRefDV.Name = "textBoxRefDV";
+            textBoxRefDV.PlaceholderText = "Add some reference";
+            textBoxRefDV.Size = new Size(175, 24);
+            textBoxRefDV.TabIndex = 1;
+            // 
+            // checkBoxColorAssociated
+            // 
+            checkBoxColorAssociated.AutoSize = true;
+            checkBoxColorAssociated.Location = new Point(23, 155);
+            checkBoxColorAssociated.Name = "checkBoxColorAssociated";
+            checkBoxColorAssociated.Padding = new Padding(10);
+            checkBoxColorAssociated.Size = new Size(146, 41);
+            checkBoxColorAssociated.TabIndex = 0;
+            checkBoxColorAssociated.Text = "Color Associated";
+            checkBoxColorAssociated.UseVisualStyleBackColor = true;
+            checkBoxColorAssociated.CheckedChanged += checkBoxColorAssociated_CheckedChanged;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(numUpDownQty);
+            groupBox2.Location = new Point(27, 205);
+            groupBox2.Margin = new Padding(7, 6, 5, 6);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new Padding(7, 8, 7, 8);
+            groupBox2.Size = new Size(105, 61);
+            groupBox2.TabIndex = 9;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Quantity";
+            // 
+            // numUpDownQty
+            // 
+            numUpDownQty.Dock = DockStyle.Fill;
+            numUpDownQty.Font = new Font("Segoe UI", 10F);
+            numUpDownQty.Location = new Point(7, 25);
+            numUpDownQty.Name = "numUpDownQty";
+            numUpDownQty.Size = new Size(91, 25);
+            numUpDownQty.TabIndex = 0;
+            numUpDownQty.TextAlign = HorizontalAlignment.Center;
             // 
             // gbxCor
             // 
             gbxCor.Controls.Add(textBoxReference);
-            gbxCor.Location = new Point(27, 209);
+            gbxCor.Location = new Point(27, 85);
             gbxCor.Margin = new Padding(7, 6, 5, 6);
             gbxCor.Name = "gbxCor";
             gbxCor.Padding = new Padding(7, 8, 7, 8);
@@ -149,20 +179,19 @@
             panel1.Controls.Add(btnCancel);
             panel1.Controls.Add(btnSave);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(23, 316);
+            panel1.Location = new Point(0, 317);
             panel1.Margin = new Padding(3, 40, 3, 3);
             panel1.MinimumSize = new Size(220, 0);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(8, 6, 8, 6);
-            panel1.Size = new Size(220, 50);
+            panel1.Size = new Size(536, 50);
             panel1.TabIndex = 6;
             // 
             // btnCancel
             // 
             btnCancel.BackColor = Color.RosyBrown;
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Dock = DockStyle.Right;
-            btnCancel.Location = new Point(139, 6);
+            btnCancel.Location = new Point(281, 5);
             btnCancel.Margin = new Padding(1, 11, 10, 11);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(73, 38);
@@ -173,8 +202,7 @@
             // btnSave
             // 
             btnSave.BackColor = Color.YellowGreen;
-            btnSave.Dock = DockStyle.Left;
-            btnSave.Location = new Point(8, 6);
+            btnSave.Location = new Point(160, 5);
             btnSave.Margin = new Padding(1, 11, 10, 11);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(74, 38);
@@ -183,13 +211,69 @@
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += BtnSave_Click;
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel1.Controls.Add(groupBox4);
+            flowLayoutPanel1.Controls.Add(gbxCor);
+            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel1.Location = new Point(260, 13);
+            flowLayoutPanel1.MinimumSize = new Size(200, 0);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Padding = new Padding(20, 6, 20, 6);
+            flowLayoutPanel1.Size = new Size(241, 158);
+            flowLayoutPanel1.TabIndex = 10;
+            flowLayoutPanel1.WrapContents = false;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(comboBoxTipo);
+            groupBox4.Location = new Point(27, 12);
+            groupBox4.Margin = new Padding(7, 6, 5, 6);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Padding = new Padding(7, 8, 7, 8);
+            groupBox4.Size = new Size(189, 61);
+            groupBox4.TabIndex = 2;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Accessory Type *";
+            // 
+            // comboBoxTipo
+            // 
+            comboBoxTipo.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            comboBoxTipo.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboBoxTipo.Dock = DockStyle.Fill;
+            comboBoxTipo.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxTipo.FormattingEnabled = true;
+            comboBoxTipo.Items.AddRange(new object[] { "conector", "clip", "olhal", "grommet" });
+            comboBoxTipo.Location = new Point(7, 25);
+            comboBoxTipo.Name = "comboBoxTipo";
+            comboBoxTipo.Size = new Size(175, 25);
+            comboBoxTipo.TabIndex = 0;
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.AutoSize = true;
+            flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel2.Controls.Add(FLP_Main);
+            flowLayoutPanel2.Controls.Add(flowLayoutPanel1);
+            flowLayoutPanel2.Dock = DockStyle.Fill;
+            flowLayoutPanel2.Location = new Point(0, 0);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Padding = new Padding(10);
+            flowLayoutPanel2.Size = new Size(536, 317);
+            flowLayoutPanel2.TabIndex = 11;
+            // 
             // AddAccessoryForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             CancelButton = btnCancel;
-            ClientSize = new Size(272, 393);
-            Controls.Add(FLP_Main);
+            ClientSize = new Size(536, 367);
+            Controls.Add(flowLayoutPanel2);
+            Controls.Add(panel1);
             Font = new Font("Segoe UI", 9.5F);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "AddAccessoryForm";
@@ -199,10 +283,17 @@
             FLP_Main.PerformLayout();
             GbxConnName.ResumeLayout(false);
             GbxConnName.PerformLayout();
-            GbxType.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numUpDownQty).EndInit();
             gbxCor.ResumeLayout(false);
             gbxCor.PerformLayout();
             panel1.ResumeLayout(false);
+            flowLayoutPanel1.ResumeLayout(false);
+            groupBox4.ResumeLayout(false);
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -210,12 +301,9 @@
         #endregion
 
         private FlowLayoutPanel FLP_Main;
-        private Label labelTitle;
         private GroupBox gbxName;
         private FlowLayoutPanel flowLayoutPanel1;
         private TextBox textBoxConnName;
-        private GroupBox GbxType;
-        private ComboBox comboBoxTipo;
         private GroupBox gbxCor;
         private Panel panel1;
         private Button btnCancel;
@@ -223,5 +311,13 @@
         private TextBox textBoxReference;
         private GroupBox GbxConnName;
         private TextBox textBoxName;
+        private GroupBox groupBox1;
+        private TextBox textBoxRefDV;
+        private GroupBox groupBox4;
+        private ComboBox comboBoxTipo;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private CheckBox checkBoxColorAssociated;
+        private GroupBox groupBox2;
+        private NumericUpDown numUpDownQty;
     }
 }
