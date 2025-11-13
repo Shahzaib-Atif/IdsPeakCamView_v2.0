@@ -18,6 +18,7 @@ namespace simple_ids_cam_view.Presenters
         private List<KeyValue> _tipoList;
         private List<KeyValue> _corsList;
         private List<KeyValue> _viasList;
+        private List<string> _fabricanteList;
 
         public SampleDetail SampleDetails { get; private set; }
 
@@ -163,7 +164,8 @@ namespace simple_ids_cam_view.Presenters
             await Task.WhenAll(
                 ConfigureTipoAsync(),
                 ConfigureCorsAsync(),
-                ConfigureViasAsync()
+                ConfigureViasAsync(),
+                ConfigureFabricanteAsync()
             );
         }
 
@@ -194,20 +196,27 @@ namespace simple_ids_cam_view.Presenters
             _view.PopulateViasComboBox(_viasList);
         }
 
+        private async Task ConfigureFabricanteAsync()
+        {
+            // Only execute first time if list is null
+            if (_fabricanteList == null)
+                await PopulateFabricanteListAsync();
+
+            _view.PopulateFabricanteComboBox(_fabricanteList);
+        }
+
         private async Task PopulateTipoListAsync()
         {
             try
             {
                 _tipoList = (await _metadataRepo.ReadAvailableTipo()).ToList();
+                _tipoList.Insert(0, new KeyValue { Key = "", Value = "" }); // Insert empty option at the start
             }
             catch (Exception ex)
             {
                 ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
                 _tipoList = new List<KeyValue>();
             }
-
-            // Insert an empty option at the start
-            _tipoList.Insert(0, new KeyValue { Key = "", Value = "" });
         }
 
         private async Task PopulateCorsListAsync()
@@ -218,8 +227,7 @@ namespace simple_ids_cam_view.Presenters
             foreach (var item in _corsList)
                 item.Key = item.Key + $"  ({item.Value})";
 
-            // Insert an empty option at the start
-            _corsList.Insert(0, new KeyValue { Key = "", Value = "" });
+            _corsList.Insert(0, new KeyValue { Key = "", Value = "" }); // Insert empty option at the start
         }
 
         private async Task PopulateViasListAsync()
@@ -233,10 +241,22 @@ namespace simple_ids_cam_view.Presenters
                     item.Key = item.Key + $"  ({item.Value})";
             }
 
-            // Insert an empty option at the start
-            _viasList.Insert(0, new KeyValue { Key = "", Value = "" });
+            _viasList.Insert(0, new KeyValue { Key = "", Value = "" }); // Insert empty option at the start
         }
 
+        private async Task PopulateFabricanteListAsync()
+        {
+            try
+            {
+                _fabricanteList = (await _metadataRepo.ReadAvailableFabricante()).ToList();
+                _fabricanteList.Insert(0, ""); // Insert empty option at the start
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
+                _fabricanteList = new List<string>();
+            }
+        }
         #endregion
 
         #region Helper Methods (same logic as original)

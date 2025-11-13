@@ -131,7 +131,7 @@
             // 
             btnCancel.BackColor = Color.RosyBrown;
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(515, 4);
+            btnCancel.Location = new Point(497, 4);
             btnCancel.Margin = new Padding(1, 11, 10, 11);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(79, 39);
@@ -142,7 +142,7 @@
             // btnSave
             // 
             btnSave.BackColor = Color.YellowGreen;
-            btnSave.Location = new Point(362, 4);
+            btnSave.Location = new Point(350, 4);
             btnSave.Margin = new Padding(1, 11, 10, 11);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(80, 39);

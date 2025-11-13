@@ -95,6 +95,14 @@ namespace simple_ids_cam_view.UI.Forms
             comboBoxVias.DataSource = items;
         }
 
+        public void PopulateFabricanteComboBox(List<string> items)
+        {
+            comboBoxManufact.Items.Clear();
+            comboBoxManufact.DisplayMember = "Key";
+            comboBoxManufact.ValueMember = "Value";
+            comboBoxManufact.DataSource = items;
+        }
+
         public void ShowDiameterSection()
         {
             gbxDiameter.Visible = true;

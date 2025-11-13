@@ -54,6 +54,7 @@ namespace ImageProcessingLibrary.Interfaces
         void PopulateTipoComboBox(List<KeyValue> items);
         void PopulateCorComboBox(List<KeyValue> items);
         void PopulateViasComboBox(List<KeyValue> items);
+        void PopulateFabricanteComboBox(List<string> items);
 
         // UI State
         void ShowDiameterSection();

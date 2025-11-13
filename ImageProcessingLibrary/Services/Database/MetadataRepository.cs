@@ -37,5 +37,11 @@ namespace ImageProcessingLibrary.Services.Database
             string query = "SELECT DISTINCT [Section] FROM [ImageFeaturesDB].[dbo].[ConnectorTypes]";
             return await DbHelper.ExecuteQueryAsync(query);
         }
+
+        public async Task<IEnumerable<string>> ReadAvailableFabricante()
+        {
+            string query = "SELECT Fabricante FROM ImageFeaturesDB.dbo.Fabricantes";
+            return await DbHelper.ExecuteQueryAsync(query);
+        }
     }
 }
