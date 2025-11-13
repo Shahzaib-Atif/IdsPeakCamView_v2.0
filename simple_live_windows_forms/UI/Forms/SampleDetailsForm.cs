@@ -188,7 +188,7 @@ namespace simple_ids_cam_view.UI.Forms
             basicDetails.Codivmac = ($"{basicDetails.PosId}{basicDetails.Cor}{basicDetails.Vias}");
 
             // configure sample details & close the form
-            this.SampleDetails = new SampleDetail(basicDetails, dimensions);
+            this.SampleDetails = new SampleDetail(basicDetails, dimensions, null, null);
             this.DialogResult = DialogResult.OK;
         }
 

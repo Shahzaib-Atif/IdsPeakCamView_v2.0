@@ -11,12 +11,12 @@ namespace simple_ids_cam_view.UI.Forms
         public event EventHandler ViewLoaded;
         public event EventHandler SaveRequested;
         public event EventHandler TipoChanged;
-        public event EventHandler PosIdTextChanged;
 
         #endregion
 
         #region Properties (Presenter reads from View)
 
+        // Sample Details Properties
         public string PosId => textBoxPosId.Text;
         public string Tipo => comboBoxTipo.Text;
         public string CorValue => comboBoxCor.SelectedValue?.ToString();
@@ -24,6 +24,26 @@ namespace simple_ids_cam_view.UI.Forms
         public decimal InternalDiameter => numericIntDia.Value;
         public decimal ExternalDiameter => numericExtDia.Value;
         public decimal Thickness => numericThickness.Value;
+
+        // Additional Properties
+        public string Fabricante => comboBoxManufact.SelectedValue?.ToString();
+        public string Refabricante => textBoxRefManufact.Text;
+        public string Designação => textBoxDesignation.Text;
+        public string OBS => textBoxOBS.Text;
+
+        // Component Checkboxes
+        public bool Clip => checkBoxClip.Checked;
+        public bool Spacer => checkBoxSpacer.Checked;
+        public bool Tampa => checkBoxCapot.Checked;
+        public bool Vedante => checkBoxVedante.Checked;
+        public bool Mola => checkBoxMola.Checked;
+        public bool Moldagem => checkBoxMoldagem.Checked;
+        public bool Travão => checkBoxTravao.Checked;
+        public bool Abracadeira => checkBoxAbracadeira.Checked;
+        public bool Linguetes => checkBoxLinguetes.Checked;
+        public bool Outros => checkBoxOutros.Checked;
+        public bool Amostra => checkBoxSamplePanel.Checked;
+        public bool Olhal => checkBoxOlhal.Checked;
 
         #endregion
 
@@ -85,16 +105,6 @@ namespace simple_ids_cam_view.UI.Forms
             gbxDiameter.Visible = false;
         }
 
-        public void SetPosIdBackColorNormal()
-        {
-            textBoxPosId.BackColor = SystemColors.Window;
-        }
-
-        public void SetTipoBackColorNormal()
-        {
-            comboBoxTipo.BackColor = SystemColors.Window;
-        }
-
         public void ShowWaitCursor()
         {
             this.Cursor = Cursors.WaitCursor;
@@ -145,11 +155,6 @@ namespace simple_ids_cam_view.UI.Forms
             TipoChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void TextBoxPosId_Leave(object sender, EventArgs e)
-        {
-            // Just raise event - presenter handles logic
-            PosIdTextChanged?.Invoke(this, EventArgs.Empty);
-        }
 
         private void TextBoxPosId_KeyDown(object sender, KeyEventArgs e)
         {

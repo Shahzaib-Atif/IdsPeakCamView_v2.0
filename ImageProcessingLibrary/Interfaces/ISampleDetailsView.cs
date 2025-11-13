@@ -14,7 +14,6 @@ namespace ImageProcessingLibrary.Interfaces
         event EventHandler ViewLoaded;
         event EventHandler SaveRequested;
         event EventHandler TipoChanged;
-        event EventHandler PosIdTextChanged;
 
         #endregion
 
@@ -27,6 +26,22 @@ namespace ImageProcessingLibrary.Interfaces
         decimal InternalDiameter { get; }
         decimal ExternalDiameter { get; }
         decimal Thickness { get; }
+        string Fabricante { get; }
+        string Refabricante { get; }
+        string Designação { get; }
+        string OBS { get; }
+        bool Clip { get; }
+        bool Spacer { get; }
+        bool Tampa { get; }
+        bool Vedante { get; }
+        bool Mola { get; }
+        bool Moldagem { get; }
+        bool Travão { get; }
+        bool Abracadeira { get; }
+        bool Linguetes { get; }
+        bool Outros { get; }
+        bool Amostra { get; }
+        bool Olhal { get; }
 
         #endregion
 
@@ -43,8 +58,6 @@ namespace ImageProcessingLibrary.Interfaces
         // UI State
         void ShowDiameterSection();
         void HideDiameterSection();
-        void SetPosIdBackColorNormal();
-        void SetTipoBackColorNormal();
         void ShowWaitCursor();
         void ShowDefaultCursor();
 

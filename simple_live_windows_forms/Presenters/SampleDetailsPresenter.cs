@@ -42,7 +42,6 @@ namespace simple_ids_cam_view.Presenters
             _view.ViewLoaded += OnViewLoaded;
             _view.SaveRequested += OnSaveRequested;
             _view.TipoChanged += OnTipoChanged;
-            _view.PosIdTextChanged += OnPosIdTextChanged;
         }
 
         public void UnsubscribeFromViewEvents()
@@ -50,7 +49,6 @@ namespace simple_ids_cam_view.Presenters
             _view.ViewLoaded -= OnViewLoaded;
             _view.SaveRequested -= OnSaveRequested;
             _view.TipoChanged -= OnTipoChanged;
-            _view.PosIdTextChanged -= OnPosIdTextChanged;
         }
 
         #endregion
@@ -89,8 +87,7 @@ namespace simple_ids_cam_view.Presenters
             bool isSuccess = await HandlePosIdAsync(basicDetails.PosId);
             _view.ShowDefaultCursor();
 
-            if (!isSuccess)
-                return;
+            if (!isSuccess) return;
 
             // Create SampleDimensions object (convert 0 to null)
             var dimensions = new SampleDimensions
@@ -100,11 +97,35 @@ namespace simple_ids_cam_view.Presenters
                 Thickness = _view.Thickness == 0 ? null : _view.Thickness
             };
 
+            var additionalDetails = new AdditionalDetails
+            {
+                Fabricante = _view.Fabricante,
+                Refabricante = _view.Refabricante,
+                Designação = _view.Designação,
+                OBS = _view.OBS
+            };
+
+            var componentDetails = new ComponentsDetails
+            {
+                Clip = _view.Clip,
+                Spacer = _view.Spacer,
+                Tampa = _view.Tampa,
+                Vedante = _view.Vedante,
+                Mola = _view.Mola,
+                Moldagem = _view.Moldagem,
+                Travão = _view.Travão,
+                Abracadeira = _view.Abracadeira,
+                Linguetes = _view.Linguetes,
+                Outros = _view.Outros,
+                Amostra = _view.Amostra,
+                Olhal = _view.Olhal,
+            };
+
             // Join PosId, Tipo & Cor to make CODIVMAC
             basicDetails.Codivmac = $"{basicDetails.PosId}{basicDetails.Cor}{basicDetails.Vias}";
 
             // Configure sample details & close the form
-            this.SampleDetails = new SampleDetail(basicDetails, dimensions);
+            this.SampleDetails = new SampleDetail(basicDetails, dimensions, additionalDetails, componentDetails);
             _view.CloseFormWithSuccess(this.SampleDetails);
         }
 
@@ -112,22 +133,11 @@ namespace simple_ids_cam_view.Presenters
         {
             var tipo = _view.Tipo;
 
-            // Make the ComboBoxTipo color normal again
-            if (!string.IsNullOrWhiteSpace(tipo))
-                _view.SetTipoBackColorNormal();
-
             // Show diameters & thickness if "Olhal" is selected
             if (tipo.ToLower() == "olhal")
                 _view.ShowDiameterSection();
             else
                 _view.HideDiameterSection();
-        }
-
-        private void OnPosIdTextChanged(object sender, EventArgs e)
-        {
-            // Make the PosId textbox color normal again
-            if (!string.IsNullOrWhiteSpace(_view.PosId))
-                _view.SetPosIdBackColorNormal();
         }
 
         #endregion
@@ -231,9 +241,7 @@ namespace simple_ids_cam_view.Presenters
 
         #region Helper Methods (same logic as original)
 
-        /// <summary>
-        /// Returns true if posId exists or is successfully saved, otherwise false.
-        /// </summary>
+        /// <summary> Returns true if posId exists or is successfully saved, otherwise false. </summary>
         private async Task<bool> HandlePosIdAsync(string posId)
         {
             try

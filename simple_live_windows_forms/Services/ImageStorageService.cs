@@ -47,9 +47,9 @@ namespace simple_ids_cam_view.Services
             PerformInitalChecks();
 
             // Get connector details
-            var connectorName = GetConnectorDetails()?.BasicDetails.Codivmac;
-            //string connectorName = newSample.BasicDetails.Codivmac;
-            SampleDetail newSample = SampleDetail.Default(); // TODO: remove this line when GetConnectorDetails is implemented
+            var newSample = GetConnectorDetails();
+            string connectorName = newSample?.BasicDetails.Codivmac;
+
             if (string.IsNullOrEmpty(connectorName)) return false;
 
             // show loading status

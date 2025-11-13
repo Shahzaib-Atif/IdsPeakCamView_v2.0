@@ -6,11 +6,16 @@ namespace ImageProcessingLibrary.Models
     {
         public BasicSampleDetails BasicDetails { get; set; }
         public SampleDimensions Dimensions { get; set; }
+        public AdditionalDetails? AdditionalDetails { get; set; }
+        public ComponentsDetails? ComponentsDetails { get; set; }
 
-        public SampleDetail(BasicSampleDetails basicDetails, SampleDimensions dimensions)
+        public SampleDetail(BasicSampleDetails basicDetails, SampleDimensions dimensions,
+            AdditionalDetails? additionalDetails, ComponentsDetails? componentDetails)
         {
             BasicDetails = basicDetails;
             Dimensions = dimensions;
+            AdditionalDetails = additionalDetails;
+            ComponentsDetails = componentDetails;
         }
 
         public SampleDetail()
@@ -72,5 +77,31 @@ namespace ImageProcessingLibrary.Models
             Thickness = thickness;
         }
     }
+
+    public struct AdditionalDetails
+    {
+        public string Fabricante { get; set; }
+        public string Refabricante { get; set; }
+        public string Designação { get; set; }
+        public string OBS { get; set; }
+    }
+
+    public struct ComponentsDetails
+    {
+        public bool Clip { get; set; }
+        public bool Spacer { get; set; }
+        public bool Tampa { get; set; }
+        public bool Vedante { get; set; }
+        public bool Mola { get; set; }
+        public bool Moldagem { get; set; }
+        public bool Travão { get; set; }
+        public bool Abracadeira { get; set; }
+        public bool Linguetes { get; set; }
+        public bool Outros { get; set; }
+        public bool Amostra { get; set; }
+        public bool Olhal { get; set; }
+    }
+
+
 
 }

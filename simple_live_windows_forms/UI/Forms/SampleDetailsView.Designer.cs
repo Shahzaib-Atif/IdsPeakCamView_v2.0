@@ -66,7 +66,7 @@
             flowLayoutPanel4 = new FlowLayoutPanel();
             groupBox8 = new GroupBox();
             flowLayoutPanel5 = new FlowLayoutPanel();
-            richTextBox1 = new RichTextBox();
+            textBoxOBS = new RichTextBox();
             flowLayoutPanel6 = new FlowLayoutPanel();
             groupBox9 = new GroupBox();
             label3 = new Label();
@@ -119,7 +119,7 @@
             panel1.Controls.Add(btnCancel);
             panel1.Controls.Add(btnSave);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 515);
+            panel1.Location = new Point(0, 495);
             panel1.Margin = new Padding(3, 60, 3, 3);
             panel1.MinimumSize = new Size(220, 0);
             panel1.Name = "panel1";
@@ -350,7 +350,6 @@
             textBoxPosId.Size = new Size(194, 24);
             textBoxPosId.TabIndex = 0;
             textBoxPosId.KeyDown += TextBoxPosId_KeyDown;
-            textBoxPosId.Leave += TextBoxPosId_Leave;
             // 
             // FLP_Main
             // 
@@ -471,7 +470,7 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(FLP_Main);
             groupBox1.FlatStyle = FlatStyle.System;
-            groupBox1.Location = new Point(15, 3);
+            groupBox1.Location = new Point(15, 13);
             groupBox1.Margin = new Padding(15, 3, 15, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.RightToLeft = RightToLeft.No;
@@ -498,7 +497,7 @@
             groupBox7.Controls.Add(label2);
             groupBox7.Controls.Add(flowLayoutPanel4);
             groupBox7.FlatStyle = FlatStyle.System;
-            groupBox7.Location = new Point(343, 3);
+            groupBox7.Location = new Point(343, 13);
             groupBox7.Margin = new Padding(15, 3, 15, 3);
             groupBox7.Name = "groupBox7";
             groupBox7.RightToLeft = RightToLeft.No;
@@ -556,7 +555,7 @@
             // 
             flowLayoutPanel5.AutoSize = true;
             flowLayoutPanel5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flowLayoutPanel5.Controls.Add(richTextBox1);
+            flowLayoutPanel5.Controls.Add(textBoxOBS);
             flowLayoutPanel5.Dock = DockStyle.Fill;
             flowLayoutPanel5.Location = new Point(1, 18);
             flowLayoutPanel5.Name = "flowLayoutPanel5";
@@ -564,14 +563,14 @@
             flowLayoutPanel5.Size = new Size(247, 115);
             flowLayoutPanel5.TabIndex = 0;
             // 
-            // richTextBox1
+            // textBoxOBS
             // 
-            richTextBox1.BorderStyle = BorderStyle.FixedSingle;
-            richTextBox1.Location = new Point(9, 10);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(229, 96);
-            richTextBox1.TabIndex = 1;
-            richTextBox1.Text = "";
+            textBoxOBS.BorderStyle = BorderStyle.FixedSingle;
+            textBoxOBS.Location = new Point(9, 10);
+            textBoxOBS.Name = "textBoxOBS";
+            textBoxOBS.Size = new Size(229, 96);
+            textBoxOBS.TabIndex = 1;
+            textBoxOBS.Text = "";
             // 
             // flowLayoutPanel6
             // 
@@ -584,8 +583,8 @@
             flowLayoutPanel6.Dock = DockStyle.Fill;
             flowLayoutPanel6.Location = new Point(0, 0);
             flowLayoutPanel6.Name = "flowLayoutPanel6";
-            flowLayoutPanel6.Padding = new Padding(0, 0, 0, 10);
-            flowLayoutPanel6.Size = new Size(1035, 515);
+            flowLayoutPanel6.Padding = new Padding(0, 10, 0, 10);
+            flowLayoutPanel6.Size = new Size(1035, 495);
             flowLayoutPanel6.TabIndex = 7;
             // 
             // groupBox9
@@ -595,7 +594,7 @@
             groupBox9.Controls.Add(label3);
             groupBox9.Controls.Add(flowLayoutPanel7);
             groupBox9.FlatStyle = FlatStyle.System;
-            groupBox9.Location = new Point(686, 3);
+            groupBox9.Location = new Point(686, 13);
             groupBox9.Margin = new Padding(15, 3, 15, 3);
             groupBox9.Name = "groupBox9";
             groupBox9.RightToLeft = RightToLeft.No;
@@ -772,7 +771,7 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = SystemColors.Control;
             CancelButton = btnCancel;
-            ClientSize = new Size(1040, 565);
+            ClientSize = new Size(1040, 545);
             Controls.Add(flowLayoutPanel6);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 9.5F);
@@ -866,7 +865,7 @@
         private FlowLayoutPanel flowLayoutPanel4;
         private GroupBox groupBox8;
         private FlowLayoutPanel flowLayoutPanel5;
-        private RichTextBox richTextBox1;
+        private RichTextBox textBoxOBS;
         private FlowLayoutPanel flowLayoutPanel6;
         private GroupBox groupBox9;
         private Label label3;
