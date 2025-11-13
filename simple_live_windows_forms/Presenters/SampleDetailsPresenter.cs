@@ -6,10 +6,7 @@ using System.Diagnostics;
 
 namespace simple_ids_cam_view.Presenters
 {
-    /// <summary>
-    /// Presenter for Sample Details form
-    /// Contains all business logic - same functionality as original form
-    /// </summary>
+    /// <summary> Presenter for Sample Details form - contains all business logic </summary>
     public class SampleDetailsPresenter
     {
         private readonly ISampleDetailsView _view;
