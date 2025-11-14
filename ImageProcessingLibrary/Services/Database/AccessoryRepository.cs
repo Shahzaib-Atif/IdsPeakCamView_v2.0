@@ -9,9 +9,6 @@ namespace ImageProcessingLibrary.Services.Database
 
         public async Task<bool> SaveAccessoryDetails(string imagePath, AccessoryDetails _accessoryDetails)
         {
-            // is image valid?
-            //if (!IsImagePathValid(imagePath)) return false;
-
             var parameters = new Dictionary<string, object>
             {
                 {"@tipo", _accessoryDetails.Tipo},

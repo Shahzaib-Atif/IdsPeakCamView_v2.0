@@ -14,7 +14,7 @@ namespace simple_ids_cam_view.Presenters
         private readonly CordConRepository _cordConRepo;
         private readonly MetadataRepository _metadataRepo;
 
-        // Cache lists (same as original static lists)
+        // Cache lists
         private List<KeyValue> _tipoList;
         private List<KeyValue> _corsList;
         private List<KeyValue> _viasList;
@@ -143,7 +143,7 @@ namespace simple_ids_cam_view.Presenters
 
         #endregion
 
-        #region Configuration Methods (same logic as original)
+        #region -- Configuration Methods
 
         private async Task ConfigureAutoCompleteForPosIdAsync()
         {

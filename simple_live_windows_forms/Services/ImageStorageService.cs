@@ -89,10 +89,8 @@ namespace simple_ids_cam_view.Services
         {
             if (!IsImageAvailable()) return; // Exit if Image is NOT available.
 
-            using var f = new AddAccessoryForm();
-            if (f.ShowDialog() != DialogResult.OK) return;
-
-            var accessoryDetails = f.AccessoryDetails;
+            var accessoryDetails = GetAccessoryDetails();
+            if (accessoryDetails is null) return;
 
             // check if \_Accessories folder path is correct 
             string accessoriesFolderPath = ProjectSettings.DefaultFolder + @"\_Accessories";
@@ -103,7 +101,7 @@ namespace simple_ids_cam_view.Services
             this.GbxShowLoading.Visible = true;
 
             // Generate file path using connector name.
-            string filePath = Path.Combine(accessoriesFolderPath, $"{f.AccessoryDetails.FullName}.jpeg");
+            string filePath = Path.Combine(accessoriesFolderPath, $"{accessoryDetails?.FullName}.jpeg");
 
             // Cancel the process if file already exists
             if (File.Exists(filePath))
@@ -124,7 +122,8 @@ namespace simple_ids_cam_view.Services
             }
 
             // add the image in the database
-            await _accessoryRepo.SaveAccessoryDetails(filePath, f.AccessoryDetails);
+            if (accessoryDetails is AccessoryDetails details)
+                await _accessoryRepo.SaveAccessoryDetails(filePath, details);
 
             // hide the loading status
             this.GbxShowLoading.Visible = false;
@@ -159,13 +158,37 @@ namespace simple_ids_cam_view.Services
             return filePath;
         }
 
+        private static AccessoryDetails? GetAccessoryDetails()
+        {
+            using var view = new AddAccessoryView();
+
+            // Create repositories
+            var referenciasRepo = new ReferenciasRepository();
+            var accessoryRepo = new AccessoryRepository();
+
+            // Create presenter (connects view and repositories)
+            var presenter = new AddAccessoryPresenter(
+                view,
+                accessoryRepo,
+                referenciasRepo
+            );
+
+            // Show the view
+            if (view.ShowDialog() == DialogResult.OK)
+            {
+                presenter.UnsubscribeFromViewEvents();
+                return presenter.AccessoryDetails;
+            }
+            else
+            {
+                presenter.UnsubscribeFromViewEvents();
+                return null;
+            }
+        }
+
         /// <summary> Open SampleDetailsForm to get connector details from user. </summary>
         private static SampleDetail GetConnectorDetails()
         {
-            //using var f = new SampleDetailsView();
-            //return f.ShowDialog() == DialogResult.OK ? f.SampleDetails : null;
-
-            // Create the view
             using var view = new SampleDetailsView();
 
             // Create repositories
@@ -185,8 +208,6 @@ namespace simple_ids_cam_view.Services
             if (view.ShowDialog() == DialogResult.OK)
             {
                 var sampleDetails = presenter.SampleDetails;
-                Console.WriteLine($"PosId: {sampleDetails.BasicDetails.PosId}");
-                Console.WriteLine($"Codivmac: {sampleDetails.BasicDetails.Codivmac}");
             }
 
             // Clean up

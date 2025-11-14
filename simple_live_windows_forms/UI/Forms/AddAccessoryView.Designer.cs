@@ -1,6 +1,6 @@
 ﻿namespace simple_ids_cam_view.UI.Forms
 {
-    partial class AddAccessoryForm
+    partial class AddAccessoryView
     {
         /// <summary>
         /// Required designer variable.
@@ -45,6 +45,10 @@
             groupBox4 = new GroupBox();
             comboBoxTipo = new ComboBox();
             flowLayoutPanel2 = new FlowLayoutPanel();
+            groupBox3 = new GroupBox();
+            comboBox1 = new ComboBox();
+            groupBox5 = new GroupBox();
+            comboBox2 = new ComboBox();
             FLP_Main.SuspendLayout();
             GbxConnName.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -55,6 +59,8 @@
             flowLayoutPanel1.SuspendLayout();
             groupBox4.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
+            groupBox3.SuspendLayout();
+            groupBox5.SuspendLayout();
             SuspendLayout();
             // 
             // FLP_Main
@@ -155,7 +161,7 @@
             // gbxCor
             // 
             gbxCor.Controls.Add(textBoxReference);
-            gbxCor.Location = new Point(27, 85);
+            gbxCor.Location = new Point(27, 231);
             gbxCor.Margin = new Padding(7, 6, 5, 6);
             gbxCor.Name = "gbxCor";
             gbxCor.Padding = new Padding(7, 8, 7, 8);
@@ -216,13 +222,15 @@
             flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel1.Controls.Add(groupBox4);
+            flowLayoutPanel1.Controls.Add(groupBox3);
+            flowLayoutPanel1.Controls.Add(groupBox5);
             flowLayoutPanel1.Controls.Add(gbxCor);
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(260, 13);
             flowLayoutPanel1.MinimumSize = new Size(200, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Padding = new Padding(20, 6, 20, 6);
-            flowLayoutPanel1.Size = new Size(241, 158);
+            flowLayoutPanel1.Size = new Size(241, 304);
             flowLayoutPanel1.TabIndex = 10;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -264,7 +272,57 @@
             flowLayoutPanel2.Size = new Size(536, 317);
             flowLayoutPanel2.TabIndex = 11;
             // 
-            // AddAccessoryForm
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(comboBox1);
+            groupBox3.Location = new Point(27, 85);
+            groupBox3.Margin = new Padding(7, 6, 5, 6);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Padding = new Padding(7, 8, 7, 8);
+            groupBox3.Size = new Size(189, 61);
+            groupBox3.TabIndex = 5;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Accessory Type *";
+            // 
+            // comboBox1
+            // 
+            comboBox1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            comboBox1.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboBox1.Dock = DockStyle.Fill;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "conector", "clip", "olhal", "grommet" });
+            comboBox1.Location = new Point(7, 25);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(175, 25);
+            comboBox1.TabIndex = 0;
+            // 
+            // groupBox5
+            // 
+            groupBox5.Controls.Add(comboBox2);
+            groupBox5.Location = new Point(27, 158);
+            groupBox5.Margin = new Padding(7, 6, 5, 6);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Padding = new Padding(7, 8, 7, 8);
+            groupBox5.Size = new Size(189, 61);
+            groupBox5.TabIndex = 6;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "Accessory Type *";
+            // 
+            // comboBox2
+            // 
+            comboBox2.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            comboBox2.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboBox2.Dock = DockStyle.Fill;
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Items.AddRange(new object[] { "conector", "clip", "olhal", "grommet" });
+            comboBox2.Location = new Point(7, 25);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(175, 25);
+            comboBox2.TabIndex = 0;
+            // 
+            // AddAccessoryView
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -276,7 +334,7 @@
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 9.5F);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            Name = "AddAccessoryForm";
+            Name = "AddAccessoryView";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Enter accessory details";
             FLP_Main.ResumeLayout(false);
@@ -294,6 +352,8 @@
             groupBox4.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox5.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -319,5 +379,9 @@
         private CheckBox checkBoxColorAssociated;
         private GroupBox groupBox2;
         private NumericUpDown numUpDownQty;
+        private GroupBox groupBox3;
+        private ComboBox comboBox1;
+        private GroupBox groupBox5;
+        private ComboBox comboBox2;
     }
 }
