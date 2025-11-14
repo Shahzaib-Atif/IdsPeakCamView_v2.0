@@ -165,12 +165,14 @@ namespace simple_ids_cam_view.Services
             // Create repositories
             var referenciasRepo = new ReferenciasRepository();
             var accessoryRepo = new AccessoryRepository();
+            var metadataRepo = new MetadataRepository();
 
             // Create presenter (connects view and repositories)
             var presenter = new AddAccessoryPresenter(
                 view,
                 accessoryRepo,
-                referenciasRepo
+                referenciasRepo,
+                metadataRepo
             );
 
             // Show the view

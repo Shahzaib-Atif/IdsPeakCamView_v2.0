@@ -10,16 +10,22 @@ namespace simple_ids_cam_view.Presenters
         private readonly IAddAccessoryView _view;
         private readonly AccessoryRepository _accessoryRepo;
         private readonly ReferenciasRepository _referenciasRepo;
+        private readonly MetadataRepository _metadataRepo;
         private AutoCompleteStringCollection codivmacCollection;
         private AutoCompleteStringCollection posIdCollection;
+        private bool showCapotAngle;
+        private bool showClipColor;
+
         public AccessoryDetails AccessoryDetails { get; set; }
 
 
-        public AddAccessoryPresenter(IAddAccessoryView view, AccessoryRepository accessoryRepo, ReferenciasRepository referenciasRepo)
+        public AddAccessoryPresenter(IAddAccessoryView view, AccessoryRepository accessoryRepo,
+            ReferenciasRepository referenciasRepo, MetadataRepository metadataRepository)
         {
             _view = view;
             _accessoryRepo = accessoryRepo;
             _referenciasRepo = referenciasRepo;
+            _metadataRepo = metadataRepository;
 
             SubscribeToViewEvents();
         }
@@ -29,6 +35,7 @@ namespace simple_ids_cam_view.Presenters
             _view.ViewLoaded += OnViewLoaded;
             _view.ColorAssociatedChanged += OnColorAssociatedChanged;
             _view.SaveRequested += OnSaveRequested;
+            _view.TipoChanged += OnTipoChanged;
         }
 
         public void UnsubscribeFromViewEvents()
@@ -36,6 +43,7 @@ namespace simple_ids_cam_view.Presenters
             _view.ViewLoaded -= OnViewLoaded;
             _view.ColorAssociatedChanged -= OnColorAssociatedChanged;
             _view.SaveRequested -= OnSaveRequested;
+            _view.TipoChanged -= OnTipoChanged;
         }
 
 
@@ -49,30 +57,33 @@ namespace simple_ids_cam_view.Presenters
                 ConnectorName = _view.ConnectorName.ToUpper(),
                 Tipo = _view.ConnectorType,
                 Reference = _view.Reference,
+                Quantity = _view.Quantity,
+                ColorAssociated = _view.ColorAssociated
             };
+
+            // conditionally fields
+            if (!string.IsNullOrEmpty(_view.RefDV)) details.RefDV = _view.RefDV;
+            if (showCapotAngle) details.CapotAngle = _view.CapotAngle;
+            if (showClipColor) details.ClipColor = _view.ClipColor;
 
             // Update FullName property
             details.FullName = $"{details.ConnectorName}_{details.Reference}";
+            if (!string.IsNullOrEmpty(details.RefDV))
+                details.FullName += $"_{details.RefDV}";
 
             // check basic model validation
             if (!ModelDataValidation.Validate(details)) return;
 
             // if the Connector does not exist, then we cannot proceed
-            if (_view.ColorAssociated)
+            if (_view.ColorAssociated && !posIdCollection.Contains(details.ConnectorName))
             {
-                if (posIdCollection is null || !posIdCollection.Contains(details.ConnectorName))
-                {
-                    ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
-                    return;
-                }
+                ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
+                return;
             }
-            else
+            else if (!_view.ColorAssociated && !codivmacCollection.Contains(details.ConnectorName))
             {
-                if (codivmacCollection is null || !codivmacCollection.Contains(details.ConnectorName))
-                {
-                    ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
-                    return;
-                }
+                ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
+                return;
             }
 
             // configure sample details & close the form
@@ -82,8 +93,13 @@ namespace simple_ids_cam_view.Presenters
 
         private async void OnViewLoaded(object sender, EventArgs e)
         {
-            ConfigureAutoCompleteForConnectorNames();
-            ConfigureTipo();
+            await Task.WhenAll(
+                InitializeCodivmacCollectionAsync(),
+                InitializePosIdCollectionAsync(),
+                ConfigureTipoAsync(),
+                ConfigureCorsAsync(),
+                ConfigureCapotAnglesAsync()
+                );
 
             _view.SetAutoCompleteForConnNames(codivmacCollection);
         }
@@ -93,18 +109,21 @@ namespace simple_ids_cam_view.Presenters
             _view.SwitchAutoCompleteSource(_view.ColorAssociated ? posIdCollection : codivmacCollection);
         }
 
+
+        private void OnTipoChanged(object sender, EventArgs e)
+        {
+            showCapotAngle = _view.ConnectorType.Equals("CAPOT", StringComparison.OrdinalIgnoreCase);
+            showClipColor = _view.ConnectorType.Equals("CLIPS", StringComparison.OrdinalIgnoreCase);
+
+            _view.ToggleCapotAngleVisibility(showCapotAngle);
+            _view.ToggleClipColorVisibility(showClipColor);
+        }
         #endregion
 
 
         #region -- Configuration Methods
-        private async void ConfigureAutoCompleteForConnectorNames()
-        {
-            await Task.WhenAll(
-                InitializeCodivmacCollection(), InitializePosIdCollection()
-            );
-        }
 
-        private async Task InitializeCodivmacCollection()
+        private async Task InitializeCodivmacCollectionAsync()
         {
             try
             {
@@ -120,7 +139,7 @@ namespace simple_ids_cam_view.Presenters
             }
         }
 
-        private async Task InitializePosIdCollection()
+        private async Task InitializePosIdCollectionAsync()
         {
             try
             {
@@ -136,7 +155,7 @@ namespace simple_ids_cam_view.Presenters
             }
         }
 
-        private async void ConfigureTipo()
+        private async Task ConfigureTipoAsync()
         {
             try
             {
@@ -150,6 +169,34 @@ namespace simple_ids_cam_view.Presenters
                 ExceptionHelper.ShowWarningMessage(ex.Message);
             }
         }
+
+        private async Task ConfigureCorsAsync()
+        {
+            var items = (await _metadataRepo.ReadAvailableCors()).ToList();
+
+            // Let the user see color and its equivalent code
+            foreach (var item in items)
+                item.Key = item.Key + $" ({item.Value})";
+
+            items.Insert(0, new KeyValue { Key = "", Value = "" }); // Insert empty option at the start
+
+            _view.PopulateClipColorComboBox(items);
+        }
+
+        private async Task ConfigureCapotAnglesAsync()
+        {
+            try
+            {
+                var items = (await _metadataRepo.ReadAvailableCapotAngles()).ToList();
+                items.Insert(0, ""); // add empty option
+                _view.PopulateCapotAngleComboBox(items);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.ShowWarningMessage(ex.Message);
+            }
+        }
         #endregion
+
     }
 }

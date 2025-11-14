@@ -12,17 +12,22 @@ namespace ImageProcessingLibrary.Services.Database
             var parameters = new Dictionary<string, object>
             {
                 {"@tipo", _accessoryDetails.Tipo},
+                {"@CapotAngle", _accessoryDetails.CapotAngle ?? (object)DBNull.Value},
+                {"@ClipColor", _accessoryDetails.ClipColor ?? (object)DBNull.Value},
                 {"@connectorName", _accessoryDetails.ConnectorName },
                 {"@imagePath", imagePath },
                 {"@reference", _accessoryDetails.Reference },
+                {"@Qty", _accessoryDetails.Quantity },
+                {"@RefDV", _accessoryDetails.RefDV },
+                {"@ColorAssociated", _accessoryDetails.ColorAssociated },
             };
 
             // Construct the SQL INSERT query
             string query = $@"
             INSERT INTO {AccessoriesTable} 
-            ([AccessoryType], [ConnName], [AccImagePath], [RefClient])
+            ([AccessoryType], CapotAngle, ClipColor, [ConnName], [AccImagePath], [RefClient], Qty, RefDV, ColorAssociated)
             VALUES 
-            (@tipo, @connectorName, @imagePath, @reference);";
+            (@tipo, @CapotAngle, @ClipColor, @connectorName, @imagePath, @reference, @Qty, @RefDV, @ColorAssociated);";
 
             int rowsAffected = await DbHelper.ExecuteNonQueryAsync(query, parameters);
             return rowsAffected > 0;

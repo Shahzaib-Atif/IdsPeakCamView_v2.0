@@ -1,4 +1,5 @@
 ﻿using ImageProcessingLibrary.Interfaces;
+using ImageProcessingLibrary.Models;
 
 namespace simple_ids_cam_view.UI.Forms
 {
@@ -8,13 +9,18 @@ namespace simple_ids_cam_view.UI.Forms
         public string ConnectorName => textBoxName.Text;
         public string ConnectorType => comboBoxTipo.Text;
         public string Reference => textBoxReference.Text;
+        public string RefDV => textBoxRefDV.Text;
         public bool ColorAssociated => checkBoxColorAssociated.Checked;
+        public string CapotAngle => comboBoxCapotAngle.Text;
+        public string ClipColor => comboBoxClipColor.Text;
+        public int Quantity => (int)numUpDownQty.Value;
         #endregion
 
         #region UI Events
         public event EventHandler ViewLoaded;
         public event EventHandler ColorAssociatedChanged;
         public event EventHandler SaveRequested;
+        public event EventHandler TipoChanged;
         #endregion
 
         public AddAccessoryView()
@@ -43,9 +49,39 @@ namespace simple_ids_cam_view.UI.Forms
             textBoxName.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
+        public void PopulateClipColorComboBox(IEnumerable<KeyValue> items)
+        {
+            comboBoxClipColor.Items.Clear();
+            comboBoxClipColor.DisplayMember = "Key";
+            comboBoxClipColor.ValueMember = "Value";
+            comboBoxClipColor.DataSource = items;
+        }
+
+        public void PopulateCapotAngleComboBox(IEnumerable<string> items)
+        {
+            comboBoxCapotAngle.Items.Clear();
+            comboBoxCapotAngle.DataSource = items;
+        }
+
         public void SwitchAutoCompleteSource(AutoCompleteStringCollection collection)
         {
             textBoxName.AutoCompleteCustomSource = collection;
+        }
+
+        public void ToggleCapotAngleVisibility(bool show)
+        {
+            gbxCapotAngle.Visible = show;
+        }
+
+        public void ToggleClipColorVisibility(bool show)
+        {
+            gbxClipColor.Visible = show;
+        }
+
+        public void CloseFormWithSuccess()
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
         #endregion
 
@@ -60,19 +96,16 @@ namespace simple_ids_cam_view.UI.Forms
             ColorAssociatedChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        #endregion
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
             SaveRequested?.Invoke(this, EventArgs.Empty);
         }
 
-        public void CloseFormWithSuccess()
+        private void ComboBoxTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            TipoChanged?.Invoke(this, EventArgs.Empty);
         }
-
-
+        #endregion
     }
 }

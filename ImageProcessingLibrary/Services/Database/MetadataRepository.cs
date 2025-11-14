@@ -43,5 +43,11 @@ namespace ImageProcessingLibrary.Services.Database
             string query = "SELECT Fabricante FROM ImageFeaturesDB.dbo.Fabricantes";
             return await DbHelper.ExecuteQueryAsync(query);
         }
+
+        public async Task<IEnumerable<string>> ReadAvailableCapotAngles()
+        {
+            string query = "SELECT DegreesNum FROM ImageFeaturesDB.dbo.CapotAngles";
+            return await DbHelper.ExecuteQueryAsync(query);
+        }
     }
 }

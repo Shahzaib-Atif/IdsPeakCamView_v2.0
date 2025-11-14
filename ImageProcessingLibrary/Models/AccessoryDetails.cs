@@ -14,7 +14,11 @@ namespace ImageProcessingLibrary.Models
 
         [Required(ErrorMessage = "{0} is required")]
         public string Reference { get; set; }
-
+        public string RefDV { get; set; }
+        public string CapotAngle { get; set; }
+        public string ClipColor { get; set; }
+        public int Quantity { get; set; }
+        public bool ColorAssociated { get; set; }
         public string FullName { get; set; }
     }
 }
