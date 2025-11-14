@@ -42,9 +42,9 @@ namespace simple_ids_cam_view.UI.Forms
             comboBoxTipo.DataSource = items;
         }
 
-        public void SetAutoCompleteForConnNames(AutoCompleteStringCollection codivmacCollection)
+        public void SetAutoCompleteForConnNames(AutoCompleteStringCollection collection)
         {
-            textBoxName.AutoCompleteCustomSource = codivmacCollection;
+            textBoxName.AutoCompleteCustomSource = collection;
             textBoxName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textBoxName.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }

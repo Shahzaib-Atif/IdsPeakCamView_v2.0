@@ -104,8 +104,8 @@ namespace simple_ids_cam_view.Services
             string filePath = Path.Combine(accessoriesFolderPath, $"{accessoryDetails?.FullName}.jpeg");
 
             // Cancel the process if file already exists
-            if (File.Exists(filePath))
-                throw new Exception($"File '{filePath}' already exists! Process cancelled.");
+            //if (File.Exists(filePath))
+            //throw new Exception($"File '{filePath}' already exists! Process cancelled.");
 
             // Add the image in the Accessory folder
             await Task.Run(() =>
@@ -118,18 +118,29 @@ namespace simple_ids_cam_view.Services
             if (!_fileService.IsValidPath(filePath))
             {
                 this.GbxShowLoading.Visible = false;
-                return;
+                throw new Exception("The image file path is not valid! Process cancelled.");
             }
 
             // add the image in the database
             if (accessoryDetails is AccessoryDetails details)
-                await _accessoryRepo.SaveAccessoryDetails(filePath, details);
+            {
+                bool recordExists = await _accessoryRepo.FindExistingRecord(details);
+                if (recordExists)
+                {
+                    var dialogResult = DialogHelper.ShowYesNoDialog(
+                         $"An accessory with the name '{details.FullName}' already exists in the system.\n" +
+                         "Do you want to add to the existing record?",
+                         "Confirm Overwrite"
+                     );
 
-            // hide the loading status
-            this.GbxShowLoading.Visible = false;
+                    if (dialogResult == DialogResult.No) return;
+                    await _accessoryRepo.UpdateAccessory(details);
+                }
+                else
+                    await _accessoryRepo.SaveNewAccessory(filePath, details);
 
-            // ask user if he wants to open the image
-            _promptService.PromptUserForOpeningImage(filePath);
+                _promptService.PromptUserForOpeningImage(filePath);
+            }
         }
 
         public void DeleteImage()

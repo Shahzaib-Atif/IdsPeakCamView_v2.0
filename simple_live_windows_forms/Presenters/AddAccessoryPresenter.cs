@@ -75,14 +75,14 @@ namespace simple_ids_cam_view.Presenters
             if (!ModelDataValidation.Validate(details)) return;
 
             // if the Connector does not exist, then we cannot proceed
-            if (_view.ColorAssociated && !posIdCollection.Contains(details.ConnectorName))
+            if (!_view.ColorAssociated && !posIdCollection.Contains(details.ConnectorName))
             {
-                ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
+                ExceptionHelper.ShowWarningMessage("This entry does not match with any existing [Pos ID]!");
                 return;
             }
-            else if (!_view.ColorAssociated && !codivmacCollection.Contains(details.ConnectorName))
+            else if (_view.ColorAssociated && !codivmacCollection.Contains(details.ConnectorName))
             {
-                ExceptionHelper.ShowWarningMessage("Cannot find this connector name in the existing data!");
+                ExceptionHelper.ShowWarningMessage("This entry does not match with any existing [CODIVMAC]!");
                 return;
             }
 
@@ -101,12 +101,12 @@ namespace simple_ids_cam_view.Presenters
                 ConfigureCapotAnglesAsync()
                 );
 
-            _view.SetAutoCompleteForConnNames(codivmacCollection);
+            _view.SetAutoCompleteForConnNames(posIdCollection); // initialize with PosId collection
         }
 
         private void OnColorAssociatedChanged(object sender, EventArgs e)
         {
-            _view.SwitchAutoCompleteSource(_view.ColorAssociated ? posIdCollection : codivmacCollection);
+            _view.SwitchAutoCompleteSource(_view.ColorAssociated ? codivmacCollection : posIdCollection);
         }
 
 
