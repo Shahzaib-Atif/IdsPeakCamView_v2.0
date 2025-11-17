@@ -8,6 +8,7 @@
     <Platforms>x86;x64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>icons8_camera_64_BZw_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <Choose>
@@ -60,6 +61,10 @@
     </ItemGroup>
     <Copy SourceFiles="@(DependenciesX64)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     </Target>
+
+  <ItemGroup>
+    <Content Include="icons8_camera_64_BZw_icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ImageProcessingLibrary\ImageProcessingLibrary.csproj" />
