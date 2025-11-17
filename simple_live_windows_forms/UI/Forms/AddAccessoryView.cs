@@ -12,7 +12,7 @@ namespace simple_ids_cam_view.UI.Forms
         public string RefDV => textBoxRefDV.Text;
         public bool ColorAssociated => checkBoxColorAssociated.Checked;
         public string CapotAngle => comboBoxCapotAngle.Text;
-        public string ClipColor => comboBoxClipColor.Text;
+        public string ClipColor => comboBoxClipColor.SelectedValue?.ToString();
         public int Quantity => (int)numUpDownQty.Value;
         #endregion
 

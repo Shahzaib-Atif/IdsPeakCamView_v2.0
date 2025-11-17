@@ -5,7 +5,8 @@ namespace ImageProcessingLibrary.Services.Database
     public class ReferenciasRepository
 
     {
-        public static readonly string MainReferenceTable = "Referências_test";
+        //public static readonly string MainReferenceTable = "Referências_test";
+        public static readonly string MainReferenceTable = "Referências";
 
         /// <summary> Inserts basic reference data into the database. </summary>
         public async Task<bool> InsertDataAsync(string imagePath, SampleDetail sampleDetails)
