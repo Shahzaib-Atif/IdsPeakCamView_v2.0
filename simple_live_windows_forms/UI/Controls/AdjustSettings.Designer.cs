@@ -73,6 +73,7 @@
             // 
             btnClose.Anchor = AnchorStyles.Bottom;
             btnClose.BackColor = Color.YellowGreen;
+            btnClose.Cursor = Cursors.Hand;
             btnClose.Location = new Point(112, 756);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(109, 43);

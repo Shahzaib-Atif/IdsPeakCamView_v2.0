@@ -11,13 +11,13 @@ namespace simple_ids_cam_view
             CameraSettingsMenuItem.Enabled = !enable;
             CrosshairBtn.Enabled = !enable;
 
+            hardwareSettingsMenuItem.Enabled = enable;
             StartAcquisitionBtn.Enabled = enable;
             SingleAcquisitionBtn.Enabled = enable;
             CropBtn.Enabled = enable;
             EditTextBtn.Enabled = enable;
             customPictureBox?.MakeEditTextVisible(enable);
             SaveFinalImageBtn.Enabled = enable;
-            ToolsBtn.Enabled = enable;
             FindSimilarImgsBtn.Enabled = enable;
             SaveToDbBtn.Enabled = enable;
             UseCurrentImageCheckbox.Enabled = enable;
