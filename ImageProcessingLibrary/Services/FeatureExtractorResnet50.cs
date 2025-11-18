@@ -5,15 +5,15 @@
     using SixLabors.ImageSharp;
     using SixLabors.ImageSharp.PixelFormats;
     using SixLabors.ImageSharp.Processing;
+    using static ImageProcessingLibrary.ProjectSettings;
 
     public class FeatureExtractorResnet50 : IDisposable
     {
-        private readonly string _modelPath = "D:/Downloads/resnet50model.onnx";
         private readonly InferenceSession _session;
 
         public FeatureExtractorResnet50()
         {
-            _session = new InferenceSession(_modelPath);
+            _session = new InferenceSession(Resnet50ModelPath);
         }
 
         public float[] ExtractFeatures(string imagePath)

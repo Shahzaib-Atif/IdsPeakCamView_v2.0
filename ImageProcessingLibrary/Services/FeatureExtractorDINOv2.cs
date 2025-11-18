@@ -7,15 +7,15 @@
     using SixLabors.ImageSharp.Processing;
     using System.Collections.Generic;
     using System.Linq;
+    using static ImageProcessingLibrary.ProjectSettings;
 
     public class FeatureExtractorDINOv2 : IDisposable
     {
-        private readonly string _modelPath = "D:/Downloads/dinov2_vits14.onnx";
         private readonly InferenceSession _session;
 
         public FeatureExtractorDINOv2()
         {
-            _session = new InferenceSession(_modelPath);
+            _session = new InferenceSession(Dinov2ModelPath);
         }
 
 

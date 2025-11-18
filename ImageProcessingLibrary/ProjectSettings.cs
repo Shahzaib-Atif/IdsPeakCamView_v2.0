@@ -38,5 +38,8 @@ namespace ImageProcessingLibrary
         // incease or decrease the quality index to change image size (min 0, max 100)
         public static long QualityIndex { get; set; } = 73;
         public static double ResizeFactor { get; set; } = 0.5;
+
+        public static readonly string Dinov2ModelPath = "OnnxModels/dinov2_vits14.onnx";
+        public static readonly string Resnet50ModelPath = "OnnxModels/resnet50model.onnx";
     }
 }
