@@ -69,7 +69,7 @@
             GbxLights.Controls.Add(BtnLightsOff);
             GbxLights.Location = new Point(15, 78);
             GbxLights.Name = "GbxLights";
-            GbxLights.Size = new Size(330, 103);
+            GbxLights.Size = new Size(330, 86);
             GbxLights.TabIndex = 0;
             GbxLights.TabStop = false;
             GbxLights.Text = "Lights";
@@ -78,7 +78,7 @@
             // 
             BtnLightsOn.BackColor = Color.YellowGreen;
             BtnLightsOn.Cursor = Cursors.Hand;
-            BtnLightsOn.Location = new Point(46, 39);
+            BtnLightsOn.Location = new Point(46, 25);
             BtnLightsOn.Margin = new Padding(4, 3, 4, 3);
             BtnLightsOn.Name = "BtnLightsOn";
             BtnLightsOn.Size = new Size(81, 43);
@@ -92,7 +92,7 @@
             BtnLightsOff.BackColor = Color.RosyBrown;
             BtnLightsOff.Cursor = Cursors.Hand;
             BtnLightsOff.DialogResult = DialogResult.Cancel;
-            BtnLightsOff.Location = new Point(182, 39);
+            BtnLightsOff.Location = new Point(182, 25);
             BtnLightsOff.Margin = new Padding(4, 3, 4, 3);
             BtnLightsOff.Name = "BtnLightsOff";
             BtnLightsOff.Size = new Size(81, 43);
@@ -108,16 +108,16 @@
             GbxMotorPos.Controls.Add(label8);
             GbxMotorPos.Controls.Add(label1);
             GbxMotorPos.Controls.Add(comboBoxMotorPos);
-            GbxMotorPos.Location = new Point(15, 215);
+            GbxMotorPos.Location = new Point(15, 184);
             GbxMotorPos.Name = "GbxMotorPos";
-            GbxMotorPos.Size = new Size(330, 133);
+            GbxMotorPos.Size = new Size(330, 115);
             GbxMotorPos.TabIndex = 1;
             GbxMotorPos.TabStop = false;
             GbxMotorPos.Text = "Motor Position";
             // 
             // textBoxCurrentPos
             // 
-            textBoxCurrentPos.Location = new Point(156, 37);
+            textBoxCurrentPos.Location = new Point(156, 29);
             textBoxCurrentPos.Name = "textBoxCurrentPos";
             textBoxCurrentPos.ReadOnly = true;
             textBoxCurrentPos.Size = new Size(154, 24);
@@ -129,7 +129,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 9F);
-            label8.Location = new Point(7, 41);
+            label8.Location = new Point(7, 33);
             label8.Name = "label8";
             label8.Size = new Size(132, 15);
             label8.TabIndex = 3;
@@ -139,7 +139,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F);
-            label1.Location = new Point(7, 90);
+            label1.Location = new Point(7, 77);
             label1.Name = "label1";
             label1.Size = new Size(133, 15);
             label1.TabIndex = 1;
@@ -151,7 +151,7 @@
             comboBoxMotorPos.Font = new Font("Segoe UI", 9F);
             comboBoxMotorPos.FormattingEnabled = true;
             comboBoxMotorPos.Items.AddRange(new object[] { "Position 1", "Position 2", "Position 3" });
-            comboBoxMotorPos.Location = new Point(156, 84);
+            comboBoxMotorPos.Location = new Point(156, 71);
             comboBoxMotorPos.Name = "comboBoxMotorPos";
             comboBoxMotorPos.Size = new Size(154, 23);
             comboBoxMotorPos.TabIndex = 0;
@@ -168,16 +168,16 @@
             GbxModbusStatus.Controls.Add(label3);
             GbxModbusStatus.Controls.Add(StatusConnected);
             GbxModbusStatus.Controls.Add(label2);
-            GbxModbusStatus.Location = new Point(15, 377);
+            GbxModbusStatus.Location = new Point(15, 319);
             GbxModbusStatus.Name = "GbxModbusStatus";
-            GbxModbusStatus.Size = new Size(330, 185);
+            GbxModbusStatus.Size = new Size(330, 159);
             GbxModbusStatus.TabIndex = 2;
             GbxModbusStatus.TabStop = false;
             GbxModbusStatus.Text = "Machine Status";
             // 
             // StatusHomePosition
             // 
-            StatusHomePosition.Location = new Point(153, 143);
+            StatusHomePosition.Location = new Point(153, 121);
             StatusHomePosition.Name = "StatusHomePosition";
             StatusHomePosition.Size = new Size(18, 16);
             StatusHomePosition.TabIndex = 7;
@@ -185,7 +185,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(25, 142);
+            label5.Location = new Point(25, 120);
             label5.Name = "label5";
             label5.Size = new Size(97, 17);
             label5.TabIndex = 6;
@@ -193,7 +193,7 @@
             // 
             // StatusDoorClosed
             // 
-            StatusDoorClosed.Location = new Point(153, 109);
+            StatusDoorClosed.Location = new Point(153, 91);
             StatusDoorClosed.Name = "StatusDoorClosed";
             StatusDoorClosed.Size = new Size(18, 16);
             StatusDoorClosed.TabIndex = 5;
@@ -201,7 +201,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(25, 108);
+            label4.Location = new Point(25, 90);
             label4.Name = "label4";
             label4.Size = new Size(83, 17);
             label4.TabIndex = 4;
@@ -209,7 +209,7 @@
             // 
             // StatusSystemError
             // 
-            StatusSystemError.Location = new Point(153, 75);
+            StatusSystemError.Location = new Point(153, 61);
             StatusSystemError.Name = "StatusSystemError";
             StatusSystemError.Size = new Size(18, 16);
             StatusSystemError.TabIndex = 3;
@@ -217,7 +217,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(25, 74);
+            label3.Location = new Point(25, 60);
             label3.Name = "label3";
             label3.Size = new Size(86, 17);
             label3.TabIndex = 2;
@@ -225,7 +225,7 @@
             // 
             // StatusConnected
             // 
-            StatusConnected.Location = new Point(153, 41);
+            StatusConnected.Location = new Point(153, 31);
             StatusConnected.Name = "StatusConnected";
             StatusConnected.Size = new Size(18, 16);
             StatusConnected.TabIndex = 1;
@@ -233,7 +233,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(25, 40);
+            label2.Location = new Point(25, 30);
             label2.Name = "label2";
             label2.Size = new Size(91, 17);
             label2.TabIndex = 0;
@@ -251,12 +251,12 @@
             // 
             // btnClose
             // 
-            btnClose.Anchor = AnchorStyles.Bottom;
+            btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnClose.BackColor = Color.YellowGreen;
             btnClose.Cursor = Cursors.Hand;
-            btnClose.Location = new Point(119, 736);
+            btnClose.Location = new Point(117, 629);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(109, 43);
+            btnClose.Size = new Size(104, 43);
             btnClose.TabIndex = 8;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = false;
@@ -294,7 +294,7 @@
             GbxUserActions.BackColor = Color.WhiteSmoke;
             GbxUserActions.Controls.Add(BtnResetSystem);
             GbxUserActions.Controls.Add(label7);
-            GbxUserActions.Location = new Point(22, 593);
+            GbxUserActions.Location = new Point(15, 500);
             GbxUserActions.Name = "GbxUserActions";
             GbxUserActions.Size = new Size(330, 103);
             GbxUserActions.TabIndex = 2;
@@ -330,7 +330,7 @@
             Controls.Add(GbxLights);
             Font = new Font("Segoe UI", 9.5F);
             Name = "ModbusControls";
-            Size = new Size(372, 790);
+            Size = new Size(372, 692);
             GbxLights.ResumeLayout(false);
             GbxMotorPos.ResumeLayout(false);
             GbxMotorPos.PerformLayout();

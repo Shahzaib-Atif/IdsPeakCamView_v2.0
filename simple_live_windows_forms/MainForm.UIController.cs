@@ -8,7 +8,7 @@ namespace simple_ids_cam_view
         private void EnableButtons(bool enable)
         {
             StopAcquisitionBtn.Enabled = !enable;
-            AjdustSettingsBtn.Enabled = !enable;
+            CameraSettingsMenuItem.Enabled = !enable;
             CrosshairBtn.Enabled = !enable;
 
             StartAcquisitionBtn.Enabled = enable;

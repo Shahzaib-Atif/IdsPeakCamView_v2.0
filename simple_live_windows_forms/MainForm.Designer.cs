@@ -47,10 +47,6 @@ namespace simple_ids_cam_view
             toolStripSeparator8 = new ToolStripSeparator();
             SingleAcquisitionBtn = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
-            ModbusControlsBtn = new ToolStripButton();
-            toolStripSeparator12 = new ToolStripSeparator();
-            AjdustSettingsBtn = new ToolStripButton();
-            toolStripSeparator6 = new ToolStripSeparator();
             ToolsBtn = new ToolStripDropDownButton();
             ImageQualityMenuItem = new ToolStripMenuItem();
             ImageSizeMenuItem = new ToolStripMenuItem();
@@ -61,6 +57,8 @@ namespace simple_ids_cam_view
             DeleteImagepMenuItem = new ToolStripMenuItem();
             ModbusConfigMenuItem = new ToolStripMenuItem();
             changeDatabaseSettingsToolStripMenuItem = new ToolStripMenuItem();
+            CameraSettingsMenuItem = new ToolStripMenuItem();
+            hardwareSettingsToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator14 = new ToolStripSeparator();
             gbxProgress = new GroupBox();
             progressBar = new ProgressBar();
@@ -112,12 +110,12 @@ namespace simple_ids_cam_view
             toolStrip1.BackColor = SystemColors.ControlLight;
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.Font = new Font("Segoe UI", 10.5F);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { StartAcquisitionBtn, toolStripSeparator1, StopAcquisitionBtn, toolStripSeparator2, LightsBtn, toolStripSeparator9, MotorPositionBtn, toolStripSeparator8, SingleAcquisitionBtn, toolStripSeparator3, ModbusControlsBtn, toolStripSeparator12, AjdustSettingsBtn, toolStripSeparator6, ToolsBtn, toolStripSeparator14 });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { StartAcquisitionBtn, toolStripSeparator1, StopAcquisitionBtn, toolStripSeparator2, LightsBtn, toolStripSeparator9, MotorPositionBtn, toolStripSeparator8, SingleAcquisitionBtn, toolStripSeparator3, ToolsBtn, toolStripSeparator14 });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Padding = new Padding(4, 4, 0, 4);
             toolStrip1.RenderMode = ToolStripRenderMode.System;
-            toolStrip1.Size = new Size(697, 34);
+            toolStrip1.Size = new Size(535, 34);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -218,40 +216,9 @@ namespace simple_ids_cam_view
             toolStripSeparator3.Size = new Size(6, 26);
             toolStripSeparator3.Visible = false;
             // 
-            // ModbusControlsBtn
-            // 
-            ModbusControlsBtn.Image = (Image)resources.GetObject("ModbusControlsBtn.Image");
-            ModbusControlsBtn.ImageTransparentColor = Color.Magenta;
-            ModbusControlsBtn.Name = "ModbusControlsBtn";
-            ModbusControlsBtn.Size = new Size(123, 23);
-            ModbusControlsBtn.Text = "Machine Status";
-            ModbusControlsBtn.ToolTipText = "Show modbus controls";
-            ModbusControlsBtn.Click += ModbusControlsBtn_Click;
-            // 
-            // toolStripSeparator12
-            // 
-            toolStripSeparator12.Name = "toolStripSeparator12";
-            toolStripSeparator12.Size = new Size(6, 26);
-            // 
-            // AjdustSettingsBtn
-            // 
-            AjdustSettingsBtn.BackColor = SystemColors.ControlLight;
-            AjdustSettingsBtn.Image = (Image)resources.GetObject("AjdustSettingsBtn.Image");
-            AjdustSettingsBtn.ImageTransparentColor = Color.Magenta;
-            AjdustSettingsBtn.Name = "AjdustSettingsBtn";
-            AjdustSettingsBtn.Size = new Size(129, 23);
-            AjdustSettingsBtn.Text = "Camera Settings";
-            AjdustSettingsBtn.ToolTipText = "Show camera controls";
-            AjdustSettingsBtn.Click += AdjustSettingsBtn_Click;
-            // 
-            // toolStripSeparator6
-            // 
-            toolStripSeparator6.Name = "toolStripSeparator6";
-            toolStripSeparator6.Size = new Size(6, 26);
-            // 
             // ToolsBtn
             // 
-            ToolsBtn.DropDownItems.AddRange(new ToolStripItem[] { ImageQualityMenuItem, ImageSizeMenuItem, ImageSimilarityMenuItem, DefaultFolderMenuItem, SaveOriginalImageMenuItem, AddImagesToDBMenuItem, DeleteImagepMenuItem, ModbusConfigMenuItem, changeDatabaseSettingsToolStripMenuItem });
+            ToolsBtn.DropDownItems.AddRange(new ToolStripItem[] { ImageQualityMenuItem, ImageSizeMenuItem, ImageSimilarityMenuItem, DefaultFolderMenuItem, SaveOriginalImageMenuItem, AddImagesToDBMenuItem, DeleteImagepMenuItem, ModbusConfigMenuItem, changeDatabaseSettingsToolStripMenuItem, CameraSettingsMenuItem, hardwareSettingsToolStripMenuItem });
             ToolsBtn.Enabled = false;
             ToolsBtn.Image = (Image)resources.GetObject("ToolsBtn.Image");
             ToolsBtn.ImageTransparentColor = Color.Magenta;
@@ -345,6 +312,22 @@ namespace simple_ids_cam_view
             changeDatabaseSettingsToolStripMenuItem.Text = "Change database settings";
             changeDatabaseSettingsToolStripMenuItem.Visible = false;
             changeDatabaseSettingsToolStripMenuItem.Click += ChangeDatabaseSettingsMenuItem_Click;
+            // 
+            // CameraSettingsMenuItem
+            // 
+            CameraSettingsMenuItem.Image = (Image)resources.GetObject("CameraSettingsMenuItem.Image");
+            CameraSettingsMenuItem.Name = "CameraSettingsMenuItem";
+            CameraSettingsMenuItem.Size = new Size(287, 24);
+            CameraSettingsMenuItem.Text = "Camera Settings";
+            CameraSettingsMenuItem.Click += AdjustSettingsBtn_Click;
+            // 
+            // hardwareSettingsToolStripMenuItem
+            // 
+            hardwareSettingsToolStripMenuItem.Image = (Image)resources.GetObject("hardwareSettingsToolStripMenuItem.Image");
+            hardwareSettingsToolStripMenuItem.Name = "hardwareSettingsToolStripMenuItem";
+            hardwareSettingsToolStripMenuItem.Size = new Size(287, 24);
+            hardwareSettingsToolStripMenuItem.Text = "Hardware Settings";
+            hardwareSettingsToolStripMenuItem.Click += ModbusControlsBtn_Click;
             // 
             // toolStripSeparator14
             // 
@@ -515,7 +498,7 @@ namespace simple_ids_cam_view
             DisplayPanel.Controls.Add(counterLabel);
             DisplayPanel.Controls.Add(customPictureBox);
             DisplayPanel.Controls.Add(toolStrip2);
-            DisplayPanel.Location = new Point(769, 7);
+            DisplayPanel.Location = new Point(772, 7);
             DisplayPanel.Margin = new Padding(0, 2, 0, 0);
             DisplayPanel.MinimumSize = new Size(0, 50);
             DisplayPanel.Name = "DisplayPanel";
@@ -585,18 +568,19 @@ namespace simple_ids_cam_view
             Flp_Main.Location = new Point(0, 37);
             Flp_Main.Name = "Flp_Main";
             Flp_Main.Padding = new Padding(5, 5, 2, 5);
-            Flp_Main.Size = new Size(1627, 726);
+            Flp_Main.Size = new Size(1630, 726);
             Flp_Main.TabIndex = 8;
             // 
             // CameraSettingsPanel
             // 
+            CameraSettingsPanel.AutoSize = true;
             CameraSettingsPanel.BorderStyle = BorderStyle.Fixed3D;
             CameraSettingsPanel.Font = new Font("Segoe UI", 9.5F);
             CameraSettingsPanel.Location = new Point(8, 7);
             CameraSettingsPanel.Margin = new Padding(3, 2, 15, 3);
             CameraSettingsPanel.Name = "CameraSettingsPanel";
             CameraSettingsPanel.Padding = new Padding(0, 1, 0, 0);
-            CameraSettingsPanel.Size = new Size(364, 697);
+            CameraSettingsPanel.Size = new Size(367, 657);
             CameraSettingsPanel.TabIndex = 8;
             CameraSettingsPanel.Visible = false;
             // 
@@ -605,7 +589,7 @@ namespace simple_ids_cam_view
             ModbusControlsPanel.BackColor = SystemColors.Control;
             ModbusControlsPanel.BorderStyle = BorderStyle.Fixed3D;
             ModbusControlsPanel.Font = new Font("Segoe UI", 9.5F);
-            ModbusControlsPanel.Location = new Point(390, 7);
+            ModbusControlsPanel.Location = new Point(393, 7);
             ModbusControlsPanel.Margin = new Padding(3, 2, 15, 3);
             ModbusControlsPanel.Name = "ModbusControlsPanel";
             ModbusControlsPanel.Padding = new Padding(0, 1, 0, 0);
@@ -643,6 +627,7 @@ namespace simple_ids_cam_view
             GbxShowLoading.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             Flp_Main.ResumeLayout(false);
+            Flp_Main.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -682,20 +667,16 @@ namespace simple_ids_cam_view
         private Label LabelConnectorName;
         private CheckBox UseCurrentImageCheckbox;
         private ToolStripMenuItem AddImagesToDBMenuItem;
-        private ToolStripButton AjdustSettingsBtn;
         private FlowLayoutPanel Flp_Main;
         private AdjustSettings CameraSettingsPanel;
         private ToolStripMenuItem DeleteImagepMenuItem;
-        private ToolStripSeparator toolStripSeparator6;
         private ToolStripMenuItem ModbusConfigMenuItem;
         private ToolStripMenuItem changeDatabaseSettingsToolStripMenuItem;
-        private ToolStripButton ModbusControlsBtn;
         private ModbusControls ModbusControlsPanel;
         private ToolStripButton CrosshairBtn;
         private ToolStripButton LightsBtn;
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripDropDownButton MotorPositionBtn;
-        private ToolStripSeparator toolStripSeparator12;
         private ToolStripMenuItem position1ToolStripMenuItem;
         private ToolStripMenuItem position2ToolStripMenuItem;
         private ToolStripMenuItem position3ToolStripMenuItem;
@@ -705,5 +686,7 @@ namespace simple_ids_cam_view
         private PictureBox pictureBox1;
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripButton AddAccessoryBtn;
+        private ToolStripMenuItem CameraSettingsMenuItem;
+        private ToolStripMenuItem hardwareSettingsToolStripMenuItem;
     }
 }

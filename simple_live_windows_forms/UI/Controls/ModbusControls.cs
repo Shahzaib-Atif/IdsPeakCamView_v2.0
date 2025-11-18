@@ -214,5 +214,10 @@ namespace simple_ids_cam_view.UI.Controls
         private void BtnClose_Click(object sender, EventArgs e) => this.Hide();
         public void DisconnectClient() => modbusController.DisconnectClient();
         public void ReconnectClient() => modbusController.ReconnectClient();
+
+        private void Label9_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }
