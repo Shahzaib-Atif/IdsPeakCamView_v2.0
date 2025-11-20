@@ -15,7 +15,7 @@ namespace simple_ids_cam_view.UI.Controls
         public PictureBox MyPanel { get; }
         private readonly EditTextService editTextService;
         private Bitmap ProcessedImage { get; set; }
-        private bool ShowCrosshair { get; set; } = true;
+        private bool ShowCrosshair { get; set; } = false;
         private int centerX = 0;
         private int centerY = 0;
 

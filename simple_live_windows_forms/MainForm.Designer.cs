@@ -59,14 +59,13 @@ namespace simple_ids_cam_view
             changeDatabaseSettingsToolStripMenuItem = new ToolStripMenuItem();
             CameraSettingsMenuItem = new ToolStripMenuItem();
             hardwareSettingsMenuItem = new ToolStripMenuItem();
+            EditTextMenuItem = new ToolStripMenuItem();
             toolStripSeparator14 = new ToolStripSeparator();
             gbxProgress = new GroupBox();
             progressBar = new ProgressBar();
             customPictureBox = new SimplePictureBox();
             toolStrip2 = new ToolStrip();
             CropBtn = new ToolStripButton();
-            toolStripSeparator10 = new ToolStripSeparator();
-            EditTextBtn = new ToolStripButton();
             toolStripSeparator11 = new ToolStripSeparator();
             CrosshairBtn = new ToolStripButton();
             SaveFinalImageBtn = new ToolStripButton();
@@ -218,7 +217,7 @@ namespace simple_ids_cam_view
             // 
             // ToolsBtn
             // 
-            ToolsBtn.DropDownItems.AddRange(new ToolStripItem[] { ImageQualityMenuItem, ImageSizeMenuItem, ImageSimilarityMenuItem, DefaultFolderMenuItem, SaveOriginalImageMenuItem, AddImagesToDBMenuItem, DeleteImagepMenuItem, ModbusConfigMenuItem, changeDatabaseSettingsToolStripMenuItem, CameraSettingsMenuItem, hardwareSettingsMenuItem });
+            ToolsBtn.DropDownItems.AddRange(new ToolStripItem[] { ImageQualityMenuItem, ImageSizeMenuItem, ImageSimilarityMenuItem, DefaultFolderMenuItem, AddImagesToDBMenuItem, DeleteImagepMenuItem, ModbusConfigMenuItem, changeDatabaseSettingsToolStripMenuItem, CameraSettingsMenuItem, hardwareSettingsMenuItem, EditTextMenuItem, SaveOriginalImageMenuItem });
             ToolsBtn.Image = (Image)resources.GetObject("ToolsBtn.Image");
             ToolsBtn.ImageTransparentColor = Color.Magenta;
             ToolsBtn.Name = "ToolsBtn";
@@ -331,6 +330,14 @@ namespace simple_ids_cam_view
             hardwareSettingsMenuItem.Text = "Hardware Settings";
             hardwareSettingsMenuItem.Click += ModbusControlsBtn_Click;
             // 
+            // EditTextMenuItem
+            // 
+            EditTextMenuItem.Image = (Image)resources.GetObject("EditTextMenuItem.Image");
+            EditTextMenuItem.Name = "EditTextMenuItem";
+            EditTextMenuItem.Size = new Size(287, 24);
+            EditTextMenuItem.Text = "Edit Text";
+            EditTextMenuItem.Click += EditTextBtn_Click;
+            // 
             // toolStripSeparator14
             // 
             toolStripSeparator14.Name = "toolStripSeparator14";
@@ -376,7 +383,7 @@ namespace simple_ids_cam_view
             toolStrip2.AutoSize = false;
             toolStrip2.BackColor = SystemColors.ControlLight;
             toolStrip2.Font = new Font("Segoe UI", 9.5F);
-            toolStrip2.Items.AddRange(new ToolStripItem[] { CropBtn, toolStripSeparator10, EditTextBtn, toolStripSeparator11, CrosshairBtn, SaveFinalImageBtn, toolStripSeparator4, SaveToDbBtn, toolStripSeparator7, AddAccessoryBtn, toolStripSeparator5, FindSimilarImgsBtn });
+            toolStrip2.Items.AddRange(new ToolStripItem[] { CropBtn, toolStripSeparator11, CrosshairBtn, SaveFinalImageBtn, toolStripSeparator4, SaveToDbBtn, toolStripSeparator7, AddAccessoryBtn, toolStripSeparator5, FindSimilarImgsBtn });
             toolStrip2.Location = new Point(0, 0);
             toolStrip2.Margin = new Padding(0, 2, 0, 0);
             toolStrip2.Name = "toolStrip2";
@@ -397,22 +404,6 @@ namespace simple_ids_cam_view
             CropBtn.Size = new Size(89, 26);
             CropBtn.Text = "Adjust ROI";
             CropBtn.Click += UpdateRoiBtn_Click;
-            // 
-            // toolStripSeparator10
-            // 
-            toolStripSeparator10.Name = "toolStripSeparator10";
-            toolStripSeparator10.Size = new Size(6, 29);
-            // 
-            // EditTextBtn
-            // 
-            EditTextBtn.Enabled = false;
-            EditTextBtn.Image = (Image)resources.GetObject("EditTextBtn.Image");
-            EditTextBtn.ImageTransparentColor = Color.Magenta;
-            EditTextBtn.Name = "EditTextBtn";
-            EditTextBtn.Size = new Size(75, 26);
-            EditTextBtn.Text = "Edit text";
-            EditTextBtn.ToolTipText = "Add/Edit text";
-            EditTextBtn.Click += EditTextBtn_Click;
             // 
             // toolStripSeparator11
             // 
@@ -654,9 +645,7 @@ namespace simple_ids_cam_view
         private SimplePictureBox customPictureBox;
         private ToolStrip toolStrip2;
         private ToolStripButton CropBtn;
-        private ToolStripSeparator toolStripSeparator10;
         private Panel DisplayPanel;
-        private ToolStripButton EditTextBtn;
         private ToolStripSeparator toolStripSeparator11;
         private ToolStripButton SaveFinalImageBtn;
         private ToolStripSeparator toolStripSeparator4;
@@ -690,5 +679,6 @@ namespace simple_ids_cam_view
         private ToolStripButton AddAccessoryBtn;
         private ToolStripMenuItem CameraSettingsMenuItem;
         private ToolStripMenuItem hardwareSettingsMenuItem;
+        private ToolStripMenuItem EditTextMenuItem;
     }
 }

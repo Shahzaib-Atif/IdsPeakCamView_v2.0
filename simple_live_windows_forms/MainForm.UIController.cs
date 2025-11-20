@@ -15,7 +15,7 @@ namespace simple_ids_cam_view
             StartAcquisitionBtn.Enabled = enable;
             SingleAcquisitionBtn.Enabled = enable;
             CropBtn.Enabled = enable;
-            EditTextBtn.Enabled = enable;
+            EditTextMenuItem.Enabled = enable;
             customPictureBox?.MakeEditTextVisible(enable);
             SaveFinalImageBtn.Enabled = enable;
             FindSimilarImgsBtn.Enabled = enable;
