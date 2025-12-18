@@ -18,6 +18,7 @@ namespace simple_ids_cam_view.Presenters
         private List<KeyValue> _tipoList;
         private List<KeyValue> _corsList;
         private List<KeyValue> _viasList;
+        private List<string> _capotAnglesList;
         private List<string> _fabricanteList;
 
         public SampleDetail SampleDetails { get; private set; }
@@ -64,8 +65,10 @@ namespace simple_ids_cam_view.Presenters
             // Configure all comboboxes
             await ConfigureTipoCorsViasAsync();
 
-            // Hide diameter section initially
-            _view.HideDiameterSection();
+            // Hide these sections initially
+            _view.ShowDiameterSection(false);
+            _view.ShowClipColorSection(false);
+            _view.ShowCapotAngleSection(false);
         }
 
         private async void OnSaveRequested(object sender, EventArgs e)
@@ -103,7 +106,9 @@ namespace simple_ids_cam_view.Presenters
                 Fabricante = _view.Fabricante,
                 Refabricante = _view.Refabricante,
                 Designação = _view.Designação,
-                OBS = _view.OBS
+                OBS = _view.OBS,
+                ClipColor = _view.ClipColor,
+                CapotAngle = _view.CapotAngle,
             };
 
             var componentDetails = new ComponentsDetails
@@ -134,11 +139,10 @@ namespace simple_ids_cam_view.Presenters
         {
             var tipo = _view.Tipo;
 
-            // Show diameters & thickness if "Olhal" is selected
-            if (tipo.ToLower() == "olhal")
-                _view.ShowDiameterSection();
-            else
-                _view.HideDiameterSection();
+            // Show optional boxes depending on tipo
+            _view.ShowDiameterSection(tipo.ToLower() == "olhal");
+            _view.ShowClipColorSection(tipo.ToLower() == "clip");
+            _view.ShowCapotAngleSection(tipo.ToLower() == "capot");
         }
 
         #endregion
@@ -160,11 +164,12 @@ namespace simple_ids_cam_view.Presenters
 
         private async Task ConfigureTipoCorsViasAsync()
         {
-            // Run three tasks in parallel (same as original)
+            // Run these tasks in parallel
             await Task.WhenAll(
                 ConfigureTipoAsync(),
                 ConfigureCorsAsync(),
                 ConfigureViasAsync(),
+                ConfigureCapotAnglesAsync(),
                 ConfigureFabricanteAsync()
             );
         }
@@ -184,7 +189,8 @@ namespace simple_ids_cam_view.Presenters
             if (_corsList == null)
                 await PopulateCorsListAsync();
 
-            _view.PopulateCorComboBox(_corsList);
+            _view.PopulateCorComboBox(_corsList ?? new List<KeyValue>());
+            _view.PopulateClipColorComboBox(_corsList ?? new List<KeyValue>());
         }
 
         private async Task ConfigureViasAsync()
@@ -194,6 +200,15 @@ namespace simple_ids_cam_view.Presenters
                 await PopulateViasListAsync();
 
             _view.PopulateViasComboBox(_viasList);
+        }
+
+        private async Task ConfigureCapotAnglesAsync()
+        {
+            // Only execute first time if list is null
+            if (_capotAnglesList == null)
+                await PopulateCapotAnglesListAsync();
+
+            _view.PopulateCapotAngleComboBox(_capotAnglesList);
         }
 
         private async Task ConfigureFabricanteAsync()
@@ -255,6 +270,20 @@ namespace simple_ids_cam_view.Presenters
             {
                 ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
                 _fabricanteList = new List<string>();
+            }
+        }
+
+        private async Task PopulateCapotAnglesListAsync()
+        {
+            try
+            {
+                _capotAnglesList = (await _metadataRepo.ReadAvailableCapotAngles()).ToList();
+                _capotAnglesList.Insert(0, ""); // Insert empty option at the start
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
+                _capotAnglesList = new List<string>();
             }
         }
         #endregion

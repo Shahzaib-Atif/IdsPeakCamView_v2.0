@@ -20,16 +20,22 @@ namespace ImageProcessingLibrary.Interfaces
         #region Properties (Presenter reads from View)
 
         string PosId { get; }
-        string Tipo { get; }
         string CorValue { get; }
         string ViasValue { get; }
+        string Tipo { get; }
+
         decimal InternalDiameter { get; }
         decimal ExternalDiameter { get; }
         decimal Thickness { get; }
+
         string Fabricante { get; }
         string Refabricante { get; }
         string Designação { get; }
         string OBS { get; }
+        string ClipColor { get; }
+        string CapotAngle { get; }
+
+
         bool Clip { get; }
         bool Spacer { get; }
         bool Tampa { get; }
@@ -53,12 +59,15 @@ namespace ImageProcessingLibrary.Interfaces
         // ComboBox population
         void PopulateTipoComboBox(List<KeyValue> items);
         void PopulateCorComboBox(List<KeyValue> items);
+        void PopulateClipColorComboBox(List<KeyValue> items);
+        void PopulateCapotAngleComboBox(List<string> items);
         void PopulateViasComboBox(List<KeyValue> items);
         void PopulateFabricanteComboBox(List<string> items);
 
         // UI State
-        void ShowDiameterSection();
-        void HideDiameterSection();
+        void ShowDiameterSection(bool status = true);
+        void ShowClipColorSection(bool status = true);
+        void ShowCapotAngleSection(bool status = true);
         void ShowWaitCursor();
         void ShowDefaultCursor();
 

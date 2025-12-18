@@ -77,7 +77,7 @@ namespace simple_ids_cam_view.Presenters
             // if the Connector does not exist, then we cannot proceed
             if (!_view.ColorAssociated && !posIdCollection.Contains(details.ConnectorName))
             {
-                ExceptionHelper.ShowWarningMessage("This entry does not match with any existing [Pos ID]!");
+                ExceptionHelper.ShowWarningMessage("This entry does not match with any existing PosId!");
                 return;
             }
             else if (_view.ColorAssociated && !codivmacCollection.Contains(details.ConnectorName))

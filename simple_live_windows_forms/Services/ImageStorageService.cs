@@ -278,7 +278,8 @@ namespace simple_ids_cam_view.Services
                     await _featureRepo.SaveFeatures(fileName, resnet, dino).ConfigureAwait(false);
 
                     // save in referencias table
-                    await _referenciasRepo.InsertDataAsync(filePath, newSample).ConfigureAwait(false);
+                    //await _referenciasRepo.InsertDataAsync(filePath, newSample).ConfigureAwait(false);
+                    await _referenciasRepo.InsertNewConnector(filePath, newSample).ConfigureAwait(false);
                     return true;
                 }).ConfigureAwait(false);
             }

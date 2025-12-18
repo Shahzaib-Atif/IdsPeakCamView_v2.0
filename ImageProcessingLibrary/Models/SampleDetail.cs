@@ -80,10 +80,12 @@ namespace ImageProcessingLibrary.Models
 
     public struct AdditionalDetails
     {
+        public string Designação { get; set; }
         public string Fabricante { get; set; }
         public string Refabricante { get; set; }
-        public string Designação { get; set; }
         public string OBS { get; set; }
+        public string ClipColor { get; set; }
+        public string CapotAngle { get; set; }
     }
 
     public struct ComponentsDetails

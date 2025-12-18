@@ -132,7 +132,7 @@ namespace ImageProcessingLibrary.Services.Database
             // Add conditions dynamically
             if (!string.IsNullOrWhiteSpace(basicDetails.PosId))
             {
-                conditions.Add("[Pos ID] LIKE @posId");
+                conditions.Add("PosId LIKE @posId");
                 command.Parameters.AddWithValue("@posId", "%" + basicDetails.PosId + "%");
             }
 

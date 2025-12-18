@@ -30,6 +30,8 @@ namespace simple_ids_cam_view.UI.Forms
         public string Refabricante => textBoxRefManufact.Text;
         public string Designação => textBoxDesignation.Text;
         public string OBS => textBoxOBS.Text;
+        public string ClipColor => comboBoxClipColor.SelectedValue?.ToString();
+        public string CapotAngle => comboBoxCapotAngles.Text;
 
         // Component Checkboxes
         public bool Clip => checkBoxClip.Checked;
@@ -95,6 +97,23 @@ namespace simple_ids_cam_view.UI.Forms
             comboBoxVias.DataSource = items;
         }
 
+        public void PopulateClipColorComboBox(List<KeyValue> items)
+        {
+            comboBoxClipColor.Items.Clear();
+            comboBoxClipColor.DisplayMember = "Key";
+            comboBoxClipColor.ValueMember = "Value";
+            // clone the list to avoid data source issues
+            comboBoxClipColor.DataSource = new List<KeyValue>(items);
+        }
+
+        public void PopulateCapotAngleComboBox(List<string> items)
+        {
+            comboBoxCapotAngles.Items.Clear();
+            comboBoxCapotAngles.DisplayMember = "Key";
+            comboBoxCapotAngles.ValueMember = "Value";
+            comboBoxCapotAngles.DataSource = items;
+        }
+
         public void PopulateFabricanteComboBox(List<string> items)
         {
             comboBoxManufact.Items.Clear();
@@ -103,14 +122,19 @@ namespace simple_ids_cam_view.UI.Forms
             comboBoxManufact.DataSource = items;
         }
 
-        public void ShowDiameterSection()
+        public void ShowDiameterSection(bool state = true)
         {
-            gbxDiameter.Visible = true;
+            gbxDiameter.Visible = state;
         }
 
-        public void HideDiameterSection()
+        public void ShowClipColorSection(bool state = true)
         {
-            gbxDiameter.Visible = false;
+            gbxClipColor.Visible = state;
+        }
+
+        public void ShowCapotAngleSection(bool state = true)
+        {
+            gbxCapotAngle.Visible = state;
         }
 
         public void ShowWaitCursor()

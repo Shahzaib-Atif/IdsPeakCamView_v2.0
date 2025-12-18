@@ -50,6 +50,8 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             textBoxPosId = new TextBox();
             FLP_Main = new FlowLayoutPanel();
+            gbxClipColor = new GroupBox();
+            comboBoxClipColor = new ComboBox();
             groupBox3 = new GroupBox();
             comboBoxManufact = new ComboBox();
             groupBox5 = new GroupBox();
@@ -83,6 +85,8 @@
             checkBoxOutros = new CheckBox();
             checkBoxSamplePanel = new CheckBox();
             checkBoxOlhal = new CheckBox();
+            gbxCapotAngle = new GroupBox();
+            comboBoxCapotAngles = new ComboBox();
             panel1.SuspendLayout();
             gbxVias.SuspendLayout();
             gbxCor.SuspendLayout();
@@ -98,6 +102,7 @@
             gbxName.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             FLP_Main.SuspendLayout();
+            gbxClipColor.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox5.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -111,6 +116,7 @@
             flowLayoutPanel6.SuspendLayout();
             groupBox9.SuspendLayout();
             flowLayoutPanel7.SuspendLayout();
+            gbxCapotAngle.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -154,7 +160,7 @@
             // gbxVias
             // 
             gbxVias.Controls.Add(comboBoxVias);
-            gbxVias.Location = new Point(10, 348);
+            gbxVias.Location = new Point(10, 233);
             gbxVias.Margin = new Padding(7, 6, 5, 6);
             gbxVias.Name = "gbxVias";
             gbxVias.Padding = new Padding(7, 8, 7, 8);
@@ -176,7 +182,7 @@
             // gbxCor
             // 
             gbxCor.Controls.Add(comboBoxCor);
-            gbxCor.Location = new Point(10, 275);
+            gbxCor.Location = new Point(10, 160);
             gbxCor.Margin = new Padding(7, 6, 5, 6);
             gbxCor.Name = "gbxCor";
             gbxCor.Padding = new Padding(7, 8, 7, 8);
@@ -200,7 +206,7 @@
             // gbxDiameter
             // 
             gbxDiameter.Controls.Add(FLP_Diameters);
-            gbxDiameter.Location = new Point(10, 160);
+            gbxDiameter.Location = new Point(10, 452);
             gbxDiameter.Margin = new Padding(7, 6, 5, 6);
             gbxDiameter.Name = "gbxDiameter";
             gbxDiameter.Size = new Size(267, 103);
@@ -359,17 +365,44 @@
             FLP_Main.BorderStyle = BorderStyle.Fixed3D;
             FLP_Main.Controls.Add(gbxName);
             FLP_Main.Controls.Add(gbxType);
-            FLP_Main.Controls.Add(gbxDiameter);
             FLP_Main.Controls.Add(gbxCor);
             FLP_Main.Controls.Add(gbxVias);
+            FLP_Main.Controls.Add(gbxCapotAngle);
+            FLP_Main.Controls.Add(gbxClipColor);
+            FLP_Main.Controls.Add(gbxDiameter);
             FLP_Main.FlowDirection = FlowDirection.TopDown;
             FLP_Main.Location = new Point(3, 42);
             FLP_Main.MinimumSize = new Size(200, 0);
             FLP_Main.Name = "FLP_Main";
             FLP_Main.Padding = new Padding(3);
-            FLP_Main.Size = new Size(289, 422);
+            FLP_Main.Size = new Size(289, 568);
             FLP_Main.TabIndex = 0;
             FLP_Main.WrapContents = false;
+            // 
+            // gbxClipColor
+            // 
+            gbxClipColor.Controls.Add(comboBoxClipColor);
+            gbxClipColor.Location = new Point(10, 379);
+            gbxClipColor.Margin = new Padding(7, 6, 5, 6);
+            gbxClipColor.Name = "gbxClipColor";
+            gbxClipColor.Padding = new Padding(7, 8, 7, 8);
+            gbxClipColor.Size = new Size(211, 61);
+            gbxClipColor.TabIndex = 6;
+            gbxClipColor.TabStop = false;
+            gbxClipColor.Text = "Clip Color";
+            gbxClipColor.Visible = false;
+            // 
+            // comboBoxClipColor
+            // 
+            comboBoxClipColor.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            comboBoxClipColor.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboBoxClipColor.Dock = DockStyle.Fill;
+            comboBoxClipColor.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxClipColor.FormattingEnabled = true;
+            comboBoxClipColor.Location = new Point(7, 25);
+            comboBoxClipColor.Name = "comboBoxClipColor";
+            comboBoxClipColor.Size = new Size(197, 25);
+            comboBoxClipColor.TabIndex = 0;
             // 
             // groupBox3
             // 
@@ -474,7 +507,7 @@
             groupBox1.Margin = new Padding(15, 3, 15, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.RightToLeft = RightToLeft.No;
-            groupBox1.Size = new Size(298, 487);
+            groupBox1.Size = new Size(298, 633);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             // 
@@ -763,6 +796,31 @@
             checkBoxOlhal.Text = "OLHAL";
             checkBoxOlhal.UseVisualStyleBackColor = true;
             // 
+            // gbxCapotAngle
+            // 
+            gbxCapotAngle.Controls.Add(comboBoxCapotAngles);
+            gbxCapotAngle.Location = new Point(10, 306);
+            gbxCapotAngle.Margin = new Padding(7, 6, 5, 6);
+            gbxCapotAngle.Name = "gbxCapotAngle";
+            gbxCapotAngle.Padding = new Padding(7, 8, 7, 8);
+            gbxCapotAngle.Size = new Size(211, 61);
+            gbxCapotAngle.TabIndex = 7;
+            gbxCapotAngle.TabStop = false;
+            gbxCapotAngle.Text = "Capot Angle";
+            gbxCapotAngle.Visible = false;
+            // 
+            // comboBoxCapotAngles
+            // 
+            comboBoxCapotAngles.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            comboBoxCapotAngles.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboBoxCapotAngles.Dock = DockStyle.Fill;
+            comboBoxCapotAngles.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCapotAngles.FormattingEnabled = true;
+            comboBoxCapotAngles.Location = new Point(7, 25);
+            comboBoxCapotAngles.Name = "comboBoxCapotAngles";
+            comboBoxCapotAngles.Size = new Size(197, 25);
+            comboBoxCapotAngles.TabIndex = 0;
+            // 
             // SampleDetailsView
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -798,6 +856,7 @@
             flowLayoutPanel1.PerformLayout();
             FLP_Main.ResumeLayout(false);
             FLP_Main.PerformLayout();
+            gbxClipColor.ResumeLayout(false);
             groupBox3.ResumeLayout(false);
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
@@ -822,6 +881,7 @@
             groupBox9.PerformLayout();
             flowLayoutPanel7.ResumeLayout(false);
             flowLayoutPanel7.PerformLayout();
+            gbxCapotAngle.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -882,5 +942,9 @@
         private CheckBox checkBoxOutros;
         private CheckBox checkBoxSamplePanel;
         private CheckBox checkBoxOlhal;
+        private GroupBox gbxClipColor;
+        private ComboBox comboBoxClipColor;
+        private GroupBox gbxCapotAngle;
+        private ComboBox comboBoxCapotAngles;
     }
 }
