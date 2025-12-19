@@ -37,7 +37,7 @@ namespace ImageProcessingLibrary.Services.Database
                     {"@Cor", basicDetails.Cor },
                     {"@Vias", basicDetails.Vias },
                     {"@CODIVMAC", basicDetails.Codivmac },
-                    {"@Qty", 1 },
+                    {"@Qty", basicDetails.Qty },
                     {"@ESTADO", 1 },
                     {"@Imagem", imagePath },
                     {"@ConnType", basicDetails.Tipo},

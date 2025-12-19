@@ -62,6 +62,7 @@ namespace ImageProcessingLibrary.Models
         public string Cor { get; set; }
 
         public string Codivmac { get; set; }
+        public int Qty { get; set; }
     }
 
     public struct SampleDimensions

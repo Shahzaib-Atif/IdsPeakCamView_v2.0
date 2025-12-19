@@ -50,6 +50,8 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             textBoxPosId = new TextBox();
             FLP_Main = new FlowLayoutPanel();
+            gbxCapotAngle = new GroupBox();
+            comboBoxCapotAngles = new ComboBox();
             gbxClipColor = new GroupBox();
             comboBoxClipColor = new ComboBox();
             groupBox3 = new GroupBox();
@@ -60,6 +62,8 @@
             groupBox6 = new GroupBox();
             flowLayoutPanel3 = new FlowLayoutPanel();
             textBoxDesignation = new TextBox();
+            groupBoxQty = new GroupBox();
+            numUpDownQty = new NumericUpDown();
             toolTip1 = new ToolTip(components);
             groupBox1 = new GroupBox();
             label1 = new Label();
@@ -85,8 +89,6 @@
             checkBoxOutros = new CheckBox();
             checkBoxSamplePanel = new CheckBox();
             checkBoxOlhal = new CheckBox();
-            gbxCapotAngle = new GroupBox();
-            comboBoxCapotAngles = new ComboBox();
             panel1.SuspendLayout();
             gbxVias.SuspendLayout();
             gbxCor.SuspendLayout();
@@ -102,12 +104,15 @@
             gbxName.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             FLP_Main.SuspendLayout();
+            gbxCapotAngle.SuspendLayout();
             gbxClipColor.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox5.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             groupBox6.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
+            groupBoxQty.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numUpDownQty).BeginInit();
             groupBox1.SuspendLayout();
             groupBox7.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
@@ -116,7 +121,6 @@
             flowLayoutPanel6.SuspendLayout();
             groupBox9.SuspendLayout();
             flowLayoutPanel7.SuspendLayout();
-            gbxCapotAngle.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -125,7 +129,7 @@
             panel1.Controls.Add(btnCancel);
             panel1.Controls.Add(btnSave);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 495);
+            panel1.Location = new Point(0, 541);
             panel1.Margin = new Padding(3, 60, 3, 3);
             panel1.MinimumSize = new Size(220, 0);
             panel1.Name = "panel1";
@@ -379,6 +383,31 @@
             FLP_Main.TabIndex = 0;
             FLP_Main.WrapContents = false;
             // 
+            // gbxCapotAngle
+            // 
+            gbxCapotAngle.Controls.Add(comboBoxCapotAngles);
+            gbxCapotAngle.Location = new Point(10, 306);
+            gbxCapotAngle.Margin = new Padding(7, 6, 5, 6);
+            gbxCapotAngle.Name = "gbxCapotAngle";
+            gbxCapotAngle.Padding = new Padding(7, 8, 7, 8);
+            gbxCapotAngle.Size = new Size(211, 61);
+            gbxCapotAngle.TabIndex = 7;
+            gbxCapotAngle.TabStop = false;
+            gbxCapotAngle.Text = "Capot Angle";
+            gbxCapotAngle.Visible = false;
+            // 
+            // comboBoxCapotAngles
+            // 
+            comboBoxCapotAngles.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            comboBoxCapotAngles.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboBoxCapotAngles.Dock = DockStyle.Fill;
+            comboBoxCapotAngles.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCapotAngles.FormattingEnabled = true;
+            comboBoxCapotAngles.Location = new Point(7, 25);
+            comboBoxCapotAngles.Name = "comboBoxCapotAngles";
+            comboBoxCapotAngles.Size = new Size(197, 25);
+            comboBoxCapotAngles.TabIndex = 0;
+            // 
             // gbxClipColor
             // 
             gbxClipColor.Controls.Add(comboBoxClipColor);
@@ -494,6 +523,30 @@
             textBoxDesignation.PlaceholderText = "Enter Pos Id ";
             textBoxDesignation.Size = new Size(229, 24);
             textBoxDesignation.TabIndex = 0;
+            // 
+            // groupBoxQty
+            // 
+            groupBoxQty.Controls.Add(numUpDownQty);
+            groupBoxQty.Location = new Point(10, 401);
+            groupBoxQty.Margin = new Padding(7, 6, 5, 6);
+            groupBoxQty.Name = "groupBoxQty";
+            groupBoxQty.Padding = new Padding(7, 8, 7, 8);
+            groupBoxQty.Size = new Size(110, 61);
+            groupBoxQty.TabIndex = 9;
+            groupBoxQty.TabStop = false;
+            groupBoxQty.Text = "Quantity";
+            // 
+            // numUpDownQty
+            // 
+            numUpDownQty.Dock = DockStyle.Fill;
+            numUpDownQty.Font = new Font("Segoe UI", 10F);
+            numUpDownQty.Location = new Point(7, 25);
+            numUpDownQty.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numUpDownQty.Name = "numUpDownQty";
+            numUpDownQty.Size = new Size(96, 25);
+            numUpDownQty.TabIndex = 0;
+            numUpDownQty.TextAlign = HorizontalAlignment.Center;
+            numUpDownQty.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // groupBox1
             // 
@@ -617,7 +670,7 @@
             flowLayoutPanel6.Location = new Point(0, 0);
             flowLayoutPanel6.Name = "flowLayoutPanel6";
             flowLayoutPanel6.Padding = new Padding(10);
-            flowLayoutPanel6.Size = new Size(1035, 495);
+            flowLayoutPanel6.Size = new Size(1035, 541);
             flowLayoutPanel6.TabIndex = 7;
             // 
             // groupBox9
@@ -626,12 +679,13 @@
             groupBox9.BackColor = SystemColors.ButtonFace;
             groupBox9.Controls.Add(label3);
             groupBox9.Controls.Add(flowLayoutPanel7);
+            groupBox9.Controls.Add(groupBoxQty);
             groupBox9.FlatStyle = FlatStyle.System;
             groupBox9.Location = new Point(696, 13);
             groupBox9.Margin = new Padding(15, 3, 15, 3);
             groupBox9.Name = "groupBox9";
             groupBox9.RightToLeft = RightToLeft.No;
-            groupBox9.Size = new Size(206, 405);
+            groupBox9.Size = new Size(206, 488);
             groupBox9.TabIndex = 3;
             groupBox9.TabStop = false;
             // 
@@ -796,31 +850,6 @@
             checkBoxOlhal.Text = "OLHAL";
             checkBoxOlhal.UseVisualStyleBackColor = true;
             // 
-            // gbxCapotAngle
-            // 
-            gbxCapotAngle.Controls.Add(comboBoxCapotAngles);
-            gbxCapotAngle.Location = new Point(10, 306);
-            gbxCapotAngle.Margin = new Padding(7, 6, 5, 6);
-            gbxCapotAngle.Name = "gbxCapotAngle";
-            gbxCapotAngle.Padding = new Padding(7, 8, 7, 8);
-            gbxCapotAngle.Size = new Size(211, 61);
-            gbxCapotAngle.TabIndex = 7;
-            gbxCapotAngle.TabStop = false;
-            gbxCapotAngle.Text = "Capot Angle";
-            gbxCapotAngle.Visible = false;
-            // 
-            // comboBoxCapotAngles
-            // 
-            comboBoxCapotAngles.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            comboBoxCapotAngles.AutoCompleteSource = AutoCompleteSource.ListItems;
-            comboBoxCapotAngles.Dock = DockStyle.Fill;
-            comboBoxCapotAngles.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxCapotAngles.FormattingEnabled = true;
-            comboBoxCapotAngles.Location = new Point(7, 25);
-            comboBoxCapotAngles.Name = "comboBoxCapotAngles";
-            comboBoxCapotAngles.Size = new Size(197, 25);
-            comboBoxCapotAngles.TabIndex = 0;
-            // 
             // SampleDetailsView
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -829,7 +858,7 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = SystemColors.Control;
             CancelButton = btnCancel;
-            ClientSize = new Size(1040, 545);
+            ClientSize = new Size(1040, 591);
             Controls.Add(flowLayoutPanel6);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 9.5F);
@@ -856,6 +885,7 @@
             flowLayoutPanel1.PerformLayout();
             FLP_Main.ResumeLayout(false);
             FLP_Main.PerformLayout();
+            gbxCapotAngle.ResumeLayout(false);
             gbxClipColor.ResumeLayout(false);
             groupBox3.ResumeLayout(false);
             groupBox5.ResumeLayout(false);
@@ -866,6 +896,8 @@
             groupBox6.PerformLayout();
             flowLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel3.PerformLayout();
+            groupBoxQty.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numUpDownQty).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox7.ResumeLayout(false);
@@ -881,7 +913,6 @@
             groupBox9.PerformLayout();
             flowLayoutPanel7.ResumeLayout(false);
             flowLayoutPanel7.PerformLayout();
-            gbxCapotAngle.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -946,5 +977,7 @@
         private ComboBox comboBoxClipColor;
         private GroupBox gbxCapotAngle;
         private ComboBox comboBoxCapotAngles;
+        private GroupBox groupBoxQty;
+        private NumericUpDown numUpDownQty;
     }
 }

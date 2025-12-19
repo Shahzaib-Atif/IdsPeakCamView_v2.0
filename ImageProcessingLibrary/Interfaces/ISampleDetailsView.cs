@@ -34,6 +34,7 @@ namespace ImageProcessingLibrary.Interfaces
         string OBS { get; }
         string ClipColor { get; }
         string CapotAngle { get; }
+        int Quantity { get; }
 
 
         bool Clip { get; }

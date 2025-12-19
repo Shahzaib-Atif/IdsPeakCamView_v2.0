@@ -49,6 +49,7 @@ namespace simple_ids_cam_view.Services
             // Get connector details
             var newSample = GetConnectorDetails();
             string connectorName = newSample?.BasicDetails.Codivmac;
+            string connectorType = newSample?.BasicDetails.Tipo;
 
             if (string.IsNullOrEmpty(connectorName)) return false;
 
@@ -56,7 +57,7 @@ namespace simple_ids_cam_view.Services
             this.GbxShowLoading.Visible = true;
 
             // Generate file path using connector name.
-            string filePath = GetDefaultConnectorPath(connectorName);
+            string filePath = GetDefaultConnectorPath(connectorName, connectorType);
 
             // Save image in local folder and database
             if (!await SaveImage(filePath, newSample)) return false;
@@ -250,8 +251,16 @@ namespace simple_ids_cam_view.Services
             return true;
         }
 
-        private static string GetDefaultConnectorPath(string connectorName)
+        private static string GetDefaultConnectorPath(string connectorName, string connectorType)
         {
+            if (connectorType == "")
+            {
+                connectorName = "C_" + connectorName;
+            }
+            else if (connectorType == "CORDON TERMINAL")
+            {
+                connectorName = "CT_" + connectorName;
+            }
             string filePath = Path.Combine(ProjectSettings.DefaultFolder, $"{connectorName}.jpeg");
 
             // Cancel the process if file already exists

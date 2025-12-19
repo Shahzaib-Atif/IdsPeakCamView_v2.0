@@ -80,6 +80,7 @@ namespace simple_ids_cam_view.Presenters
                 Tipo = _view.Tipo,
                 Cor = _view.CorValue ?? "",
                 Vias = _view.ViasValue ?? "",
+                Qty = _view.Quantity,
             };
 
             // Validate basic model
