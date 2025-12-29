@@ -1,4 +1,6 @@
-﻿namespace TriCamPylonView.UI
+﻿using ImageProcessingLibrary.Helpers;
+
+namespace TriCamPylonView.UI
 {
     partial class ImageQualityForm
     {
@@ -63,11 +65,16 @@
             // 
             // btnSave
             // 
-            btnSave.BackColor = Color.YellowGreen;
+            btnSave.BackColor = UIColors.ButtonSuccess;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.ForeColor = Color.White;
+            btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnSave.Cursor = Cursors.Hand;
             btnSave.Location = new Point(45, 125);
             btnSave.Margin = new Padding(4, 3, 4, 3);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(88, 36);
+            btnSave.Size = new Size(90, 36);
             btnSave.TabIndex = 2;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = false;
@@ -75,12 +82,17 @@
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.RosyBrown;
+            btnCancel.BackColor = UIColors.ButtonCancel;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.ForeColor = UIColors.TextPrimary;
+            btnCancel.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnCancel.Cursor = Cursors.Hand;
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Location = new Point(181, 125);
             btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(88, 36);
+            btnCancel.Size = new Size(90, 36);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = false;
@@ -89,6 +101,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 14F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = UIColors.Background;
             CancelButton = btnCancel;
             ClientSize = new Size(328, 193);
             Controls.Add(btnSave);

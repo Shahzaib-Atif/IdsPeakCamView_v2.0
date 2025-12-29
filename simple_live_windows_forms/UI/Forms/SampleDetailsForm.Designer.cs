@@ -1,4 +1,6 @@
-﻿namespace simple_ids_cam_view.UI.Forms
+﻿using ImageProcessingLibrary.Helpers;
+
+namespace simple_ids_cam_view.UI.Forms
 {
     partial class SampleDetailsForm
     {
@@ -84,25 +86,35 @@
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.RosyBrown;
+            btnCancel.BackColor = UIColors.ButtonCancel;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.ForeColor = UIColors.TextPrimary;
+            btnCancel.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnCancel.Cursor = Cursors.Hand;
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Dock = DockStyle.Right;
             btnCancel.Location = new Point(192, 6);
             btnCancel.Margin = new Padding(1, 11, 10, 11);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(73, 38);
+            btnCancel.Size = new Size(85, 38);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = false;
             // 
             // btnSave
             // 
-            btnSave.BackColor = Color.YellowGreen;
+            btnSave.BackColor = UIColors.ButtonSuccess;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.ForeColor = Color.White;
+            btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnSave.Cursor = Cursors.Hand;
             btnSave.Dock = DockStyle.Left;
             btnSave.Location = new Point(8, 6);
             btnSave.Margin = new Padding(1, 11, 10, 11);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(74, 38);
+            btnSave.Size = new Size(85, 38);
             btnSave.TabIndex = 0;
             btnSave.Text = "OK";
             btnSave.UseVisualStyleBackColor = false;
@@ -346,6 +358,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BackColor = UIColors.Background;
             CancelButton = btnCancel;
             ClientSize = new Size(324, 568);
             Controls.Add(FLP_Main);

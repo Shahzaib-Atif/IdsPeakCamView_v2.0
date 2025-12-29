@@ -1,4 +1,6 @@
-﻿namespace simple_ids_cam_view.UI.Forms
+﻿using ImageProcessingLibrary.Helpers;
+
+namespace simple_ids_cam_view.UI.Forms
 {
     partial class SampleDetailsView
     {
@@ -143,23 +145,33 @@
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.RosyBrown;
+            btnCancel.BackColor = UIColors.ButtonCancel;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.ForeColor = UIColors.TextPrimary;
+            btnCancel.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnCancel.Cursor = Cursors.Hand;
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Location = new Point(497, 4);
             btnCancel.Margin = new Padding(1, 11, 10, 11);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(79, 39);
+            btnCancel.Size = new Size(90, 39);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = false;
             // 
             // btnSave
             // 
-            btnSave.BackColor = Color.YellowGreen;
+            btnSave.BackColor = UIColors.ButtonSuccess;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.ForeColor = Color.White;
+            btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnSave.Cursor = Cursors.Hand;
             btnSave.Location = new Point(350, 4);
             btnSave.Margin = new Padding(1, 11, 10, 11);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(80, 39);
+            btnSave.Size = new Size(90, 39);
             btnSave.TabIndex = 0;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = false;
@@ -168,11 +180,13 @@
             // gbxVias
             // 
             gbxVias.Controls.Add(comboBoxVias);
+            gbxVias.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            gbxVias.ForeColor = UIColors.Primary;
             gbxVias.Location = new Point(10, 233);
-            gbxVias.Margin = new Padding(7, 6, 5, 6);
+            gbxVias.Margin = new Padding(10, 8, 8, 8);
             gbxVias.Name = "gbxVias";
-            gbxVias.Padding = new Padding(7, 8, 7, 8);
-            gbxVias.Size = new Size(211, 61);
+            gbxVias.Padding = new Padding(12, 14, 12, 12);
+            gbxVias.Size = new Size(211, 65);
             gbxVias.TabIndex = 5;
             gbxVias.TabStop = false;
             gbxVias.Text = "Vias *";
@@ -181,20 +195,24 @@
             // 
             comboBoxVias.Dock = DockStyle.Fill;
             comboBoxVias.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxVias.Font = new Font("Segoe UI", 10F);
+            comboBoxVias.FlatStyle = FlatStyle.Flat;
             comboBoxVias.FormattingEnabled = true;
-            comboBoxVias.Location = new Point(7, 25);
+            comboBoxVias.Location = new Point(12, 31);
             comboBoxVias.Name = "comboBoxVias";
-            comboBoxVias.Size = new Size(197, 25);
+            comboBoxVias.Size = new Size(187, 26);
             comboBoxVias.TabIndex = 0;
             // 
             // gbxCor
             // 
             gbxCor.Controls.Add(comboBoxCor);
+            gbxCor.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            gbxCor.ForeColor = UIColors.Primary;
             gbxCor.Location = new Point(10, 160);
-            gbxCor.Margin = new Padding(7, 6, 5, 6);
+            gbxCor.Margin = new Padding(10, 8, 8, 8);
             gbxCor.Name = "gbxCor";
-            gbxCor.Padding = new Padding(7, 8, 7, 8);
-            gbxCor.Size = new Size(211, 61);
+            gbxCor.Padding = new Padding(12, 14, 12, 12);
+            gbxCor.Size = new Size(211, 65);
             gbxCor.TabIndex = 4;
             gbxCor.TabStop = false;
             gbxCor.Text = "Cor *";
@@ -205,10 +223,12 @@
             comboBoxCor.AutoCompleteSource = AutoCompleteSource.ListItems;
             comboBoxCor.Dock = DockStyle.Fill;
             comboBoxCor.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCor.Font = new Font("Segoe UI", 10F);
+            comboBoxCor.FlatStyle = FlatStyle.Flat;
             comboBoxCor.FormattingEnabled = true;
-            comboBoxCor.Location = new Point(7, 25);
+            comboBoxCor.Location = new Point(12, 31);
             comboBoxCor.Name = "comboBoxCor";
-            comboBoxCor.Size = new Size(197, 25);
+            comboBoxCor.Size = new Size(187, 26);
             comboBoxCor.TabIndex = 0;
             // 
             // gbxDiameter
@@ -307,11 +327,13 @@
             // gbxType
             // 
             gbxType.Controls.Add(comboBoxTipo);
+            gbxType.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            gbxType.ForeColor = UIColors.Primary;
             gbxType.Location = new Point(10, 87);
-            gbxType.Margin = new Padding(7, 6, 5, 6);
+            gbxType.Margin = new Padding(10, 8, 8, 8);
             gbxType.Name = "gbxType";
-            gbxType.Padding = new Padding(7, 8, 7, 8);
-            gbxType.Size = new Size(211, 61);
+            gbxType.Padding = new Padding(12, 14, 12, 12);
+            gbxType.Size = new Size(211, 65);
             gbxType.TabIndex = 2;
             gbxType.TabStop = false;
             gbxType.Text = "Tipo *";
@@ -322,11 +344,13 @@
             comboBoxTipo.AutoCompleteSource = AutoCompleteSource.ListItems;
             comboBoxTipo.Dock = DockStyle.Fill;
             comboBoxTipo.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxTipo.Font = new Font("Segoe UI", 10F);
+            comboBoxTipo.FlatStyle = FlatStyle.Flat;
             comboBoxTipo.FormattingEnabled = true;
             comboBoxTipo.Items.AddRange(new object[] { "conector", "clip", "olhal", "grommet" });
-            comboBoxTipo.Location = new Point(7, 25);
+            comboBoxTipo.Location = new Point(12, 31);
             comboBoxTipo.Name = "comboBoxTipo";
-            comboBoxTipo.Size = new Size(197, 25);
+            comboBoxTipo.Size = new Size(187, 26);
             comboBoxTipo.TabIndex = 0;
             comboBoxTipo.SelectedIndexChanged += ComboBoxTipo_SelectedIndexChanged;
             // 
@@ -334,11 +358,13 @@
             // 
             gbxName.AutoSize = true;
             gbxName.Controls.Add(flowLayoutPanel1);
+            gbxName.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            gbxName.ForeColor = UIColors.Primary;
             gbxName.Location = new Point(10, 9);
-            gbxName.Margin = new Padding(7, 6, 7, 6);
+            gbxName.Margin = new Padding(10, 8, 8, 8);
             gbxName.Name = "gbxName";
-            gbxName.Padding = new Padding(1, 1, 1, 2);
-            gbxName.Size = new Size(214, 66);
+            gbxName.Padding = new Padding(12, 14, 12, 12);
+            gbxName.Size = new Size(214, 70);
             gbxName.TabIndex = 1;
             gbxName.TabStop = false;
             gbxName.Text = "Pos Id *";
@@ -357,11 +383,12 @@
             // 
             // textBoxPosId
             // 
+            textBoxPosId.Font = new Font("Segoe UI", 10F);
             textBoxPosId.Location = new Point(9, 13);
             textBoxPosId.Margin = new Padding(3, 6, 3, 3);
             textBoxPosId.Name = "textBoxPosId";
             textBoxPosId.PlaceholderText = "Enter Pos Id ";
-            textBoxPosId.Size = new Size(194, 24);
+            textBoxPosId.Size = new Size(194, 25);
             textBoxPosId.TabIndex = 0;
             textBoxPosId.KeyDown += TextBoxPosId_KeyDown;
             // 
@@ -441,11 +468,13 @@
             // 
             groupBox3.Anchor = AnchorStyles.None;
             groupBox3.Controls.Add(comboBoxManufact);
+            groupBox3.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBox3.ForeColor = UIColors.Primary;
             groupBox3.Location = new Point(29, 12);
-            groupBox3.Margin = new Padding(7, 6, 5, 6);
+            groupBox3.Margin = new Padding(10, 8, 8, 8);
             groupBox3.Name = "groupBox3";
-            groupBox3.Padding = new Padding(7, 8, 7, 8);
-            groupBox3.Size = new Size(246, 61);
+            groupBox3.Padding = new Padding(12, 14, 12, 12);
+            groupBox3.Size = new Size(246, 65);
             groupBox3.TabIndex = 6;
             groupBox3.TabStop = false;
             groupBox3.Text = "Manufacturer";
@@ -454,21 +483,25 @@
             // 
             comboBoxManufact.Dock = DockStyle.Fill;
             comboBoxManufact.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxManufact.Font = new Font("Segoe UI", 10F);
+            comboBoxManufact.FlatStyle = FlatStyle.Flat;
             comboBoxManufact.FormattingEnabled = true;
-            comboBoxManufact.Location = new Point(7, 25);
+            comboBoxManufact.Location = new Point(12, 31);
             comboBoxManufact.Name = "comboBoxManufact";
-            comboBoxManufact.Size = new Size(232, 25);
+            comboBoxManufact.Size = new Size(222, 26);
             comboBoxManufact.TabIndex = 0;
             // 
             // groupBox5
             // 
             groupBox5.AutoSize = true;
             groupBox5.Controls.Add(flowLayoutPanel2);
+            groupBox5.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBox5.ForeColor = UIColors.Primary;
             groupBox5.Location = new Point(27, 85);
-            groupBox5.Margin = new Padding(7, 6, 7, 6);
+            groupBox5.Margin = new Padding(10, 8, 8, 8);
             groupBox5.Name = "groupBox5";
-            groupBox5.Padding = new Padding(1, 1, 1, 2);
-            groupBox5.Size = new Size(249, 66);
+            groupBox5.Padding = new Padding(12, 14, 12, 12);
+            groupBox5.Size = new Size(249, 70);
             groupBox5.TabIndex = 7;
             groupBox5.TabStop = false;
             groupBox5.Text = "Ref. Manufacturer";
@@ -487,22 +520,25 @@
             // 
             // textBoxRefManufact
             // 
+            textBoxRefManufact.Font = new Font("Segoe UI", 10F);
             textBoxRefManufact.Location = new Point(9, 13);
             textBoxRefManufact.Margin = new Padding(3, 6, 3, 3);
             textBoxRefManufact.Name = "textBoxRefManufact";
             textBoxRefManufact.PlaceholderText = "Enter Pos Id ";
-            textBoxRefManufact.Size = new Size(229, 24);
+            textBoxRefManufact.Size = new Size(229, 25);
             textBoxRefManufact.TabIndex = 0;
             // 
             // groupBox6
             // 
             groupBox6.AutoSize = true;
             groupBox6.Controls.Add(flowLayoutPanel3);
+            groupBox6.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBox6.ForeColor = UIColors.Primary;
             groupBox6.Location = new Point(27, 163);
-            groupBox6.Margin = new Padding(7, 6, 7, 6);
+            groupBox6.Margin = new Padding(10, 8, 8, 8);
             groupBox6.Name = "groupBox6";
-            groupBox6.Padding = new Padding(1, 1, 1, 2);
-            groupBox6.Size = new Size(249, 66);
+            groupBox6.Padding = new Padding(12, 14, 12, 12);
+            groupBox6.Size = new Size(249, 70);
             groupBox6.TabIndex = 8;
             groupBox6.TabStop = false;
             groupBox6.Text = "Designation";
@@ -521,21 +557,24 @@
             // 
             // textBoxDesignation
             // 
+            textBoxDesignation.Font = new Font("Segoe UI", 10F);
             textBoxDesignation.Location = new Point(9, 13);
             textBoxDesignation.Margin = new Padding(3, 6, 3, 3);
             textBoxDesignation.Name = "textBoxDesignation";
-            textBoxDesignation.PlaceholderText = "Enter Pos Id ";
-            textBoxDesignation.Size = new Size(229, 24);
+            textBoxDesignation.PlaceholderText = "Enter Designation";
+            textBoxDesignation.Size = new Size(229, 25);
             textBoxDesignation.TabIndex = 0;
             // 
             // groupBoxQty
             // 
             groupBoxQty.Controls.Add(numUpDownQty);
+            groupBoxQty.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBoxQty.ForeColor = UIColors.Primary;
             groupBoxQty.Location = new Point(10, 401);
-            groupBoxQty.Margin = new Padding(7, 6, 5, 6);
+            groupBoxQty.Margin = new Padding(10, 8, 8, 8);
             groupBoxQty.Name = "groupBoxQty";
-            groupBoxQty.Padding = new Padding(7, 8, 7, 8);
-            groupBoxQty.Size = new Size(110, 61);
+            groupBoxQty.Padding = new Padding(12, 14, 12, 12);
+            groupBoxQty.Size = new Size(110, 65);
             groupBoxQty.TabIndex = 9;
             groupBoxQty.TabStop = false;
             groupBoxQty.Text = "Quantity";
@@ -543,11 +582,13 @@
             // groupBoxFamily
             // 
             groupBoxFamily.Controls.Add(numUpDownFamily);
+            groupBoxFamily.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBoxFamily.ForeColor = UIColors.Primary;
             groupBoxFamily.Location = new Point(127, 401);
-            groupBoxFamily.Margin = new Padding(7, 6, 5, 6);
+            groupBoxFamily.Margin = new Padding(10, 8, 8, 8);
             groupBoxFamily.Name = "groupBoxFamily";
-            groupBoxFamily.Padding = new Padding(7, 8, 7, 8);
-            groupBoxFamily.Size = new Size(110, 61);
+            groupBoxFamily.Padding = new Padding(12, 14, 12, 12);
+            groupBoxFamily.Size = new Size(110, 65);
             groupBoxFamily.TabIndex = 10;
             groupBoxFamily.TabStop = false;
             groupBoxFamily.Text = "Family";
@@ -656,11 +697,13 @@
             // 
             groupBox8.AutoSize = true;
             groupBox8.Controls.Add(flowLayoutPanel5);
+            groupBox8.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBox8.ForeColor = UIColors.Primary;
             groupBox8.Location = new Point(27, 241);
-            groupBox8.Margin = new Padding(7, 6, 7, 6);
+            groupBox8.Margin = new Padding(10, 8, 8, 8);
             groupBox8.Name = "groupBox8";
-            groupBox8.Padding = new Padding(1, 1, 1, 2);
-            groupBox8.Size = new Size(249, 135);
+            groupBox8.Padding = new Padding(12, 14, 12, 12);
+            groupBox8.Size = new Size(249, 140);
             groupBox8.TabIndex = 9;
             groupBox8.TabStop = false;
             groupBox8.Text = "Observation";
@@ -679,8 +722,8 @@
             // 
             // textBoxOBS
             // 
-            textBoxOBS.BorderStyle = BorderStyle.FixedSingle;
-            textBoxOBS.Location = new Point(9, 10);
+            textBoxOBS.Font = new Font("Segoe UI", 10F);
+            textBoxOBS.Location = new Point(9, 13);
             textBoxOBS.Name = "textBoxOBS";
             textBoxOBS.Size = new Size(229, 96);
             textBoxOBS.TabIndex = 1;
@@ -885,7 +928,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BackColor = SystemColors.Control;
+            BackColor = UIColors.Background;
             CancelButton = btnCancel;
             ClientSize = new Size(1040, 591);
             Controls.Add(flowLayoutPanel6);

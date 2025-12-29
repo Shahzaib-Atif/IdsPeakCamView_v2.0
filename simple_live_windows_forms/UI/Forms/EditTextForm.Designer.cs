@@ -1,4 +1,6 @@
-﻿namespace simple_ids_cam_view
+﻿using ImageProcessingLibrary.Helpers;
+
+namespace simple_ids_cam_view
 {
     partial class EditTextForm
     {
@@ -65,7 +67,11 @@
             // btnUpdate
             // 
             btnUpdate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnUpdate.BackColor = Color.YellowGreen;
+            btnUpdate.BackColor = UIColors.ButtonSuccess;
+            btnUpdate.FlatStyle = FlatStyle.Flat;
+            btnUpdate.FlatAppearance.BorderSize = 0;
+            btnUpdate.ForeColor = Color.White;
+            btnUpdate.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             btnUpdate.Cursor = Cursors.Hand;
             btnUpdate.Location = new Point(97, 300);
             btnUpdate.Margin = new Padding(4, 3, 4, 3);
@@ -127,6 +133,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = UIColors.Background;
             ClientSize = new Size(401, 378);
             Controls.Add(lblSampleText);
             Controls.Add(SelectFontBtn);

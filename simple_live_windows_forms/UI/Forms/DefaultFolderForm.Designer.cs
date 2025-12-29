@@ -1,4 +1,6 @@
-﻿namespace simple_ids_cam_view.UI.Forms
+﻿using ImageProcessingLibrary.Helpers;
+
+namespace simple_ids_cam_view.UI.Forms
 {
     partial class DefaultFolderForm
     {
@@ -37,23 +39,33 @@
             // 
             // CancelBtn
             // 
-            CancelBtn.BackColor = Color.RosyBrown;
+            CancelBtn.BackColor = UIColors.ButtonCancel;
+            CancelBtn.FlatStyle = FlatStyle.Flat;
+            CancelBtn.FlatAppearance.BorderSize = 0;
+            CancelBtn.ForeColor = UIColors.TextPrimary;
+            CancelBtn.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            CancelBtn.Cursor = Cursors.Hand;
             CancelBtn.DialogResult = DialogResult.Cancel;
             CancelBtn.Location = new Point(212, 151);
             CancelBtn.Margin = new Padding(4, 3, 4, 3);
             CancelBtn.Name = "CancelBtn";
-            CancelBtn.Size = new Size(88, 43);
+            CancelBtn.Size = new Size(90, 43);
             CancelBtn.TabIndex = 2;
             CancelBtn.Text = "Cancel";
             CancelBtn.UseVisualStyleBackColor = false;
             // 
             // SaveBtn
             // 
-            SaveBtn.BackColor = Color.YellowGreen;
+            SaveBtn.BackColor = UIColors.ButtonSuccess;
+            SaveBtn.FlatStyle = FlatStyle.Flat;
+            SaveBtn.FlatAppearance.BorderSize = 0;
+            SaveBtn.ForeColor = Color.White;
+            SaveBtn.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            SaveBtn.Cursor = Cursors.Hand;
             SaveBtn.Location = new Point(84, 151);
             SaveBtn.Margin = new Padding(4, 3, 4, 3);
             SaveBtn.Name = "SaveBtn";
-            SaveBtn.Size = new Size(88, 43);
+            SaveBtn.Size = new Size(90, 43);
             SaveBtn.TabIndex = 1;
             SaveBtn.Text = "Save";
             SaveBtn.UseVisualStyleBackColor = false;
@@ -87,6 +99,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = UIColors.Background;
             CancelButton = CancelBtn;
             ClientSize = new Size(413, 228);
             Controls.Add(UpdateFolderBtn);

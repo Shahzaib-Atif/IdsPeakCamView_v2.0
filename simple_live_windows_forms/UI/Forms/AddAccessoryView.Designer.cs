@@ -1,4 +1,6 @@
-﻿namespace simple_ids_cam_view.UI.Forms
+﻿using ImageProcessingLibrary.Helpers;
+
+namespace simple_ids_cam_view.UI.Forms
 {
     partial class AddAccessoryView
     {
@@ -83,11 +85,13 @@
             // GbxConnName
             // 
             GbxConnName.Controls.Add(textBoxName);
+            GbxConnName.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            GbxConnName.ForeColor = UIColors.Primary;
             GbxConnName.Location = new Point(27, 12);
-            GbxConnName.Margin = new Padding(7, 6, 5, 6);
+            GbxConnName.Margin = new Padding(10, 8, 8, 8);
             GbxConnName.Name = "GbxConnName";
-            GbxConnName.Padding = new Padding(7, 8, 7, 8);
-            GbxConnName.Size = new Size(189, 61);
+            GbxConnName.Padding = new Padding(12, 14, 12, 12);
+            GbxConnName.Size = new Size(189, 65);
             GbxConnName.TabIndex = 7;
             GbxConnName.TabStop = false;
             GbxConnName.Text = "Connector Name *";
@@ -95,21 +99,24 @@
             // textBoxName
             // 
             textBoxName.Dock = DockStyle.Fill;
-            textBoxName.Location = new Point(7, 25);
+            textBoxName.Font = new Font("Segoe UI", 10F);
+            textBoxName.Location = new Point(12, 31);
             textBoxName.Margin = new Padding(3, 6, 3, 3);
             textBoxName.Name = "textBoxName";
             textBoxName.PlaceholderText = "Add connector name";
-            textBoxName.Size = new Size(175, 24);
+            textBoxName.Size = new Size(165, 25);
             textBoxName.TabIndex = 2;
             // 
             // groupBox1
             // 
             groupBox1.Controls.Add(textBoxRefDV);
+            groupBox1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBox1.ForeColor = UIColors.Primary;
             groupBox1.Location = new Point(27, 158);
-            groupBox1.Margin = new Padding(7, 6, 5, 6);
+            groupBox1.Margin = new Padding(10, 8, 8, 8);
             groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(7, 8, 7, 8);
-            groupBox1.Size = new Size(189, 61);
+            groupBox1.Padding = new Padding(12, 14, 12, 12);
+            groupBox1.Size = new Size(189, 65);
             groupBox1.TabIndex = 8;
             groupBox1.TabStop = false;
             groupBox1.Text = "Ref DV";
@@ -117,11 +124,12 @@
             // textBoxRefDV
             // 
             textBoxRefDV.Dock = DockStyle.Fill;
-            textBoxRefDV.Location = new Point(7, 25);
+            textBoxRefDV.Font = new Font("Segoe UI", 10F);
+            textBoxRefDV.Location = new Point(12, 31);
             textBoxRefDV.Margin = new Padding(3, 6, 3, 3);
             textBoxRefDV.Name = "textBoxRefDV";
             textBoxRefDV.PlaceholderText = "Add some reference";
-            textBoxRefDV.Size = new Size(175, 24);
+            textBoxRefDV.Size = new Size(165, 25);
             textBoxRefDV.TabIndex = 1;
             // 
             // checkBoxColorAssociated
@@ -139,11 +147,13 @@
             // groupBox2
             // 
             groupBox2.Controls.Add(numUpDownQty);
+            groupBox2.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBox2.ForeColor = UIColors.Primary;
             groupBox2.Location = new Point(27, 231);
-            groupBox2.Margin = new Padding(7, 6, 5, 6);
+            groupBox2.Margin = new Padding(10, 8, 8, 8);
             groupBox2.Name = "groupBox2";
-            groupBox2.Padding = new Padding(7, 8, 7, 8);
-            groupBox2.Size = new Size(105, 61);
+            groupBox2.Padding = new Padding(12, 14, 12, 12);
+            groupBox2.Size = new Size(105, 65);
             groupBox2.TabIndex = 9;
             groupBox2.TabStop = false;
             groupBox2.Text = "Quantity";
@@ -161,11 +171,13 @@
             // gbxCor
             // 
             gbxCor.Controls.Add(textBoxReference);
+            gbxCor.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            gbxCor.ForeColor = UIColors.Primary;
             gbxCor.Location = new Point(27, 85);
-            gbxCor.Margin = new Padding(7, 6, 5, 6);
+            gbxCor.Margin = new Padding(10, 8, 8, 8);
             gbxCor.Name = "gbxCor";
-            gbxCor.Padding = new Padding(7, 8, 7, 8);
-            gbxCor.Size = new Size(189, 61);
+            gbxCor.Padding = new Padding(12, 14, 12, 12);
+            gbxCor.Size = new Size(189, 65);
             gbxCor.TabIndex = 4;
             gbxCor.TabStop = false;
             gbxCor.Text = "Reference *";
@@ -173,11 +185,12 @@
             // textBoxReference
             // 
             textBoxReference.Dock = DockStyle.Fill;
-            textBoxReference.Location = new Point(7, 25);
+            textBoxReference.Font = new Font("Segoe UI", 10F);
+            textBoxReference.Location = new Point(12, 31);
             textBoxReference.Margin = new Padding(3, 6, 3, 3);
             textBoxReference.Name = "textBoxReference";
             textBoxReference.PlaceholderText = "Add some reference";
-            textBoxReference.Size = new Size(175, 24);
+            textBoxReference.Size = new Size(165, 25);
             textBoxReference.TabIndex = 1;
             // 
             // panel1
@@ -195,23 +208,33 @@
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.RosyBrown;
+            btnCancel.BackColor = UIColors.ButtonCancel;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.ForeColor = UIColors.TextPrimary;
+            btnCancel.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnCancel.Cursor = Cursors.Hand;
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Location = new Point(281, 5);
             btnCancel.Margin = new Padding(1, 11, 10, 11);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(73, 38);
+            btnCancel.Size = new Size(85, 38);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = false;
             // 
             // btnSave
             // 
-            btnSave.BackColor = Color.YellowGreen;
+            btnSave.BackColor = UIColors.ButtonSuccess;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.ForeColor = Color.White;
+            btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnSave.Cursor = Cursors.Hand;
             btnSave.Location = new Point(160, 5);
             btnSave.Margin = new Padding(1, 11, 10, 11);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(74, 38);
+            btnSave.Size = new Size(85, 38);
             btnSave.TabIndex = 0;
             btnSave.Text = "OK";
             btnSave.UseVisualStyleBackColor = false;
@@ -331,6 +354,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BackColor = UIColors.Background;
             CancelButton = btnCancel;
             ClientSize = new Size(536, 367);
             Controls.Add(flowLayoutPanel2);
