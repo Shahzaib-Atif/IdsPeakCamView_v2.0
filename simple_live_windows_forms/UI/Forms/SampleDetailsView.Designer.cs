@@ -64,6 +64,8 @@
             textBoxDesignation = new TextBox();
             groupBoxQty = new GroupBox();
             numUpDownQty = new NumericUpDown();
+            groupBoxFamily = new GroupBox();
+            numUpDownFamily = new NumericUpDown();
             toolTip1 = new ToolTip(components);
             groupBox1 = new GroupBox();
             label1 = new Label();
@@ -113,6 +115,8 @@
             flowLayoutPanel3.SuspendLayout();
             groupBoxQty.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numUpDownQty).BeginInit();
+            groupBoxFamily.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numUpDownFamily).BeginInit();
             groupBox1.SuspendLayout();
             groupBox7.SuspendLayout();
             flowLayoutPanel4.SuspendLayout();
@@ -536,6 +540,18 @@
             groupBoxQty.TabStop = false;
             groupBoxQty.Text = "Quantity";
             // 
+            // groupBoxFamily
+            // 
+            groupBoxFamily.Controls.Add(numUpDownFamily);
+            groupBoxFamily.Location = new Point(127, 401);
+            groupBoxFamily.Margin = new Padding(7, 6, 5, 6);
+            groupBoxFamily.Name = "groupBoxFamily";
+            groupBoxFamily.Padding = new Padding(7, 8, 7, 8);
+            groupBoxFamily.Size = new Size(110, 61);
+            groupBoxFamily.TabIndex = 10;
+            groupBoxFamily.TabStop = false;
+            groupBoxFamily.Text = "Family";
+            // 
             // numUpDownQty
             // 
             numUpDownQty.Dock = DockStyle.Fill;
@@ -547,6 +563,18 @@
             numUpDownQty.TabIndex = 0;
             numUpDownQty.TextAlign = HorizontalAlignment.Center;
             numUpDownQty.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // numUpDownFamily
+            // 
+            numUpDownFamily.Dock = DockStyle.Fill;
+            numUpDownFamily.Font = new Font("Segoe UI", 10F);
+            numUpDownFamily.Location = new Point(7, 25);
+            numUpDownFamily.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numUpDownFamily.Name = "numUpDownFamily";
+            numUpDownFamily.Size = new Size(96, 25);
+            numUpDownFamily.TabIndex = 0;
+            numUpDownFamily.TextAlign = HorizontalAlignment.Center;
+            numUpDownFamily.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // groupBox1
             // 
@@ -679,6 +707,7 @@
             groupBox9.BackColor = SystemColors.ButtonFace;
             groupBox9.Controls.Add(label3);
             groupBox9.Controls.Add(flowLayoutPanel7);
+            groupBox9.Controls.Add(groupBoxFamily);
             groupBox9.Controls.Add(groupBoxQty);
             groupBox9.FlatStyle = FlatStyle.System;
             groupBox9.Location = new Point(696, 13);
@@ -898,6 +927,8 @@
             flowLayoutPanel3.PerformLayout();
             groupBoxQty.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numUpDownQty).EndInit();
+            groupBoxFamily.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numUpDownFamily).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox7.ResumeLayout(false);
@@ -979,5 +1010,7 @@
         private ComboBox comboBoxCapotAngles;
         private GroupBox groupBoxQty;
         private NumericUpDown numUpDownQty;
+        private GroupBox groupBoxFamily;
+        private NumericUpDown numUpDownFamily;
     }
 }

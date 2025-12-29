@@ -35,6 +35,7 @@ namespace ImageProcessingLibrary.Interfaces
         string ClipColor { get; }
         string CapotAngle { get; }
         int Quantity { get; }
+        int Family { get; }
 
 
         bool Clip { get; }

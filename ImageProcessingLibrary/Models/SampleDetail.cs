@@ -87,6 +87,7 @@ namespace ImageProcessingLibrary.Models
         public string OBS { get; set; }
         public string ClipColor { get; set; }
         public string CapotAngle { get; set; }
+        public int Family { get; set; }
     }
 
     public struct ComponentsDetails

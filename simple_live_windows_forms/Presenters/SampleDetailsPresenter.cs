@@ -110,6 +110,7 @@ namespace simple_ids_cam_view.Presenters
                 OBS = _view.OBS,
                 ClipColor = _view.ClipColor,
                 CapotAngle = _view.CapotAngle,
+                Family = _view.Family,
             };
 
             var componentDetails = new ComponentsDetails

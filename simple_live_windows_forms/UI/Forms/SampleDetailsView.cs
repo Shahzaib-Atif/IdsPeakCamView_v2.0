@@ -22,6 +22,7 @@ namespace simple_ids_cam_view.UI.Forms
         public string CorValue => comboBoxCor.SelectedValue?.ToString();
         public string ViasValue => comboBoxVias.SelectedValue?.ToString();
         public int Quantity => (int)numUpDownQty.Value;
+        public int Family => (int)numUpDownFamily.Value;
         public decimal InternalDiameter => numericIntDia.Value;
         public decimal ExternalDiameter => numericExtDia.Value;
         public decimal Thickness => numericThickness.Value;
