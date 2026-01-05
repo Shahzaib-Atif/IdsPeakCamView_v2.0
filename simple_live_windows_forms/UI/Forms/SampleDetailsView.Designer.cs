@@ -145,13 +145,13 @@ namespace simple_ids_cam_view.UI.Forms
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = UIColors.ButtonCancel;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.FlatAppearance.BorderSize = 0;
-            btnCancel.ForeColor = UIColors.TextPrimary;
-            btnCancel.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnCancel.BackColor = Color.FromArgb(189, 195, 199);
             btnCancel.Cursor = Cursors.Hand;
             btnCancel.DialogResult = DialogResult.Cancel;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Segoe UI", 10F);
+            btnCancel.ForeColor = Color.FromArgb(44, 62, 80);
             btnCancel.Location = new Point(497, 4);
             btnCancel.Margin = new Padding(1, 11, 10, 11);
             btnCancel.Name = "btnCancel";
@@ -162,12 +162,12 @@ namespace simple_ids_cam_view.UI.Forms
             // 
             // btnSave
             // 
-            btnSave.BackColor = UIColors.ButtonSuccess;
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.ForeColor = Color.White;
-            btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            btnSave.BackColor = Color.FromArgb(39, 174, 96);
             btnSave.Cursor = Cursors.Hand;
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.Font = new Font("Segoe UI", 10F);
+            btnSave.ForeColor = Color.White;
             btnSave.Location = new Point(350, 4);
             btnSave.Margin = new Padding(1, 11, 10, 11);
             btnSave.Name = "btnSave";
@@ -181,8 +181,8 @@ namespace simple_ids_cam_view.UI.Forms
             // 
             gbxVias.Controls.Add(comboBoxVias);
             gbxVias.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            gbxVias.ForeColor = UIColors.Primary;
-            gbxVias.Location = new Point(10, 233);
+            gbxVias.ForeColor = Color.FromArgb(44, 62, 80);
+            gbxVias.Location = new Point(13, 280);
             gbxVias.Margin = new Padding(10, 8, 8, 8);
             gbxVias.Name = "gbxVias";
             gbxVias.Padding = new Padding(12, 14, 12, 12);
@@ -195,20 +195,20 @@ namespace simple_ids_cam_view.UI.Forms
             // 
             comboBoxVias.Dock = DockStyle.Fill;
             comboBoxVias.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxVias.Font = new Font("Segoe UI", 10F);
             comboBoxVias.FlatStyle = FlatStyle.Flat;
+            comboBoxVias.Font = new Font("Segoe UI", 10F);
             comboBoxVias.FormattingEnabled = true;
-            comboBoxVias.Location = new Point(12, 31);
+            comboBoxVias.Location = new Point(12, 32);
             comboBoxVias.Name = "comboBoxVias";
-            comboBoxVias.Size = new Size(187, 26);
+            comboBoxVias.Size = new Size(187, 25);
             comboBoxVias.TabIndex = 0;
             // 
             // gbxCor
             // 
             gbxCor.Controls.Add(comboBoxCor);
             gbxCor.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            gbxCor.ForeColor = UIColors.Primary;
-            gbxCor.Location = new Point(10, 160);
+            gbxCor.ForeColor = Color.FromArgb(44, 62, 80);
+            gbxCor.Location = new Point(13, 199);
             gbxCor.Margin = new Padding(10, 8, 8, 8);
             gbxCor.Name = "gbxCor";
             gbxCor.Padding = new Padding(12, 14, 12, 12);
@@ -223,18 +223,18 @@ namespace simple_ids_cam_view.UI.Forms
             comboBoxCor.AutoCompleteSource = AutoCompleteSource.ListItems;
             comboBoxCor.Dock = DockStyle.Fill;
             comboBoxCor.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxCor.Font = new Font("Segoe UI", 10F);
             comboBoxCor.FlatStyle = FlatStyle.Flat;
+            comboBoxCor.Font = new Font("Segoe UI", 10F);
             comboBoxCor.FormattingEnabled = true;
-            comboBoxCor.Location = new Point(12, 31);
+            comboBoxCor.Location = new Point(12, 32);
             comboBoxCor.Name = "comboBoxCor";
-            comboBoxCor.Size = new Size(187, 26);
+            comboBoxCor.Size = new Size(187, 25);
             comboBoxCor.TabIndex = 0;
             // 
             // gbxDiameter
             // 
             gbxDiameter.Controls.Add(FLP_Diameters);
-            gbxDiameter.Location = new Point(10, 452);
+            gbxDiameter.Location = new Point(10, 505);
             gbxDiameter.Margin = new Padding(7, 6, 5, 6);
             gbxDiameter.Name = "gbxDiameter";
             gbxDiameter.Size = new Size(267, 103);
@@ -328,8 +328,8 @@ namespace simple_ids_cam_view.UI.Forms
             // 
             gbxType.Controls.Add(comboBoxTipo);
             gbxType.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            gbxType.ForeColor = UIColors.Primary;
-            gbxType.Location = new Point(10, 87);
+            gbxType.ForeColor = Color.FromArgb(44, 62, 80);
+            gbxType.Location = new Point(13, 118);
             gbxType.Margin = new Padding(10, 8, 8, 8);
             gbxType.Name = "gbxType";
             gbxType.Padding = new Padding(12, 14, 12, 12);
@@ -344,13 +344,13 @@ namespace simple_ids_cam_view.UI.Forms
             comboBoxTipo.AutoCompleteSource = AutoCompleteSource.ListItems;
             comboBoxTipo.Dock = DockStyle.Fill;
             comboBoxTipo.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxTipo.Font = new Font("Segoe UI", 10F);
             comboBoxTipo.FlatStyle = FlatStyle.Flat;
+            comboBoxTipo.Font = new Font("Segoe UI", 10F);
             comboBoxTipo.FormattingEnabled = true;
             comboBoxTipo.Items.AddRange(new object[] { "conector", "clip", "olhal", "grommet" });
-            comboBoxTipo.Location = new Point(12, 31);
+            comboBoxTipo.Location = new Point(12, 32);
             comboBoxTipo.Name = "comboBoxTipo";
-            comboBoxTipo.Size = new Size(187, 26);
+            comboBoxTipo.Size = new Size(187, 25);
             comboBoxTipo.TabIndex = 0;
             comboBoxTipo.SelectedIndexChanged += ComboBoxTipo_SelectedIndexChanged;
             // 
@@ -359,12 +359,12 @@ namespace simple_ids_cam_view.UI.Forms
             gbxName.AutoSize = true;
             gbxName.Controls.Add(flowLayoutPanel1);
             gbxName.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            gbxName.ForeColor = UIColors.Primary;
-            gbxName.Location = new Point(10, 9);
+            gbxName.ForeColor = Color.FromArgb(44, 62, 80);
+            gbxName.Location = new Point(13, 11);
             gbxName.Margin = new Padding(10, 8, 8, 8);
             gbxName.Name = "gbxName";
             gbxName.Padding = new Padding(12, 14, 12, 12);
-            gbxName.Size = new Size(214, 70);
+            gbxName.Size = new Size(236, 91);
             gbxName.TabIndex = 1;
             gbxName.TabStop = false;
             gbxName.Text = "Pos Id *";
@@ -375,10 +375,10 @@ namespace simple_ids_cam_view.UI.Forms
             flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel1.Controls.Add(textBoxPosId);
             flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.Location = new Point(1, 18);
+            flowLayoutPanel1.Location = new Point(12, 32);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Padding = new Padding(6, 7, 6, 6);
-            flowLayoutPanel1.Size = new Size(212, 46);
+            flowLayoutPanel1.Size = new Size(212, 47);
             flowLayoutPanel1.TabIndex = 0;
             // 
             // textBoxPosId
@@ -410,14 +410,14 @@ namespace simple_ids_cam_view.UI.Forms
             FLP_Main.MinimumSize = new Size(200, 0);
             FLP_Main.Name = "FLP_Main";
             FLP_Main.Padding = new Padding(3);
-            FLP_Main.Size = new Size(289, 568);
+            FLP_Main.Size = new Size(289, 621);
             FLP_Main.TabIndex = 0;
             FLP_Main.WrapContents = false;
             // 
             // gbxCapotAngle
             // 
             gbxCapotAngle.Controls.Add(comboBoxCapotAngles);
-            gbxCapotAngle.Location = new Point(10, 306);
+            gbxCapotAngle.Location = new Point(10, 359);
             gbxCapotAngle.Margin = new Padding(7, 6, 5, 6);
             gbxCapotAngle.Name = "gbxCapotAngle";
             gbxCapotAngle.Padding = new Padding(7, 8, 7, 8);
@@ -442,7 +442,7 @@ namespace simple_ids_cam_view.UI.Forms
             // gbxClipColor
             // 
             gbxClipColor.Controls.Add(comboBoxClipColor);
-            gbxClipColor.Location = new Point(10, 379);
+            gbxClipColor.Location = new Point(10, 432);
             gbxClipColor.Margin = new Padding(7, 6, 5, 6);
             gbxClipColor.Name = "gbxClipColor";
             gbxClipColor.Padding = new Padding(7, 8, 7, 8);
@@ -469,8 +469,8 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox3.Anchor = AnchorStyles.None;
             groupBox3.Controls.Add(comboBoxManufact);
             groupBox3.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBox3.ForeColor = UIColors.Primary;
-            groupBox3.Location = new Point(29, 12);
+            groupBox3.ForeColor = Color.FromArgb(44, 62, 80);
+            groupBox3.Location = new Point(42, 14);
             groupBox3.Margin = new Padding(10, 8, 8, 8);
             groupBox3.Name = "groupBox3";
             groupBox3.Padding = new Padding(12, 14, 12, 12);
@@ -483,12 +483,12 @@ namespace simple_ids_cam_view.UI.Forms
             // 
             comboBoxManufact.Dock = DockStyle.Fill;
             comboBoxManufact.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxManufact.Font = new Font("Segoe UI", 10F);
             comboBoxManufact.FlatStyle = FlatStyle.Flat;
+            comboBoxManufact.Font = new Font("Segoe UI", 10F);
             comboBoxManufact.FormattingEnabled = true;
-            comboBoxManufact.Location = new Point(12, 31);
+            comboBoxManufact.Location = new Point(12, 32);
             comboBoxManufact.Name = "comboBoxManufact";
-            comboBoxManufact.Size = new Size(222, 26);
+            comboBoxManufact.Size = new Size(222, 25);
             comboBoxManufact.TabIndex = 0;
             // 
             // groupBox5
@@ -496,12 +496,12 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox5.AutoSize = true;
             groupBox5.Controls.Add(flowLayoutPanel2);
             groupBox5.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBox5.ForeColor = UIColors.Primary;
-            groupBox5.Location = new Point(27, 85);
+            groupBox5.ForeColor = Color.FromArgb(44, 62, 80);
+            groupBox5.Location = new Point(30, 95);
             groupBox5.Margin = new Padding(10, 8, 8, 8);
             groupBox5.Name = "groupBox5";
             groupBox5.Padding = new Padding(12, 14, 12, 12);
-            groupBox5.Size = new Size(249, 70);
+            groupBox5.Size = new Size(271, 91);
             groupBox5.TabIndex = 7;
             groupBox5.TabStop = false;
             groupBox5.Text = "Ref. Manufacturer";
@@ -512,10 +512,10 @@ namespace simple_ids_cam_view.UI.Forms
             flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel2.Controls.Add(textBoxRefManufact);
             flowLayoutPanel2.Dock = DockStyle.Fill;
-            flowLayoutPanel2.Location = new Point(1, 18);
+            flowLayoutPanel2.Location = new Point(12, 32);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(6, 7, 6, 6);
-            flowLayoutPanel2.Size = new Size(247, 46);
+            flowLayoutPanel2.Size = new Size(247, 47);
             flowLayoutPanel2.TabIndex = 0;
             // 
             // textBoxRefManufact
@@ -524,7 +524,7 @@ namespace simple_ids_cam_view.UI.Forms
             textBoxRefManufact.Location = new Point(9, 13);
             textBoxRefManufact.Margin = new Padding(3, 6, 3, 3);
             textBoxRefManufact.Name = "textBoxRefManufact";
-            textBoxRefManufact.PlaceholderText = "Enter Pos Id ";
+            textBoxRefManufact.PlaceholderText = "Enter Ref Manufact ";
             textBoxRefManufact.Size = new Size(229, 25);
             textBoxRefManufact.TabIndex = 0;
             // 
@@ -533,12 +533,12 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox6.AutoSize = true;
             groupBox6.Controls.Add(flowLayoutPanel3);
             groupBox6.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBox6.ForeColor = UIColors.Primary;
-            groupBox6.Location = new Point(27, 163);
+            groupBox6.ForeColor = Color.FromArgb(44, 62, 80);
+            groupBox6.Location = new Point(30, 202);
             groupBox6.Margin = new Padding(10, 8, 8, 8);
             groupBox6.Name = "groupBox6";
             groupBox6.Padding = new Padding(12, 14, 12, 12);
-            groupBox6.Size = new Size(249, 70);
+            groupBox6.Size = new Size(271, 91);
             groupBox6.TabIndex = 8;
             groupBox6.TabStop = false;
             groupBox6.Text = "Designation";
@@ -549,10 +549,10 @@ namespace simple_ids_cam_view.UI.Forms
             flowLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel3.Controls.Add(textBoxDesignation);
             flowLayoutPanel3.Dock = DockStyle.Fill;
-            flowLayoutPanel3.Location = new Point(1, 18);
+            flowLayoutPanel3.Location = new Point(12, 32);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
             flowLayoutPanel3.Padding = new Padding(6, 7, 6, 6);
-            flowLayoutPanel3.Size = new Size(247, 46);
+            flowLayoutPanel3.Size = new Size(247, 47);
             flowLayoutPanel3.TabIndex = 0;
             // 
             // textBoxDesignation
@@ -569,7 +569,7 @@ namespace simple_ids_cam_view.UI.Forms
             // 
             groupBoxQty.Controls.Add(numUpDownQty);
             groupBoxQty.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBoxQty.ForeColor = UIColors.Primary;
+            groupBoxQty.ForeColor = Color.FromArgb(44, 62, 80);
             groupBoxQty.Location = new Point(10, 401);
             groupBoxQty.Margin = new Padding(10, 8, 8, 8);
             groupBoxQty.Name = "groupBoxQty";
@@ -579,11 +579,21 @@ namespace simple_ids_cam_view.UI.Forms
             groupBoxQty.TabStop = false;
             groupBoxQty.Text = "Quantity";
             // 
+            // numUpDownQty
+            // 
+            numUpDownQty.Dock = DockStyle.Fill;
+            numUpDownQty.Font = new Font("Segoe UI", 10F);
+            numUpDownQty.Location = new Point(12, 32);
+            numUpDownQty.Name = "numUpDownQty";
+            numUpDownQty.Size = new Size(86, 25);
+            numUpDownQty.TabIndex = 0;
+            numUpDownQty.TextAlign = HorizontalAlignment.Center;
+            // 
             // groupBoxFamily
             // 
             groupBoxFamily.Controls.Add(numUpDownFamily);
             groupBoxFamily.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBoxFamily.ForeColor = UIColors.Primary;
+            groupBoxFamily.ForeColor = Color.FromArgb(44, 62, 80);
             groupBoxFamily.Location = new Point(127, 401);
             groupBoxFamily.Margin = new Padding(10, 8, 8, 8);
             groupBoxFamily.Name = "groupBoxFamily";
@@ -593,26 +603,14 @@ namespace simple_ids_cam_view.UI.Forms
             groupBoxFamily.TabStop = false;
             groupBoxFamily.Text = "Family";
             // 
-            // numUpDownQty
-            // 
-            numUpDownQty.Dock = DockStyle.Fill;
-            numUpDownQty.Font = new Font("Segoe UI", 10F);
-            numUpDownQty.Location = new Point(7, 25);
-            numUpDownQty.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            numUpDownQty.Name = "numUpDownQty";
-            numUpDownQty.Size = new Size(96, 25);
-            numUpDownQty.TabIndex = 0;
-            numUpDownQty.TextAlign = HorizontalAlignment.Center;
-            numUpDownQty.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            // 
             // numUpDownFamily
             // 
             numUpDownFamily.Dock = DockStyle.Fill;
             numUpDownFamily.Font = new Font("Segoe UI", 10F);
-            numUpDownFamily.Location = new Point(7, 25);
+            numUpDownFamily.Location = new Point(12, 32);
             numUpDownFamily.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numUpDownFamily.Name = "numUpDownFamily";
-            numUpDownFamily.Size = new Size(96, 25);
+            numUpDownFamily.Size = new Size(86, 25);
             numUpDownFamily.TabIndex = 0;
             numUpDownFamily.TextAlign = HorizontalAlignment.Center;
             numUpDownFamily.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -629,7 +627,7 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox1.Margin = new Padding(15, 3, 15, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.RightToLeft = RightToLeft.No;
-            groupBox1.Size = new Size(298, 633);
+            groupBox1.Size = new Size(298, 686);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             // 
@@ -656,7 +654,7 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox7.Margin = new Padding(15, 3, 15, 3);
             groupBox7.Name = "groupBox7";
             groupBox7.RightToLeft = RightToLeft.No;
-            groupBox7.Size = new Size(313, 457);
+            groupBox7.Size = new Size(339, 551);
             groupBox7.TabIndex = 2;
             groupBox7.TabStop = false;
             // 
@@ -668,7 +666,7 @@ namespace simple_ids_cam_view.UI.Forms
             label2.Location = new Point(3, 20);
             label2.Name = "label2";
             label2.Padding = new Padding(0, 0, 5, 5);
-            label2.Size = new Size(307, 22);
+            label2.Size = new Size(333, 22);
             label2.TabIndex = 1;
             label2.Text = "Properties";
             label2.TextAlign = ContentAlignment.MiddleCenter;
@@ -689,7 +687,7 @@ namespace simple_ids_cam_view.UI.Forms
             flowLayoutPanel4.MinimumSize = new Size(200, 0);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
             flowLayoutPanel4.Padding = new Padding(20, 6, 20, 6);
-            flowLayoutPanel4.Size = new Size(307, 392);
+            flowLayoutPanel4.Size = new Size(333, 486);
             flowLayoutPanel4.TabIndex = 0;
             flowLayoutPanel4.WrapContents = false;
             // 
@@ -698,12 +696,12 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox8.AutoSize = true;
             groupBox8.Controls.Add(flowLayoutPanel5);
             groupBox8.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBox8.ForeColor = UIColors.Primary;
-            groupBox8.Location = new Point(27, 241);
+            groupBox8.ForeColor = Color.FromArgb(44, 62, 80);
+            groupBox8.Location = new Point(30, 309);
             groupBox8.Margin = new Padding(10, 8, 8, 8);
             groupBox8.Name = "groupBox8";
             groupBox8.Padding = new Padding(12, 14, 12, 12);
-            groupBox8.Size = new Size(249, 140);
+            groupBox8.Size = new Size(271, 159);
             groupBox8.TabIndex = 9;
             groupBox8.TabStop = false;
             groupBox8.Text = "Observation";
@@ -714,7 +712,7 @@ namespace simple_ids_cam_view.UI.Forms
             flowLayoutPanel5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel5.Controls.Add(textBoxOBS);
             flowLayoutPanel5.Dock = DockStyle.Fill;
-            flowLayoutPanel5.Location = new Point(1, 18);
+            flowLayoutPanel5.Location = new Point(12, 32);
             flowLayoutPanel5.Name = "flowLayoutPanel5";
             flowLayoutPanel5.Padding = new Padding(6, 7, 6, 6);
             flowLayoutPanel5.Size = new Size(247, 115);
@@ -723,7 +721,7 @@ namespace simple_ids_cam_view.UI.Forms
             // textBoxOBS
             // 
             textBoxOBS.Font = new Font("Segoe UI", 10F);
-            textBoxOBS.Location = new Point(9, 13);
+            textBoxOBS.Location = new Point(9, 10);
             textBoxOBS.Name = "textBoxOBS";
             textBoxOBS.Size = new Size(229, 96);
             textBoxOBS.TabIndex = 1;
@@ -753,11 +751,11 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox9.Controls.Add(groupBoxFamily);
             groupBox9.Controls.Add(groupBoxQty);
             groupBox9.FlatStyle = FlatStyle.System;
-            groupBox9.Location = new Point(696, 13);
+            groupBox9.Location = new Point(722, 13);
             groupBox9.Margin = new Padding(15, 3, 15, 3);
             groupBox9.Name = "groupBox9";
             groupBox9.RightToLeft = RightToLeft.No;
-            groupBox9.Size = new Size(206, 488);
+            groupBox9.Size = new Size(248, 494);
             groupBox9.TabIndex = 3;
             groupBox9.TabStop = false;
             // 
@@ -769,7 +767,7 @@ namespace simple_ids_cam_view.UI.Forms
             label3.Margin = new Padding(30, 0, 3, 0);
             label3.Name = "label3";
             label3.Padding = new Padding(0, 0, 5, 5);
-            label3.Size = new Size(200, 22);
+            label3.Size = new Size(242, 22);
             label3.TabIndex = 1;
             label3.Text = "Components";
             label3.TextAlign = ContentAlignment.MiddleCenter;
@@ -928,7 +926,7 @@ namespace simple_ids_cam_view.UI.Forms
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BackColor = UIColors.Background;
+            BackColor = Color.FromArgb(236, 240, 241);
             CancelButton = btnCancel;
             ClientSize = new Size(1040, 591);
             Controls.Add(flowLayoutPanel6);
