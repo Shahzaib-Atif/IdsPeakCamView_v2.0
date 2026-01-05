@@ -59,7 +59,7 @@ namespace simple_ids_cam_view
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainForm mainForm = new(_pipeWriter);
+            MainForm mainForm = new();
             Application.Run(mainForm);
             #endregion
 

@@ -91,18 +91,17 @@ namespace simple_ids_cam_view.UI.Controls
         {
             if (modbusController is null) return false;
 
-            switch (position)
-            {
-                case CameraPositions.Position_1:
-                    return modbusController.ChangeMotorPosition(1);
-                case CameraPositions.Position_2:
-                    return modbusController.ChangeMotorPosition(4);
-                case CameraPositions.Position_3:
-                    return modbusController.ChangeMotorPosition(16);
-                default:
-                    ExceptionHelper.ShowWarningMessage($"Unknown camera position selected: {position}");
-                    return false;
-            }
+            else if (position.Contains(CameraPositions.Position_1))
+                return modbusController.ChangeMotorPosition(1);
+
+            else if (position.Contains(CameraPositions.Position_2))
+                return modbusController.ChangeMotorPosition(4);
+
+            else if (position.Contains(CameraPositions.Position_3))
+                return modbusController.ChangeMotorPosition(16);
+
+            ExceptionHelper.ShowWarningMessage($"Unknown camera position selected: {position}");
+            return false;
         }
 
         private void BtnResetSystem_Click(object sender, EventArgs e)

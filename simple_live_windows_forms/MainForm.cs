@@ -1,5 +1,4 @@
-﻿using ImageProcessingLibrary;
-using ImageProcessingLibrary.Helpers;
+﻿using ImageProcessingLibrary.Helpers;
 using ImageProcessingLibrary.Services;
 using simple_ids_cam_view.Services;
 using simple_ids_cam_view.UI.Forms;
@@ -20,14 +19,11 @@ namespace simple_ids_cam_view
         private bool IsRoiModified { get; set; } = false;
         private bool IsUsingCurrentImage { get; set; } = true;
         private RoiService previousImageCropService; // Keep a reference to the previous service
-        private readonly StreamWriter _pipeWriter;
 
-        public MainForm(StreamWriter _pipeWriter)
+        public MainForm()
         {
             // stay at the top, initially
             this.TopMost = true;
-
-            this._pipeWriter = _pipeWriter;
 
             Debug.WriteLine("--- [MainForm] Init");
             InitializeComponent();
@@ -111,11 +107,6 @@ namespace simple_ids_cam_view
             // disconnect modbus & turn off lights
             ModbusControlsPanel.TurnOffLights();
             ModbusControlsPanel.DisconnectClient();
-
-            _pipeWriter?.WriteLine("--- Child process is exiting.");
-            //_pipeWriter?.WriteLine($"-t Name -s {ProjectSettings.ConnectorName}");
-
-            //e.Cancel = true;
         }
 
         private void StartAcquisitionBtn_Click(object s, EventArgs e) => StartAcquisition();
@@ -146,15 +137,21 @@ namespace simple_ids_cam_view
             //SaveFinalImage();
         }
 
+        private void SaveOriginalImageMenuItem_Click(object sender, EventArgs e)
+        {
+            // No camera image -→ skip
+            if (!IsImageAvailable()) return;
+
+            using Bitmap image = new(customPictureBox.Image);
+            FileHelper.SaveImage(image);
+        }
+
         private async void SaveToDbBtn_ClickAsync(object s, EventArgs e)
         {
             try
             {
                 //bool isSuccess = await SaveConnectorToDB();
                 bool isSuccess = await imageStorageService.SaveConnectorToDB();
-                if (isSuccess)
-                    _pipeWriter?.WriteLineAsync($"-t Name -s {ProjectSettings.ConnectorName}");
-
                 this.GbxShowLoading.Visible = false;
             }
             catch (Exception ex)
@@ -218,15 +215,6 @@ namespace simple_ids_cam_view
         {
             using var f = new DefaultFolderForm();            //f.TopMost = true;
             f.ShowDialog();
-        }
-
-        private void SaveOriginalImageMenuItem_Click(object sender, EventArgs e)
-        {
-            // No camera image -→ skip
-            if (!IsImageAvailable()) return;
-
-            using Bitmap image = new(customPictureBox.Image);
-            FileHelper.SaveImage(image);
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
