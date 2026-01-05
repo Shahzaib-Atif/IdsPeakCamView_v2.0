@@ -52,7 +52,6 @@ namespace simple_ids_cam_view
             ImageSizeMenuItem = new ToolStripMenuItem();
             ImageSimilarityMenuItem = new ToolStripMenuItem();
             DefaultFolderMenuItem = new ToolStripMenuItem();
-            SaveOriginalImageMenuItem = new ToolStripMenuItem();
             AddImagesToDBMenuItem = new ToolStripMenuItem();
             DeleteImagepMenuItem = new ToolStripMenuItem();
             ModbusConfigMenuItem = new ToolStripMenuItem();
@@ -60,6 +59,7 @@ namespace simple_ids_cam_view
             CameraSettingsMenuItem = new ToolStripMenuItem();
             hardwareSettingsMenuItem = new ToolStripMenuItem();
             EditTextMenuItem = new ToolStripMenuItem();
+            SaveOriginalImageMenuItem = new ToolStripMenuItem();
             toolStripSeparator14 = new ToolStripSeparator();
             gbxProgress = new GroupBox();
             progressBar = new ProgressBar();
@@ -114,7 +114,7 @@ namespace simple_ids_cam_view
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Padding = new Padding(4, 4, 0, 4);
             toolStrip1.RenderMode = ToolStripRenderMode.System;
-            toolStrip1.Size = new Size(433, 34);
+            toolStrip1.Size = new Size(535, 34);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -266,15 +266,6 @@ namespace simple_ids_cam_view
             DefaultFolderMenuItem.Visible = false;
             DefaultFolderMenuItem.Click += DefaultFolderMenuItem_Click;
             // 
-            // SaveOriginalImageMenuItem
-            // 
-            SaveOriginalImageMenuItem.Image = (Image)resources.GetObject("SaveOriginalImageMenuItem.Image");
-            SaveOriginalImageMenuItem.Name = "SaveOriginalImageMenuItem";
-            SaveOriginalImageMenuItem.Size = new Size(287, 24);
-            SaveOriginalImageMenuItem.Text = "Save original image";
-            SaveOriginalImageMenuItem.ToolTipText = "Save original image without text";
-            SaveOriginalImageMenuItem.Click += SaveOriginalImageMenuItem_Click;
-            // 
             // AddImagesToDBMenuItem
             // 
             AddImagesToDBMenuItem.Image = (Image)resources.GetObject("AddImagesToDBMenuItem.Image");
@@ -337,6 +328,15 @@ namespace simple_ids_cam_view
             EditTextMenuItem.Size = new Size(287, 24);
             EditTextMenuItem.Text = "Edit Text";
             EditTextMenuItem.Click += EditTextBtn_Click;
+            // 
+            // SaveOriginalImageMenuItem
+            // 
+            SaveOriginalImageMenuItem.Image = (Image)resources.GetObject("SaveOriginalImageMenuItem.Image");
+            SaveOriginalImageMenuItem.Name = "SaveOriginalImageMenuItem";
+            SaveOriginalImageMenuItem.Size = new Size(287, 24);
+            SaveOriginalImageMenuItem.Text = "Save Image";
+            SaveOriginalImageMenuItem.ToolTipText = "Save original image without text";
+            SaveOriginalImageMenuItem.Click += SaveOriginalImageMenuItem_Click;
             // 
             // toolStripSeparator14
             // 

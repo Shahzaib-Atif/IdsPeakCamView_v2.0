@@ -1,13 +1,9 @@
 ﻿using System.Diagnostics;
-using System.IO.Pipes;
 
 namespace simple_ids_cam_view
 {
     static class Program
     {
-        private static NamedPipeClientStream _pipeClient;
-        private static StreamWriter _pipeWriter;
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -15,7 +11,7 @@ namespace simple_ids_cam_view
         [STAThread]
         static void Main(string[] args)
         {
-            string processName = "simple_ids_cam_view"; // Replace with your actual process name (without .exe)
+            string processName = "simple_ids_cam_view";
 
             // Check if the process is already running
             if (Process.GetProcessesByName(processName).Length > 1)
@@ -24,35 +20,8 @@ namespace simple_ids_cam_view
                 return;
             }
 
-            if (args.Length < 1)
-            {
-                //ExceptionHelper.ShowWarningMessage("Pipe name argument is missing.");
-                Debug.WriteLine("Pipe name argument is missing.");
-                //return;
-            }
-            else
-            {
-                // read pipeName and connector name from the arguments
-                string pipeName = args[0];
-                //if (args.Length > 1)
-                //    ProjectSettings.SetConnectorName(args[1]);
-
-                #region -- IPC
-                // Initialize the named pipe client
-                _pipeClient = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut);
-                _pipeClient.Connect();
-
-                _pipeWriter = new StreamWriter(_pipeClient) { AutoFlush = true };
-
-                // Send an initial message to the parent
-                _pipeWriter.WriteLine("1. Child process initialized.");
-                #endregion
-            }
-
-
             #region -- MAIN APPLICATION
             // Run the application with the main form
-            Application.ApplicationExit += OnApplicationExit;
             Application.ThreadException += new ThreadExceptionEventHandler(GlobalExceptionHandler);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(GlobalUnhandledExceptionHandler);
 
@@ -62,9 +31,6 @@ namespace simple_ids_cam_view
             MainForm mainForm = new();
             Application.Run(mainForm);
             #endregion
-
-            // finally
-            Cleanup();
         }
 
         // Handler for UI thread exceptions
@@ -72,7 +38,6 @@ namespace simple_ids_cam_view
         {
             MessageBox.Show($"An unexpected error occurred: {e.Exception.Message}",
                 "ThreadException", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Cleanup();
         }
 
         // Handler for non-UI thread exceptions
@@ -80,36 +45,6 @@ namespace simple_ids_cam_view
         {
             MessageBox.Show($"An unexpected error occurred: {e.ExceptionObject}",
                 "UnhandledException", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Cleanup();
-        }
-
-        //Application Exit event
-        private static void OnApplicationExit(object sender, EventArgs e)
-        {
-            try
-            {
-                //// Send final data to the parent process before closing
-                //_pipeWriter?.WriteLine("2. Child process is exiting.");
-                //_pipeWriter?.WriteLine($"-t Name -s {ProjectSettings.ConnectorName}");
-            }
-            catch
-            {
-                // Ignore errors during shutdown
-            }
-        }
-
-
-        private static void Cleanup()
-        {
-            try
-            {
-                _pipeWriter?.Close();
-                _pipeClient?.Close();
-            }
-            catch
-            {
-                // Ignore cleanup exceptions
-            }
         }
 
     }

@@ -150,7 +150,6 @@ namespace simple_ids_cam_view
         {
             try
             {
-                //bool isSuccess = await SaveConnectorToDB();
                 bool isSuccess = await imageStorageService.SaveConnectorToDB();
                 this.GbxShowLoading.Visible = false;
             }
