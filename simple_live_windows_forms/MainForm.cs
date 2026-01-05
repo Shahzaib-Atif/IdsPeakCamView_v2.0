@@ -137,13 +137,18 @@ namespace simple_ids_cam_view
             //SaveFinalImage();
         }
 
-        private void SaveOriginalImageMenuItem_Click(object sender, EventArgs e)
+        private async void SaveOriginalImageMenuItem_Click(object sender, EventArgs e)
         {
-            // No camera image -→ skip
-            if (!IsImageAvailable()) return;
-
-            using Bitmap image = new(customPictureBox.Image);
-            FileHelper.SaveImage(image);
+            try
+            {
+                // No camera image -→ skip
+                if (!IsImageAvailable()) return;
+                await imageStorageService.SaveExtraImage();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.DisplayErrorMessage(ex.Message);
+            }
         }
 
         private async void SaveToDbBtn_ClickAsync(object s, EventArgs e)

@@ -40,6 +40,23 @@ namespace simple_ids_cam_view.Services
             _referenciasRepo = new ReferenciasRepository();
         }
 
+        public async Task SaveExtraImage()
+        {
+            // get image path from user
+            string filePath = FileHelper.SelectSaveImageFilePath("Select the location to save the image");
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            // save the processed image
+            await Task.Run(() =>
+            {
+                Image _image = customPictureBox.GetProcessedImage();
+                _imageProcessor.SaveCompressedImage(_image, filePath);
+            });
+
+            // ask user if he wants to open the image
+            _promptService.PromptUserForOpeningImage(filePath);
+        }
+
         /// <summary> store connector in local folder and database </summary>
         public async Task<bool> SaveConnectorToDB()
         {

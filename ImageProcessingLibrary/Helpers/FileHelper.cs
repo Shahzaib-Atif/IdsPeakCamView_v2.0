@@ -171,6 +171,21 @@ namespace ImageProcessingLibrary.Helpers
                 ExceptionHelper.DisplayErrorMessage($"Error opening image in explorer: {ex.Message}");
             }
         }
+
+        public static string SelectSaveImageFilePath(string v)
+        {
+            // get image path from user
+            using var saveFileDialog = new SaveFileDialog()
+            {
+                Title = v,
+                Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp",
+                FileName = "image"
+            };
+
+            return saveFileDialog.ShowDialog() == DialogResult.OK ?
+                saveFileDialog.FileName :
+                string.Empty;
+        }
         #endregion
     }
 }
