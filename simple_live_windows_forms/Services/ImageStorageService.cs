@@ -140,8 +140,8 @@ namespace simple_ids_cam_view.Services
         // Saves the processed image with a pre-defined name, and returns a filepath
         public string SaveTempImage(string name)
         {
-            using var _image = new Bitmap(customPictureBox.Image);
             string filePath = _fileService.GetFilePath(name);
+            using var _image = customPictureBox.GetProcessedImage();
             _imageProcessor.SaveCompressedImage(_image, filePath);
 
             return filePath;
@@ -295,36 +295,40 @@ namespace simple_ids_cam_view.Services
         /// <summary> Save image in local folder and database. </summary>
         private async Task<bool> SaveImage(string filePath, SampleDetail newSample)
         {
+            Bitmap imageCopy = null;
+
             try
             {
-                return await Task.Run(async () =>
-                {
-                    // first save in local folder
-                    using var _temImage = new Bitmap(customPictureBox.Image);
-                    _imageProcessor.SaveCompressedImage(_temImage, filePath);
+                imageCopy = customPictureBox.GetClonedImage();
+                if (imageCopy == null) return false;
 
-                    // then save features in database
-                    var (resnet, dino) = ExtractFeatures(filePath);
-                    string fileName = Path.GetFileNameWithoutExtension(filePath);
-                    await _featureRepo.SaveFeatures(fileName, resnet, dino).ConfigureAwait(false);
+                // Save image on background thread
+                await Task.Run(() => _imageProcessor.SaveCompressedImage(imageCopy, filePath));
 
-                    // save in referencias table
-                    //await _referenciasRepo.InsertDataAsync(filePath, newSample).ConfigureAwait(false);
-                    await _referenciasRepo.InsertNewConnector(filePath, newSample).ConfigureAwait(false);
-                    return true;
-                }).ConfigureAwait(false);
+                // Extract features (CPU-bound, can run in same thread or Task.Run if heavy)
+                var (resnet, dino) = ExtractFeatures(filePath);
+                string fileName = Path.GetFileNameWithoutExtension(filePath);
+
+                // Save features to DB (async naturally)
+                await _featureRepo.SaveFeatures(fileName, resnet, dino);
+                await _referenciasRepo.InsertNewConnector(filePath, newSample);
+
+                return true;
             }
             catch (Exception ex)
             {
                 // in case of error, delete the file from the local folder
-                if (File.Exists(filePath))
-                    File.Delete(filePath);
+                if (File.Exists(filePath)) File.Delete(filePath);
 
                 // Handle UNIQUE KEY violation (duplicate entry)
                 if (ex is SqlException sqlx && (sqlx.Number == 2627 || sqlx.Number == 2601))
                     throw new Exception($"{newSample.BasicDetails.Codivmac} already exists in the database! Process cancelled.");
                 else
                     throw; // re-throw the original error
+            }
+            finally
+            {
+                imageCopy?.Dispose();
             }
         }
 

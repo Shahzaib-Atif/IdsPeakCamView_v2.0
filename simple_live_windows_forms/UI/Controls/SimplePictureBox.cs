@@ -151,6 +151,14 @@ namespace simple_ids_cam_view.UI.Controls
             return bmp; // caller MUST dispose
         }
 
+        // returns a clone of the current image
+        internal Bitmap GetClonedImage()
+        {
+            if (Image == null)
+                return null;
+            return new Bitmap(Image); // caller MUST dispose
+        }
+
         private void UpdateDrawingArea()
         {
             if (Image is null)

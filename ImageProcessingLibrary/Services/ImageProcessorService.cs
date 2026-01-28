@@ -7,10 +7,7 @@ namespace ImageProcessingLibrary.Services
 {
     public class ImageProcessorService
     {
-        public ImageProcessorService()
-        {
-
-        }
+        public ImageProcessorService() { }
 
         // Save image after compressing and prompt user to open in File Explorer.
         public void SaveCompressedImage(Image image, string savePath)
@@ -40,10 +37,10 @@ namespace ImageProcessingLibrary.Services
             // Set up the parameters for JPEG compression
             ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
             Encoder qualityEncoder = Encoder.Quality;
-            EncoderParameters encoderParameters = new(1);
+            using EncoderParameters encoderParameters = new(1);
 
             // Set the image quality (between 0 and 100)
-            EncoderParameter qualityParam = new(qualityEncoder, quality_index);
+            using EncoderParameter qualityParam = new(qualityEncoder, quality_index);
             encoderParameters.Param[0] = qualityParam;
 
             int newWidth = (int)(originalImage.Width * resize_factor);
