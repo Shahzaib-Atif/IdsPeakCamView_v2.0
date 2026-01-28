@@ -305,8 +305,8 @@ namespace simple_ids_cam_view.Services
                 // Save image on background thread
                 await Task.Run(() => _imageProcessor.SaveCompressedImage(imageCopy, filePath));
 
-                // Extract features (CPU-bound, can run in same thread or Task.Run if heavy)
-                var (resnet, dino) = ExtractFeatures(filePath);
+                // Extract features
+                var (resnet, dino) = await Task.Run(() => ExtractFeatures(filePath));
                 string fileName = Path.GetFileNameWithoutExtension(filePath);
 
                 // Save features to DB (async naturally)
