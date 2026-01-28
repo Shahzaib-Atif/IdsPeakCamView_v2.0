@@ -23,8 +23,7 @@ namespace simple_ids_cam_view.Services
 
                 if (!deviceManager.Devices().Any())
                 {
-                    ExceptionHelper.DisplayErrorMessage("No camera device found!");
-                    return null;
+                    throw new Exception("No camera device found!");
                 }
 
                 return deviceManager;
@@ -32,8 +31,7 @@ namespace simple_ids_cam_view.Services
             catch (Exception e)
             {
                 Debug.WriteLine("--- [BackEnd] Error: " + e.Message);
-                ExceptionHelper.DisplayErrorMessage("Failed to create device manager");
-                return null;
+                throw new Exception("Failed to create device manager");
             }
         }
 
@@ -53,8 +51,7 @@ namespace simple_ids_cam_view.Services
                 else if (i == deviceCount - 1)
                 {
                     Debug.WriteLine("--- [BackEnd] Error: Device could not be openend");
-                    ExceptionHelper.DisplayErrorMessage("Device could not be openend");
-                    return null;
+                    throw new Exception("Device could not be openend");
                 }
             }
 
@@ -71,8 +68,7 @@ namespace simple_ids_cam_view.Services
             if (!dataStreams.Any())
             {
                 Debug.WriteLine("--- [BackEnd] Error: Device has no DataStream");
-                ExceptionHelper.DisplayErrorMessage("Device has no DataStream");
-                return null;
+                throw new Exception("Device has no DataStream");
             }
 
             try
@@ -82,8 +78,7 @@ namespace simple_ids_cam_view.Services
             catch (Exception e)
             {
                 Debug.WriteLine("--- [BackEnd] Error: Failed to open DataStream");
-                ExceptionHelper.DisplayErrorMessage("Failed to open DataStream\n" + e.Message);
-                return null;
+                throw new Exception("Failed to open DataStream\n" + e.Message);
             }
         }
 
@@ -100,7 +95,7 @@ namespace simple_ids_cam_view.Services
             catch
             {
                 Debug.WriteLine("--- [BackEnd] Error: Userset not available");
-                ExceptionHelper.DisplayErrorMessage("Userset not available");
+                throw new Exception("Userset not available");
             }
         }
 
@@ -365,34 +360,20 @@ namespace simple_ids_cam_view.Services
         {
             if (nodeMap is null) return;
 
-            try
-            {
-                // Determine the current status of ReverseX
-                bool value = nodeMap.FindNode<peak.core.nodes.BooleanNode>("ReverseX").Value();
-                if (value is false) // Set ReverseX to true
-                    nodeMap.FindNode<peak.core.nodes.BooleanNode>("ReverseX").SetValue(true);
-            }
-            catch (Exception e)
-            {
-                ExceptionHelper.DisplayErrorMessage(e.Message);
-            }
+            // Determine the current status of ReverseX
+            bool value = nodeMap.FindNode<peak.core.nodes.BooleanNode>("ReverseX").Value();
+            if (value is false) // Set ReverseX to true
+                nodeMap.FindNode<peak.core.nodes.BooleanNode>("ReverseX").SetValue(true);
         }
 
         internal static void MirrorY(NodeMap nodeMap)
         {
             if (nodeMap is null) return;
 
-            try
-            {
-                // Determine the current status of ReverseY
-                bool value = nodeMap.FindNode<peak.core.nodes.BooleanNode>("ReverseY").Value();
-                if (value is false) // Set ReverseY to true
-                    nodeMap.FindNode<peak.core.nodes.BooleanNode>("ReverseY").SetValue(true);
-            }
-            catch (Exception e)
-            {
-                ExceptionHelper.DisplayErrorMessage(e.Message);
-            }
+            // Determine the current status of ReverseY
+            bool value = nodeMap.FindNode<peak.core.nodes.BooleanNode>("ReverseY").Value();
+            if (value is false) // Set ReverseY to true
+                nodeMap.FindNode<peak.core.nodes.BooleanNode>("ReverseY").SetValue(true);
         }
 
         #endregion

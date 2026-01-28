@@ -69,7 +69,15 @@ namespace simple_ids_cam_view
         {
             try
             {
+                if (InvokeRequired)
+                {
+                    BeginInvoke(new Action(() => BackEnd_ImageReceived(sender, image)));
+                    return;
+                }
+
+                var old = customPictureBox.Image;
                 customPictureBox.Image = image;
+                old?.Dispose();
             }
             catch (Exception e)
             {

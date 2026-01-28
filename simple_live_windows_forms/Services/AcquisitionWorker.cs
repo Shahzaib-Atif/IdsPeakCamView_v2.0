@@ -86,10 +86,11 @@ namespace simple_ids_cam_view.Services
 
         private void ProcessFrames()
         {
+            peak.core.Buffer buffer = null;
             try
             {
                 // Get buffer from device's datastream
-                var buffer = dataStream.WaitForFinishedBuffer(5000);
+                buffer = dataStream.WaitForFinishedBuffer(5000);
 
                 // convert image to buffer
                 var iplImg = deviceHandler.ConvertBufferToImage(buffer, imageConverter, targetPixelFormat);
@@ -98,7 +99,7 @@ namespace simple_ids_cam_view.Services
                 var imageCopy = deviceHandler.CreateDeepCopy(iplImg);
 
                 // Queue buffer so that it can be used again 
-                dataStream.QueueBuffer(buffer);
+                //dataStream.QueueBuffer(buffer);
 
                 // notify image received
                 if (ImageReceived != null)
@@ -120,6 +121,11 @@ namespace simple_ids_cam_view.Services
                 errorCounter++;
                 Debug.WriteLine("--- [AcquisitionWorker] Exception: " + e.Message);
                 MessageBoxTrigger(this, "Exception", e.Message);
+            }
+            finally
+            {
+                if (buffer != null)
+                    dataStream.QueueBuffer(buffer);
             }
 
             // Raise event with current frame and error counter
