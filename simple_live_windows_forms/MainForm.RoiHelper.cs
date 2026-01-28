@@ -20,6 +20,7 @@ namespace simple_ids_cam_view
         private void SetCropModeUI(string filepath)
         {
             customPictureBox.ChangePanelVisibility(isVisible: true);
+            customPictureBox.MyPanel.BackgroundImage?.Dispose();
             customPictureBox.MyPanel.BackgroundImage = Image.FromFile(filepath);
 
             CropBtn.BackColor = SystemColors.GradientActiveCaption;

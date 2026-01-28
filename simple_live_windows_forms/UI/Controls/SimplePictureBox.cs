@@ -58,22 +58,18 @@ namespace simple_ids_cam_view.UI.Controls
             set { SetImage(value); }
         }
 
+        // Use a mutex to ensure thread safety when setting the image
         private void SetImage(Image image)
         {
-            if (mutex.WaitOne(0))
+            mutex.WaitOne();  // Block until available
+            try
             {
-                if (base.Image != null)
-                {
-                    base.Image.Dispose();
-                    base.Image = null;
-                }
-
+                base.Image?.Dispose();
                 base.Image = image;
-                mutex.ReleaseMutex();
             }
-            else
+            finally
             {
-                image.Dispose();
+                mutex.ReleaseMutex();
             }
         }
 

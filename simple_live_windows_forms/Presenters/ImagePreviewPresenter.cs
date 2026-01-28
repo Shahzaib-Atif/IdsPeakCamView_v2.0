@@ -135,10 +135,10 @@ namespace simple_ids_cam_view.Presenters
             string imagePath = ResolveImagePath(imageName);
             if (imagePath == null) return;
 
-            // load a new image
-            using var image = Image.FromFile(imagePath);
-            using var bmp = new Bitmap(image);
-            var img = (Image)bmp.Clone();
+            // to avoid locking the file, we open a filestream and create a copy of the image
+            using var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+            using var image = Image.FromStream(stream);
+            var img = (Image)new Bitmap(image);
 
             // add image item to _View
             this.View.AddImageItem(imageName, img, score, imagePath);
