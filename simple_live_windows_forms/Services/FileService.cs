@@ -28,11 +28,12 @@ namespace simple_ids_cam_view.Services
             return Path.Combine(ProjectSettings.DefaultFolder, name);
         }
 
+        /// <summary> Validates the provided image path. </summary>
         public bool IsValidPath(string imagePath)
         {
             if (string.IsNullOrEmpty(imagePath) || !File.Exists(imagePath))
             {
-                ExceptionHelper.ShowWarningMessage("ExtractImageFeatures: Invalid image path!");
+                ExceptionHelper.ShowWarningMessage("Error: The given file path is not valid!");
                 return false;
             }
             return true;

@@ -44,23 +44,8 @@ namespace simple_ids_cam_view.Services
         {
             // get image path from user
             string filePath = FileHelper.SelectSaveImageFilePath("Select the location to save the image");
-            if (string.IsNullOrEmpty(filePath)) return;
 
-            // get image on UI thread, process in background
-            Bitmap _image = customPictureBox.GetProcessedImage();
-            if (_image == null) return;
-
-            // save the processed image
-            await Task.Run(() =>
-            {
-                using (_image)
-                {
-                    _imageProcessor.SaveCompressedImage(_image, filePath);
-                }
-            });
-
-            // ask user if he wants to open the image
-            _promptService.PromptUserForOpeningImage(filePath);
+            await SaveCompressedImageAsync(filePath);
         }
 
         /// <summary> store connector in local folder and database </summary>
@@ -85,28 +70,11 @@ namespace simple_ids_cam_view.Services
             // Save image in local folder and database
             if (!await SaveImage(filePath, newSample)) return false;
 
-            //bool isImageSaved = await SaveCompressedImageAsync(filePath);
-            //if(!isImageSaved) return false;
-
-            // get image on UI thread, process in background
-            Bitmap image = customPictureBox.GetProcessedImage();
-            if (image == null)
-                return false;
-
-            // Overwrite original image in local folder with the processed image containing text.
-            await Task.Run(() =>
-            {
-                using (image)
-                {
-                    _imageProcessor.SaveCompressedImage(image, filePath);
-                }
-            });
+            // Save compressed image with text overlays
+            if (!await SaveCompressedImageAsync(filePath)) return false;
 
             // hide the loading status
             this.GbxShowLoading.Visible = false;
-
-            // ask user if he wants to open the image
-            _promptService.PromptUserForOpeningImage(filePath);
 
             // update Label which shows ConnectorName
             LabelConnectorName.Text = connectorName;
@@ -117,22 +85,6 @@ namespace simple_ids_cam_view.Services
             return true;
         }
 
-        private async Task<bool> SaveCompressedImageAsync(string filePath)
-        {
-            // get image on UI thread, process in background
-            Bitmap imageCopy = customPictureBox.GetProcessedImage();
-            if (imageCopy == null) return false;
-
-            // Overwrite original image in local folder with the processed image containing text.
-            await Task.Run(() =>
-            {
-                using (imageCopy)
-                {
-                    _imageProcessor.SaveCompressedImage(imageCopy, filePath);
-                }
-            });
-            return true;
-        }
 
         /// <summary> store accessory image to local folder and database </summary>
         public async Task SaveAccessoryToDB()
@@ -153,50 +105,20 @@ namespace simple_ids_cam_view.Services
             // Generate file path using connector name.
             string filePath = Path.Combine(accessoriesFolderPath, $"{accessoryDetails?.FullName}.jpeg");
 
-            // Cancel the process if file already exists
-            //if (File.Exists(filePath))
-            //throw new Exception($"File '{filePath}' already exists! Process cancelled.");
+            // Save compressed image with text overlays
+            if (!await SaveCompressedImageAsync(filePath)) return;
 
-            // get image on UI thread, process in background
-            Bitmap _image = customPictureBox.GetProcessedImage();
-            if (_image == null) return;
+            // validate the file path (check if image was saved correctly)
+            if (!_fileService.IsValidPath(filePath)) return;
 
-            // Add the image in the Accessory folder
-            await Task.Run(() =>
-            {
-                using (_image)
-                {
-                    _imageProcessor.SaveCompressedImage(_image, filePath);
-                }
-            });
-
-            // validate the file path
-            if (!_fileService.IsValidPath(filePath))
-            {
-                this.GbxShowLoading.Visible = false;
-                throw new Exception("The image file path is not valid! Process cancelled.");
-            }
-
-            // add the image in the database
+            // insert or update accessory record
             if (accessoryDetails is AccessoryDetails details)
             {
-                bool recordExists = await _accessoryRepo.FindExistingRecord(details);
-                if (recordExists)
-                {
-                    var dialogResult = DialogHelper.ShowYesNoDialog(
-                         $"An accessory with the name '{details.FullName}' already exists in the system.\n" +
-                         "Do you want to add to the existing record?",
-                         "Confirm Overwrite"
-                     );
-
-                    if (dialogResult == DialogResult.No) return;
-                    await _accessoryRepo.UpdateAccessory(details);
-                }
-                else
-                    await _accessoryRepo.SaveNewAccessory(filePath, details);
-
-                _promptService.PromptUserForOpeningImage(filePath);
+                await UpsertAccessoryAsync(details, filePath);
+                return;
             }
+
+            throw new Exception("Something went wrong while saving accessory!");
         }
 
         public void DeleteImage()
@@ -253,6 +175,51 @@ namespace simple_ids_cam_view.Services
                 presenter.UnsubscribeFromViewEvents();
                 return null;
             }
+        }
+
+        /// <summary> Saves the processed image with text overlays. </summary>
+        private async Task<bool> SaveCompressedImageAsync(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath)) return false;
+
+            // get image on UI thread, process in background
+            Bitmap imageCopy = customPictureBox.GetProcessedImage();
+            if (imageCopy == null) return false;
+
+            // write original image in local folder with the processed image containing text.
+            await Task.Run(() =>
+            {
+                using (imageCopy)
+                {
+                    _imageProcessor.SaveCompressedImage(imageCopy, filePath);
+                }
+            });
+
+            // ask user if he wants to open the image
+            _promptService.PromptUserForOpeningImage(filePath);
+
+            return true;
+        }
+
+        /// <summary> Insert or update accessory record in the database </summary>
+        private async Task<bool> UpsertAccessoryAsync(AccessoryDetails details, string filePath)
+        {
+            bool recordExists = await _accessoryRepo.FindExistingRecord(details);
+            if (recordExists)
+            {
+                var dialogResult = DialogHelper.ShowYesNoDialog(
+                     $"An accessory with the name '{details.FullName}' already exists in the system.\n" +
+                     "Do you want to add to the existing record?",
+                     "Confirm Overwrite"
+                 );
+
+                if (dialogResult == DialogResult.No) return false;
+                await _accessoryRepo.UpdateAccessory(details);
+            }
+            else
+                await _accessoryRepo.SaveNewAccessory(filePath, details);
+
+            return true;
         }
 
         /// <summary> Open SampleDetailsForm to get connector details from user. </summary>
