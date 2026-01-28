@@ -98,17 +98,18 @@ namespace simple_ids_cam_view.Services
                 // create a deep copy
                 var imageCopy = deviceHandler.CreateDeepCopy(iplImg);
 
-                // Queue buffer so that it can be used again 
-                //dataStream.QueueBuffer(buffer);
+                frameCounter++;
 
-                // notify image received
-                if (ImageReceived != null)
+                // APPLY THROTTLE HERE
+                if (frameCounter % 3 != 0)
                 {
-                    Debug.WriteLine("--- [AcquisitionWorker] Send image Nr. " + (frameCounter + 1));
-                    ImageReceived(this, imageCopy);
+                    imageCopy.Dispose();   // you created it → you destroy it
+                    return;
                 }
 
-                frameCounter++;
+                // notify listeners about new image
+                Debug.WriteLine("--- [AcquisitionWorker] Send image Nr. " + frameCounter);
+                ImageReceived?.Invoke(this, imageCopy);
 
                 if (isSingleAcquisition)
                 {
