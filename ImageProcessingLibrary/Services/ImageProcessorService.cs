@@ -18,16 +18,15 @@ namespace ImageProcessingLibrary.Services
             // Set up the parameters for JPEG compression
             ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
             Encoder qualityEncoder = Encoder.Quality;
-            EncoderParameters encoderParameters = new(1);
+            using EncoderParameters encoderParameters = new(1);
 
             // Set the image quality (between 0 and 100)
             EncoderParameter qualityParam = new(qualityEncoder, QualityIndex);
             encoderParameters.Param[0] = qualityParam;
 
-            image = ResizeImage(image, (int)(image.Width * ResizeFactor), (int)(image.Height * ResizeFactor));
-
             // Save the image with the compression settings
-            image.Save(savePath, jpgEncoder, encoderParameters);
+            using var resized = ResizeImage(image, (int)(image.Width * ResizeFactor), (int)(image.Height * ResizeFactor));
+            resized.Save(savePath, jpgEncoder, encoderParameters);
 
             Debug.WriteLine("--- [ImageProcessor] image saved after compressing");
         }

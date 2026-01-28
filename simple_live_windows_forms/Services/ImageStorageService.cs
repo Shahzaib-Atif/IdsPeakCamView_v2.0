@@ -46,11 +46,17 @@ namespace simple_ids_cam_view.Services
             string filePath = FileHelper.SelectSaveImageFilePath("Select the location to save the image");
             if (string.IsNullOrEmpty(filePath)) return;
 
+            // get image on UI thread, process in background
+            Bitmap _image = customPictureBox.GetProcessedImage();
+            if (_image == null) return;
+
             // save the processed image
             await Task.Run(() =>
             {
-                Image _image = customPictureBox.GetProcessedImage();
-                _imageProcessor.SaveCompressedImage(_image, filePath);
+                using (_image)
+                {
+                    _imageProcessor.SaveCompressedImage(_image, filePath);
+                }
             });
 
             // ask user if he wants to open the image
@@ -79,11 +85,21 @@ namespace simple_ids_cam_view.Services
             // Save image in local folder and database
             if (!await SaveImage(filePath, newSample)) return false;
 
+            //bool isImageSaved = await SaveCompressedImageAsync(filePath);
+            //if(!isImageSaved) return false;
+
+            // get image on UI thread, process in background
+            Bitmap image = customPictureBox.GetProcessedImage();
+            if (image == null)
+                return false;
+
             // Overwrite original image in local folder with the processed image containing text.
             await Task.Run(() =>
             {
-                Image _image = customPictureBox.GetProcessedImage();
-                _imageProcessor.SaveCompressedImage(_image, filePath);
+                using (image)
+                {
+                    _imageProcessor.SaveCompressedImage(image, filePath);
+                }
             });
 
             // hide the loading status
@@ -101,6 +117,22 @@ namespace simple_ids_cam_view.Services
             return true;
         }
 
+        private async Task<bool> SaveCompressedImageAsync(string filePath)
+        {
+            // get image on UI thread, process in background
+            Bitmap imageCopy = customPictureBox.GetProcessedImage();
+            if (imageCopy == null) return false;
+
+            // Overwrite original image in local folder with the processed image containing text.
+            await Task.Run(() =>
+            {
+                using (imageCopy)
+                {
+                    _imageProcessor.SaveCompressedImage(imageCopy, filePath);
+                }
+            });
+            return true;
+        }
 
         /// <summary> store accessory image to local folder and database </summary>
         public async Task SaveAccessoryToDB()
@@ -125,11 +157,17 @@ namespace simple_ids_cam_view.Services
             //if (File.Exists(filePath))
             //throw new Exception($"File '{filePath}' already exists! Process cancelled.");
 
+            // get image on UI thread, process in background
+            Bitmap _image = customPictureBox.GetProcessedImage();
+            if (_image == null) return;
+
             // Add the image in the Accessory folder
             await Task.Run(() =>
             {
-                Image _image = customPictureBox.GetProcessedImage();
-                _imageProcessor.SaveCompressedImage(_image, filePath);
+                using (_image)
+                {
+                    _imageProcessor.SaveCompressedImage(_image, filePath);
+                }
             });
 
             // validate the file path

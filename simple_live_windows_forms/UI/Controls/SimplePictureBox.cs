@@ -1,5 +1,4 @@
-﻿using ImageProcessingLibrary.Helpers;
-using ImageProcessingLibrary.Interfaces;
+﻿using ImageProcessingLibrary.Interfaces;
 using ImageProcessingLibrary.Models;
 using ImageProcessingLibrary.Services;
 
@@ -14,7 +13,6 @@ namespace simple_ids_cam_view.UI.Controls
         private readonly Label EditTextLabel;
         public PictureBox MyPanel { get; }
         private readonly EditTextService editTextService;
-        private Bitmap ProcessedImage { get; set; }
         private bool ShowCrosshair { get; set; } = false;
         private int centerX = 0;
         private int centerY = 0;
@@ -145,18 +143,12 @@ namespace simple_ids_cam_view.UI.Controls
         // Returns a clone of the current image with embedded text
         internal Bitmap GetProcessedImage()
         {
-            if (Image != null)
-            {
-                ProcessedImage?.Dispose();
-                ProcessedImage = new Bitmap(Image);
-                editTextService.EmbedTextOntoImage(ProcessedImage);
-                return ProcessedImage;
-            }
-            else
-            {
-                ExceptionHelper.ShowWarningMessage("No image found!");
+            if (Image == null)
                 return null;
-            }
+
+            var bmp = new Bitmap(Image);
+            editTextService.EmbedTextOntoImage(bmp);
+            return bmp; // caller MUST dispose
         }
 
         private void UpdateDrawingArea()
