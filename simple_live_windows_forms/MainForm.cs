@@ -20,6 +20,8 @@ namespace simple_ids_cam_view
         private bool IsUsingCurrentImage { get; set; } = true;
         private RoiService previousImageCropService; // Keep a reference to the previous service
 
+        private volatile bool isUpdatingImage = false;
+
         public MainForm()
         {
             // stay at the top, initially
@@ -65,22 +67,40 @@ namespace simple_ids_cam_view
         }
 
         #region -- Event Handlers
+        // Image received from backend
         private void BackEnd_ImageReceived(object sender, Bitmap image)
         {
             try
             {
                 if (InvokeRequired)
                 {
+                    // Skip frame if UI thread is still processing previous frame
+                    if (isUpdatingImage)
+                    {
+                        image?.Dispose();  // Don't leak the skipped frame
+                        return;
+                    }
+
                     BeginInvoke(new Action(() => BackEnd_ImageReceived(sender, image)));
                     return;
                 }
 
-                var old = customPictureBox.Image;
-                customPictureBox.Image = image;
-                old?.Dispose();
+                isUpdatingImage = true;
+                try
+                {
+                    var old = customPictureBox.Image;
+                    customPictureBox.Image = image;
+                    old?.Dispose();
+                }
+                finally
+                {
+                    isUpdatingImage = false;
+                }
             }
             catch (Exception e)
             {
+                isUpdatingImage = false;
+                image?.Dispose();
                 Debug.WriteLine("--- [FormWindow] Exception: " + e.Message);
                 BackEnd_MessageBoxTrigger(this, "Exception", e.Message);
             }
