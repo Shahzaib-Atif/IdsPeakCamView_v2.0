@@ -6,6 +6,7 @@ namespace simple_ids_cam_view.UI.Controls
 {
     public class SimplePictureBox : PictureBox, ISimplePictureBox
     {
+        #region -- Fields & Properties --
         public Rectangle ActualImageRectangle { get; private set; }
         public Rectangle CroppingRectangle { get; set; }
         public bool IsSelecting { get; set; } = false;
@@ -16,6 +17,11 @@ namespace simple_ids_cam_view.UI.Controls
         private bool ShowCrosshair { get; set; } = false;
         private int centerX = 0;
         private int centerY = 0;
+
+        // Add field to cache drawing area
+        private Rectangle cachedDrawingArea;
+        private Size lastImageSize;
+        #endregion
 
         public SimplePictureBox()
         {
@@ -79,7 +85,15 @@ namespace simple_ids_cam_view.UI.Controls
             mutex.WaitOne();
             try
             {
-                UpdateDrawingArea();
+                //UpdateDrawingArea();
+                // Only recalculate if image size changed
+                if (Image != null &&
+                    (lastImageSize.Width != Image.Width || lastImageSize.Height != Image.Height))
+                {
+                    UpdateDrawingArea();
+                    lastImageSize = Image.Size;
+                }
+
                 base.OnPaint(e);
                 DrawCrossHair(e);
             }
