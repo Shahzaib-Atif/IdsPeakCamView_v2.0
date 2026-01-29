@@ -17,7 +17,6 @@ namespace TriCamPylonView.UI.Forms
         public event EventHandler ViewInExplorerRequested;
         public event EventHandler CopyFilepathRequested;
         public event EventHandler SortingChanged;
-        public event EventHandler ViewClosed;
         #endregion
 
         // ctor

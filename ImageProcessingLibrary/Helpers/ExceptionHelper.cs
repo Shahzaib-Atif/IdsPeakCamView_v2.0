@@ -32,7 +32,7 @@ namespace ImageProcessingLibrary.Helpers
                 var stackTrace = new StackTrace();
                 var frame = stackTrace.GetFrame(1); // Get the calling frame (not this method)
 
-                string errorMessage = $"Error in {frame.GetFileName()} at line {frame.GetFileLineNumber()}, method {frame.GetMethod().Name}: {ex.Message}";
+                string errorMessage = $"Error in {frame?.GetFileName()} at line {frame?.GetFileLineNumber()}, method {frame?.GetMethod()?.Name}: {ex.Message}";
                 MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

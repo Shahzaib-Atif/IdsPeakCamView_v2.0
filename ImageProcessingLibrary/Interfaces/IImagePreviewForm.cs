@@ -11,7 +11,6 @@ namespace ImageProcessingLibrary.Interfaces
         event EventHandler ViewInExplorerRequested;
         event EventHandler CopyFilepathRequested;
         event EventHandler SortingChanged;
-        event EventHandler ViewClosed;
 
         void ClearImages();
         void AddImageItem(string imageName, Image image, string score, string imagePath);

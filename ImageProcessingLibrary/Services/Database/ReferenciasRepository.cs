@@ -16,7 +16,7 @@ namespace ImageProcessingLibrary.Services.Database
         public async Task InsertNewConnector(string imagePath, SampleDetail sampleDetails)
         {
             using var conn = new SqlConnection(ProjectSettings.DbConnectionString);
-            conn.Open();
+            await conn.OpenAsync();
 
             using var tx = conn.BeginTransaction();
 
@@ -121,7 +121,7 @@ namespace ImageProcessingLibrary.Services.Database
                 using var compsCommand = new SqlCommand(compsQuery, conn, tx);
                 foreach (var parameter in compsParameters)
                     compsCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
-                compsCommand.ExecuteNonQuery();
+                await compsCommand.ExecuteNonQueryAsync();
 
                 tx.Commit();
             }

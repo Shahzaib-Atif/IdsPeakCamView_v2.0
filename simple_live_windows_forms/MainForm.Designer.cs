@@ -640,7 +640,6 @@ namespace simple_ids_cam_view
         private ToolStripMenuItem ImageSimilarityMenuItem;
         private GroupBox gbxProgress;
         private ProgressBar progressBar;
-        private ToolStripSplitButton toolStripSplitButton1;
         private ToolStripSeparator toolStripSeparator9;
         private SimplePictureBox customPictureBox;
         private ToolStrip toolStrip2;

@@ -388,9 +388,7 @@ namespace simple_ids_cam_view.UI.Forms
         #endregion
 
         private FlowLayoutPanel FLP_Main;
-        private GroupBox gbxName;
         private FlowLayoutPanel flowLayoutPanel1;
-        private TextBox textBoxConnName;
         private GroupBox gbxCor;
         private Panel panel1;
         private Button btnCancel;

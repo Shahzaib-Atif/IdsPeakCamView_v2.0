@@ -13,7 +13,13 @@ namespace ImageProcessingLibrary.Services
         public void SaveCompressedImage(Image image, string savePath)
         {
             // Set up the parameters for JPEG compression
-            ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+            ImageCodecInfo? jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+            if (jpgEncoder == null)
+            {
+                Debug.WriteLine("--- [ImageProcessor] JPEG encoder not found!");
+                return;
+            }
+
             Encoder qualityEncoder = Encoder.Quality;
             using EncoderParameters encoderParameters = new(1);
 
@@ -35,7 +41,13 @@ namespace ImageProcessingLibrary.Services
             double resize_factor = 0.2; long quality_index = 50;
 
             // Set up the parameters for JPEG compression
-            ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+            ImageCodecInfo? jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+            if (jpgEncoder == null)
+            {
+                Debug.WriteLine("--- [ImageProcessor] JPEG encoder not found!");
+                return;
+            }
+
             Encoder qualityEncoder = Encoder.Quality;
             using EncoderParameters encoderParameters = new(1);
 
@@ -71,7 +83,7 @@ namespace ImageProcessingLibrary.Services
         // --------------------- //
         #region Private functions
         // Get the JPEG encoder
-        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        private static ImageCodecInfo? GetEncoder(ImageFormat format)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
             foreach (ImageCodecInfo codec in codecs)

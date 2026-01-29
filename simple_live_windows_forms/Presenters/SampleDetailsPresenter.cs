@@ -180,9 +180,12 @@ namespace simple_ids_cam_view.Presenters
         {
             // Only execute first time if list is null
             if (_tipoList == null)
-                await PopulateTipoListAsync();
-
-            _view.PopulateTipoComboBox(_tipoList);
+            {
+                bool isSuccess = await PopulateTipoListAsync();
+                if (isSuccess) _view.PopulateTipoComboBox(_tipoList!);
+            }
+            else
+                _view.PopulateTipoComboBox(_tipoList);
         }
 
         private async Task ConfigureCorsAsync()
@@ -201,38 +204,46 @@ namespace simple_ids_cam_view.Presenters
             if (_viasList == null)
                 await PopulateViasListAsync();
 
-            _view.PopulateViasComboBox(_viasList);
+            _view.PopulateViasComboBox(_viasList!);
         }
 
         private async Task ConfigureCapotAnglesAsync()
         {
             // Only execute first time if list is null
             if (_capotAnglesList == null)
-                await PopulateCapotAnglesListAsync();
-
-            _view.PopulateCapotAngleComboBox(_capotAnglesList);
+            {
+                bool isSuccess = await PopulateCapotAnglesListAsync();
+                if (isSuccess) _view.PopulateCapotAngleComboBox(_capotAnglesList!);
+            }
+            else
+                _view.PopulateCapotAngleComboBox(_capotAnglesList);
         }
 
         private async Task ConfigureFabricanteAsync()
         {
             // Only execute first time if list is null
             if (_fabricanteList == null)
-                await PopulateFabricanteListAsync();
-
-            _view.PopulateFabricanteComboBox(_fabricanteList);
+            {
+                bool isSuccess = await PopulateFabricanteListAsync();
+                if (isSuccess) _view.PopulateFabricanteComboBox(_fabricanteList!);
+            }
+            else
+                _view.PopulateFabricanteComboBox(_fabricanteList);
         }
 
-        private async Task PopulateTipoListAsync()
+        private async Task<bool> PopulateTipoListAsync()
         {
             try
             {
                 _tipoList = (await _metadataRepo.ReadAvailableTipo()).ToList();
                 _tipoList.Insert(0, new KeyValue { Key = "", Value = "" }); // Insert empty option at the start
+                return true;
             }
             catch (Exception ex)
             {
                 ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
                 _tipoList = new List<KeyValue>();
+                return false;
             }
         }
 
@@ -247,7 +258,7 @@ namespace simple_ids_cam_view.Presenters
             _corsList.Insert(0, new KeyValue { Key = "", Value = "" }); // Insert empty option at the start
         }
 
-        private async Task PopulateViasListAsync()
+        private async Task<bool> PopulateViasListAsync()
         {
             _viasList = (await _metadataRepo.ReadAvailableVias()).ToList();
 
@@ -259,33 +270,38 @@ namespace simple_ids_cam_view.Presenters
             }
 
             _viasList.Insert(0, new KeyValue { Key = "", Value = "" }); // Insert empty option at the start
+            return true;
         }
 
-        private async Task PopulateFabricanteListAsync()
+        private async Task<bool> PopulateFabricanteListAsync()
         {
             try
             {
                 _fabricanteList = (await _metadataRepo.ReadAvailableFabricante()).ToList();
                 _fabricanteList.Insert(0, ""); // Insert empty option at the start
+                return true;
             }
             catch (Exception ex)
             {
                 ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
                 _fabricanteList = new List<string>();
+                return false;
             }
         }
 
-        private async Task PopulateCapotAnglesListAsync()
+        private async Task<bool> PopulateCapotAnglesListAsync()
         {
             try
             {
                 _capotAnglesList = (await _metadataRepo.ReadAvailableCapotAngles()).ToList();
                 _capotAnglesList.Insert(0, ""); // Insert empty option at the start
+                return true;
             }
             catch (Exception ex)
             {
                 ExceptionHelper.DisplayErrorMessage($"Database Error: {ex.Message}");
                 _capotAnglesList = new List<string>();
+                return false;
             }
         }
         #endregion

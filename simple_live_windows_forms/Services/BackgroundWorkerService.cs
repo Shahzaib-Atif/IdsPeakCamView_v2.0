@@ -51,10 +51,11 @@ namespace simple_ids_cam_view.Services
             // initialize services
             _imageStorage = new ImageStorageService(customPictureBox, null, null);
             _onnxService = new OnnxService();
+            _featureRepo = new FeatureRepository();
         }
 
         /// <summary> find similar images from database based on their features </summary>
-        public void FindSimilarImages(bool IsUsingCurrentImage)
+        public async Task FindSimilarImages(bool IsUsingCurrentImage)
         {
             // Validate default folder or prompt user to update it.
             if (FileHelper.IsDefaultFolderUpdateRequired())
@@ -71,7 +72,7 @@ namespace simple_ids_cam_view.Services
             }
 
             // choose filePath
-            string filePath = SelectFilePath(IsUsingCurrentImage);
+            string filePath = await SelectFilePathAsync(IsUsingCurrentImage);
             if (!string.IsNullOrEmpty(filePath))
             {
                 // get otpional connector details for a filtered search
@@ -253,11 +254,11 @@ namespace simple_ids_cam_view.Services
         }
 
         // select filePath path based on the flag IsUsingCurrentImage
-        private string SelectFilePath(bool IsUsingCurrentImage)
+        private async Task<string> SelectFilePathAsync(bool IsUsingCurrentImage)
         {
             string filePath;
             if (IsUsingCurrentImage)
-                filePath = _imageStorage.SaveTempImage("temp.jpeg");
+                filePath = await _imageStorage.SaveTempImage("temp.jpeg");
             else
                 filePath = FileHelper.SelectImageFilePath();
 

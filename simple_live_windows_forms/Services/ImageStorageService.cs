@@ -138,11 +138,18 @@ namespace simple_ids_cam_view.Services
         }
 
         // Saves the processed image with a pre-defined name, and returns a filepath
-        public string SaveTempImage(string name)
+        public async Task<string> SaveTempImage(string name)
         {
             string filePath = _fileService.GetFilePath(name);
-            using var _image = customPictureBox.GetProcessedImage();
-            _imageProcessor.SaveCompressedImage(_image, filePath);
+            using var imageCopy = customPictureBox.GetProcessedImage();
+
+            await Task.Run(() =>
+            {
+                using (imageCopy)
+                {
+                    _imageProcessor.SaveCompressedImage(imageCopy, filePath);
+                }
+            });
 
             return filePath;
         }

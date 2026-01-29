@@ -189,12 +189,12 @@ namespace simple_ids_cam_view
         }
 
 
-        private void FindImagesBtn_Click(object s, EventArgs e)
+        private async void FindImagesBtn_Click(object s, EventArgs e)
         {
             try
             {
                 if (IsUsingCurrentImage && !IsImageAvailable()) return; // if camera mode for searching selected + No camera image -→ skip
-                else this.backgroundWorkerService.FindSimilarImages(this.IsUsingCurrentImage); // else proceed with the search
+                else await this.backgroundWorkerService.FindSimilarImages(this.IsUsingCurrentImage); // else proceed with the search
             }
             catch (Exception ex)
             {

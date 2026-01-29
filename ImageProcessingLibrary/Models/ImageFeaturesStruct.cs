@@ -2,7 +2,7 @@
 {
     public class ImageFeaturesStruct
     {
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
         public byte[]? Histogram { get; set; }
         public byte[]? Hash { get; set; }
         public byte[]? ORBKeyPoints { get; set; }

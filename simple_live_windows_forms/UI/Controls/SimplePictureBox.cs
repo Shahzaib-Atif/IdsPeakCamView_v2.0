@@ -140,7 +140,7 @@ namespace simple_ids_cam_view.UI.Controls
             EditTextLabel.Visible = visible;
         }
 
-        // Returns a clone of the current image with embedded text
+        /// <summary> returns a processed image with the embedded text </summary>
         internal Bitmap GetProcessedImage()
         {
             if (Image == null)
