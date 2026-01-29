@@ -31,6 +31,9 @@ namespace simple_ids_cam_view
             InitializeComponent();
             DoubleBuffered = true;
 
+            // Enable hardware acceleration
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+
             backgroundWorkerService = new(customPictureBox, progressBar, gbxProgress);
             imageStorageService = new(customPictureBox, GbxShowLoading, LabelConnectorName);
             imageProcessorService = new ImageProcessorService();
