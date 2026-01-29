@@ -1,6 +1,7 @@
 ﻿using ImageProcessingLibrary.Interfaces;
 using ImageProcessingLibrary.Models;
 using ImageProcessingLibrary.Services;
+using System.Diagnostics;
 
 namespace simple_ids_cam_view.UI.Controls
 {
@@ -20,8 +21,6 @@ namespace simple_ids_cam_view.UI.Controls
         // Add field to cache drawing area
         private Rectangle cachedDrawingArea;
         private Size lastImageSize;
-
-        private readonly SemaphoreSlim semaphore = new(1, 1);
         #endregion
 
         public SimplePictureBox()
@@ -63,30 +62,26 @@ namespace simple_ids_cam_view.UI.Controls
             set { SetImage(value); }
         }
 
-        // Use a semaphore to ensure thread safety when setting the image
+        // Thread-safe image setter
         private void SetImage(Image image)
         {
-            semaphore.Wait();  // Block until available
-            try
+            if (InvokeRequired)
             {
-                var old = base.Image;
-                base.Image = image;
-                old?.Dispose();  // Dispose after successful assignment
+                Invoke(new Action(() => SetImage(image)));
+                return;
             }
-            finally
-            {
-                semaphore.Release();
-            }
+
+            var old = base.Image;
+            base.Image = image;
+            old?.Dispose();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             if (IsSelecting) return;
 
-            semaphore.Wait();
             try
             {
-                //UpdateDrawingArea();
                 // Only recalculate if image size changed
                 if (Image != null &&
                     (lastImageSize.Width != Image.Width || lastImageSize.Height != Image.Height))
@@ -98,9 +93,9 @@ namespace simple_ids_cam_view.UI.Controls
                 base.OnPaint(e);
                 DrawCrossHair(e);
             }
-            finally
+            catch (Exception ex)
             {
-                semaphore.Release();
+                Debug.WriteLine("--- [PictureBox] Error: " + ex.Message);
             }
         }
 
