@@ -103,7 +103,7 @@ namespace simple_ids_cam_view.Services
                 // APPLY THROTTLE HERE
                 if (frameCounter % 3 != 0)
                 {
-                    imageCopy.Dispose();   // you created it → you destroy it
+                    imageCopy.Dispose();  // dispose unused image
                     return;
                 }
 
@@ -129,8 +129,9 @@ namespace simple_ids_cam_view.Services
                     dataStream.QueueBuffer(buffer);
             }
 
-            // Raise event with current frame and error counter
-            CounterChanged(this, frameCounter, errorCounter);
+            // Only update counter display every 15 frames
+            if (frameCounter % 15 == 0)
+                CounterChanged(this, frameCounter, errorCounter);
         }
     }
 }
