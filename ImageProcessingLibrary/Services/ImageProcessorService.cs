@@ -135,9 +135,6 @@ namespace ImageProcessingLibrary.Services
                 g.DrawImage(image, 0, 0, newWidth, newHeight);
             }
 
-            // Dispose of the original image as it's no longer needed.
-            image.Dispose();
-
             return resizedImage;
         }
         #endregion

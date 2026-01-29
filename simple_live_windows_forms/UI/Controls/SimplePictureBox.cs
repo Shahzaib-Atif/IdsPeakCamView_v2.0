@@ -62,8 +62,9 @@ namespace simple_ids_cam_view.UI.Controls
             mutex.WaitOne();  // Block until available
             try
             {
-                base.Image?.Dispose();
+                var old = base.Image;
                 base.Image = image;
+                old?.Dispose();  // Dispose after successful assignment
             }
             finally
             {
