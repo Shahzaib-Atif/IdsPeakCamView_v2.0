@@ -74,19 +74,18 @@ namespace simple_ids_cam_view.UI.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            if (IsSelecting) return;
+
+            mutex.WaitOne();
             try
             {
-                if (IsSelecting)
-                    return;
-
-                mutex.WaitOne();
                 UpdateDrawingArea();
                 base.OnPaint(e);
                 DrawCrossHair(e);
-                mutex.ReleaseMutex();
             }
             finally
             {
+                mutex.ReleaseMutex();
             }
         }
 
