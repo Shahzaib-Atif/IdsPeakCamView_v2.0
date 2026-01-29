@@ -10,7 +10,6 @@ namespace simple_ids_cam_view.UI.Controls
         public Rectangle ActualImageRectangle { get; private set; }
         public Rectangle CroppingRectangle { get; set; }
         public bool IsSelecting { get; set; } = false;
-        private readonly Mutex mutex = new();
         private readonly Label EditTextLabel;
         public PictureBox MyPanel { get; }
         private readonly EditTextService editTextService;
@@ -21,6 +20,8 @@ namespace simple_ids_cam_view.UI.Controls
         // Add field to cache drawing area
         private Rectangle cachedDrawingArea;
         private Size lastImageSize;
+
+        private readonly SemaphoreSlim semaphore = new(1, 1);
         #endregion
 
         public SimplePictureBox()
@@ -62,10 +63,10 @@ namespace simple_ids_cam_view.UI.Controls
             set { SetImage(value); }
         }
 
-        // Use a mutex to ensure thread safety when setting the image
+        // Use a semaphore to ensure thread safety when setting the image
         private void SetImage(Image image)
         {
-            mutex.WaitOne();  // Block until available
+            semaphore.Wait();  // Block until available
             try
             {
                 var old = base.Image;
@@ -74,7 +75,7 @@ namespace simple_ids_cam_view.UI.Controls
             }
             finally
             {
-                mutex.ReleaseMutex();
+                semaphore.Release();
             }
         }
 
@@ -82,7 +83,7 @@ namespace simple_ids_cam_view.UI.Controls
         {
             if (IsSelecting) return;
 
-            mutex.WaitOne();
+            semaphore.Wait();
             try
             {
                 //UpdateDrawingArea();
@@ -99,7 +100,7 @@ namespace simple_ids_cam_view.UI.Controls
             }
             finally
             {
-                mutex.ReleaseMutex();
+                semaphore.Release();
             }
         }
 
