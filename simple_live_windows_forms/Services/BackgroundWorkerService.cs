@@ -49,7 +49,7 @@ namespace simple_ids_cam_view.Services
             BgWorker.WorkerSupportsCancellation = true;
 
             // initialize services
-            _imageStorage = new ImageStorageService(customPictureBox, null, null);
+            _imageStorage = new ImageStorageService(customPictureBox, null);
             _onnxService = new OnnxService();
             _featureRepo = new FeatureRepository();
         }

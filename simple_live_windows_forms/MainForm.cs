@@ -35,7 +35,7 @@ namespace simple_ids_cam_view
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
 
             backgroundWorkerService = new(customPictureBox, progressBar, gbxProgress);
-            imageStorageService = new(customPictureBox, GbxShowLoading, LabelConnectorName);
+            imageStorageService = new(customPictureBox, GbxShowLoading);
             imageProcessorService = new ImageProcessorService();
             controlPanelManager = new(CameraSettingsPanel, ModbusControlsPanel);
             backEnd = new();
@@ -173,12 +173,16 @@ namespace simple_ids_cam_view
             try
             {
                 bool isSuccess = await imageStorageService.SaveConnectorToDB();
-                this.GbxShowLoading.Visible = false;
+                ShowStatus(isSuccess ? "Connector saved successfully!" : "Failed to save!", isSuccess);
             }
             catch (Exception ex)
             {
-                this.GbxShowLoading.Visible = false;
                 ExceptionHelper.DisplayErrorMessage(ex.Message);
+            }
+            finally
+            {
+                this.GbxShowLoading.Visible = false;
+
             }
         }
 
@@ -187,13 +191,18 @@ namespace simple_ids_cam_view
             try
             {
                 //await SaveAccessoryToDB();
-                await imageStorageService.SaveAccessoryToDB();
-                this.GbxShowLoading.Visible = false;
+                bool isSuccess = await imageStorageService.SaveAccessoryToDB();
+                ShowStatus(isSuccess ? "Accessory saved successfully!" : "Failed to save accessory!", isSuccess);
+
             }
             catch (Exception ex)
             {
-                this.GbxShowLoading.Visible = false;
                 ExceptionHelper.DisplayErrorMessage(ex.Message);
+            }
+            finally
+            {
+                this.GbxShowLoading.Visible = false;
+
             }
         }
 
@@ -335,12 +344,28 @@ namespace simple_ids_cam_view
             {
                 // No camera image -→ skip
                 if (!IsImageAvailable()) return;
-                await imageStorageService.SaveExtraImage();
+                bool isSuccess = await imageStorageService.SaveExtraImage();
+                ShowStatus(isSuccess ? "Image saved successfully!" : "Failed to save image!", isSuccess);
             }
             catch (Exception ex)
             {
                 ExceptionHelper.DisplayErrorMessage(ex.Message);
             }
+        }
+
+        private async void ShowStatus(string message, bool success)
+        {
+            int waitTime = 4000; // milliseconds
+
+            statusLabel.Text = message;
+            statusLabel.ForeColor = success ? Color.Green : Color.Red;
+            statusLabel.Visible = true;
+            statusStrip1.Visible = true;
+
+            await Task.Delay(waitTime);
+
+            statusLabel.Visible = false;
+            statusStrip1.Visible = false;
         }
     }
 }

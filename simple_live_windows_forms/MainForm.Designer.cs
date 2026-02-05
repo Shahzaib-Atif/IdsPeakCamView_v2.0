@@ -67,20 +67,21 @@ namespace simple_ids_cam_view
             CropBtn = new ToolStripButton();
             toolStripSeparator11 = new ToolStripSeparator();
             CrosshairBtn = new ToolStripButton();
-            SaveExtraImgBtn = new ToolStripButton();
-            toolStripSeparator6 = new ToolStripSeparator();
             SaveFinalImageBtn = new ToolStripButton();
             toolStripSeparator4 = new ToolStripSeparator();
             SaveToDbBtn = new ToolStripButton();
             toolStripSeparator7 = new ToolStripSeparator();
             AddAccessoryBtn = new ToolStripButton();
+            toolStripSeparator6 = new ToolStripSeparator();
+            SaveExtraImgBtn = new ToolStripButton();
             toolStripSeparator5 = new ToolStripSeparator();
             FindSimilarImgsBtn = new ToolStripDropDownButton();
             DisplayPanel = new Panel();
+            statusStrip1 = new StatusStrip();
+            statusLabel = new ToolStripStatusLabel();
             GbxShowLoading = new GroupBox();
             pictureBox1 = new PictureBox();
             UseCurrentImageCheckbox = new CheckBox();
-            LabelConnectorName = new Label();
             Flp_Main = new FlowLayoutPanel();
             CameraSettingsPanel = new AdjustSettings();
             ModbusControlsPanel = new ModbusControls();
@@ -90,6 +91,7 @@ namespace simple_ids_cam_view
             ((System.ComponentModel.ISupportInitialize)customPictureBox).BeginInit();
             toolStrip2.SuspendLayout();
             DisplayPanel.SuspendLayout();
+            statusStrip1.SuspendLayout();
             GbxShowLoading.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             Flp_Main.SuspendLayout();
@@ -413,22 +415,6 @@ namespace simple_ids_cam_view
             CrosshairBtn.Text = "Crosshair";
             CrosshairBtn.Click += CrosshairBtn_Click;
             // 
-            // SaveExtraImgBtn
-            // 
-            SaveExtraImgBtn.Enabled = false;
-            SaveExtraImgBtn.Image = (Image)resources.GetObject("SaveExtraImgBtn.Image");
-            SaveExtraImgBtn.ImageTransparentColor = Color.Magenta;
-            SaveExtraImgBtn.Name = "SaveExtraImgBtn";
-            SaveExtraImgBtn.Size = new Size(97, 26);
-            SaveExtraImgBtn.Text = "Extra Image";
-            SaveExtraImgBtn.ToolTipText = "Extra Image";
-            SaveExtraImgBtn.Click += SaveExtraImgBtn_Click;
-            // 
-            // toolStripSeparator6
-            // 
-            toolStripSeparator6.Name = "toolStripSeparator6";
-            toolStripSeparator6.Size = new Size(6, 29);
-            // 
             // SaveFinalImageBtn
             // 
             SaveFinalImageBtn.Enabled = false;
@@ -471,6 +457,22 @@ namespace simple_ids_cam_view
             AddAccessoryBtn.Text = "Add accessory";
             AddAccessoryBtn.Click += AddAccessoryBtn_Click;
             // 
+            // toolStripSeparator6
+            // 
+            toolStripSeparator6.Name = "toolStripSeparator6";
+            toolStripSeparator6.Size = new Size(6, 29);
+            // 
+            // SaveExtraImgBtn
+            // 
+            SaveExtraImgBtn.Enabled = false;
+            SaveExtraImgBtn.Image = (Image)resources.GetObject("SaveExtraImgBtn.Image");
+            SaveExtraImgBtn.ImageTransparentColor = Color.Magenta;
+            SaveExtraImgBtn.Name = "SaveExtraImgBtn";
+            SaveExtraImgBtn.Size = new Size(97, 26);
+            SaveExtraImgBtn.Text = "Extra Image";
+            SaveExtraImgBtn.ToolTipText = "Extra Image";
+            SaveExtraImgBtn.Click += SaveExtraImgBtn_Click;
+            // 
             // toolStripSeparator5
             // 
             toolStripSeparator5.Name = "toolStripSeparator5";
@@ -492,9 +494,9 @@ namespace simple_ids_cam_view
             // 
             // DisplayPanel
             // 
+            DisplayPanel.Controls.Add(statusStrip1);
             DisplayPanel.Controls.Add(GbxShowLoading);
             DisplayPanel.Controls.Add(UseCurrentImageCheckbox);
-            DisplayPanel.Controls.Add(LabelConnectorName);
             DisplayPanel.Controls.Add(gbxProgress);
             DisplayPanel.Controls.Add(counterLabel);
             DisplayPanel.Controls.Add(customPictureBox);
@@ -505,6 +507,26 @@ namespace simple_ids_cam_view
             DisplayPanel.Name = "DisplayPanel";
             DisplayPanel.Size = new Size(856, 714);
             DisplayPanel.TabIndex = 7;
+            // 
+            // statusStrip1
+            // 
+            statusStrip1.Font = new Font("Segoe UI", 9.5F);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { statusLabel });
+            statusStrip1.Location = new Point(8, 697);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.RenderMode = ToolStripRenderMode.Professional;
+            statusStrip1.Size = new Size(90, 22);
+            statusStrip1.TabIndex = 9;
+            statusStrip1.Text = "statusStrip1";
+            statusStrip1.UseWaitCursor = true;
+            statusStrip1.Visible = false;
+            // 
+            // statusLabel
+            // 
+            statusLabel.Name = "statusLabel";
+            statusLabel.Size = new Size(42, 17);
+            statusLabel.Text = "status";
+            statusLabel.Visible = false;
             // 
             // GbxShowLoading
             // 
@@ -548,16 +570,6 @@ namespace simple_ids_cam_view
             toolTip1.SetToolTip(UseCurrentImageCheckbox, "Uncheck to use a local image for comparison; otherwise, the camera image will be used.");
             UseCurrentImageCheckbox.UseVisualStyleBackColor = false;
             UseCurrentImageCheckbox.CheckedChanged += UseCurrentImage_CheckedChanged;
-            // 
-            // LabelConnectorName
-            // 
-            LabelConnectorName.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            LabelConnectorName.Location = new Point(8, 699);
-            LabelConnectorName.Name = "LabelConnectorName";
-            LabelConnectorName.RightToLeft = RightToLeft.No;
-            LabelConnectorName.Size = new Size(147, 15);
-            LabelConnectorName.TabIndex = 7;
-            LabelConnectorName.UseMnemonic = false;
             // 
             // Flp_Main
             // 
@@ -625,6 +637,8 @@ namespace simple_ids_cam_view
             toolStrip2.PerformLayout();
             DisplayPanel.ResumeLayout(false);
             DisplayPanel.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             GbxShowLoading.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             Flp_Main.ResumeLayout(false);
@@ -661,7 +675,6 @@ namespace simple_ids_cam_view
         private ToolStripSeparator toolStripSeparator7;
         private ToolStripButton SaveToDbBtn;
         private ToolStripMenuItem DefaultFolderMenuItem;
-        private Label LabelConnectorName;
         private CheckBox UseCurrentImageCheckbox;
         private ToolStripMenuItem AddImagesToDBMenuItem;
         private FlowLayoutPanel Flp_Main;
@@ -688,5 +701,7 @@ namespace simple_ids_cam_view
         private ToolStripMenuItem EditTextMenuItem;
         private ToolStripButton SaveExtraImgBtn;
         private ToolStripSeparator toolStripSeparator6;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel statusLabel;
     }
 }

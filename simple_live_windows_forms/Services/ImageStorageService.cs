@@ -15,7 +15,6 @@ namespace simple_ids_cam_view.Services
     {
         private readonly SimplePictureBox customPictureBox;
         private readonly GroupBox GbxShowLoading;
-        private readonly Label LabelConnectorName;
         private readonly ImageProcessorService _imageProcessor;
         private readonly FileService _fileService;
         private readonly PromptService _promptService;
@@ -24,12 +23,11 @@ namespace simple_ids_cam_view.Services
         private readonly ReferenciasRepository _referenciasRepo;
 
 
-        public ImageStorageService(SimplePictureBox customPictureBox, GroupBox gbxShowLoading, Label labelConnectorName)
+        public ImageStorageService(SimplePictureBox customPictureBox, GroupBox gbxShowLoading)
         {
             // initialize UI components references
             this.customPictureBox = customPictureBox;
             this.GbxShowLoading = gbxShowLoading;
-            this.LabelConnectorName = labelConnectorName;
 
             // initialize services
             _imageProcessor = new ImageProcessorService();
@@ -40,12 +38,12 @@ namespace simple_ids_cam_view.Services
             _referenciasRepo = new ReferenciasRepository();
         }
 
-        public async Task SaveExtraImage()
+        public async Task<bool> SaveExtraImage()
         {
             // get image path from user
             string filePath = FileHelper.SelectSaveImageFilePath("Select the location to save the image");
 
-            await SaveCompressedImageAsync(filePath);
+            return await SaveCompressedImageAsync(filePath);
         }
 
         /// <summary> store connector in local folder and database </summary>
@@ -76,9 +74,6 @@ namespace simple_ids_cam_view.Services
             // hide the loading status
             this.GbxShowLoading.Visible = false;
 
-            // update Label which shows ConnectorName
-            LabelConnectorName.Text = connectorName;
-
             // if everything went well then save connector name
             ProjectSettings.SetConnectorName(connectorName);
 
@@ -87,12 +82,12 @@ namespace simple_ids_cam_view.Services
 
 
         /// <summary> store accessory image to local folder and database </summary>
-        public async Task SaveAccessoryToDB()
+        public async Task<bool> SaveAccessoryToDB()
         {
-            if (!IsImageAvailable()) return; // Exit if Image is NOT available.
+            if (!IsImageAvailable()) return false; // Exit if Image is NOT available.
 
             var accessoryDetails = GetAccessoryDetails();
-            if (accessoryDetails is null) return;
+            if (accessoryDetails is null) return false;
 
             // check if \_Accessories folder path is correct 
             string accessoriesFolderPath = ProjectSettings.DefaultFolder + @"\_Accessories";
@@ -106,16 +101,16 @@ namespace simple_ids_cam_view.Services
             string filePath = Path.Combine(accessoriesFolderPath, $"{accessoryDetails?.FullName}.jpeg");
 
             // Save compressed image with text overlays
-            if (!await SaveCompressedImageAsync(filePath)) return;
+            if (!await SaveCompressedImageAsync(filePath)) return false;
 
             // validate the file path (check if image was saved correctly)
-            if (!_fileService.IsValidPath(filePath)) return;
+            if (!_fileService.IsValidPath(filePath)) return false;
 
             // insert or update accessory record
             if (accessoryDetails is AccessoryDetails details)
             {
                 await UpsertAccessoryAsync(details, filePath);
-                return;
+                return true;
             }
 
             throw new Exception("Something went wrong while saving accessory!");
@@ -203,7 +198,7 @@ namespace simple_ids_cam_view.Services
             });
 
             // ask user if he wants to open the image
-            _promptService.PromptUserForOpeningImage(filePath);
+            //_promptService.PromptUserForOpeningImage(filePath);
 
             return true;
         }
