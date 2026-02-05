@@ -17,7 +17,7 @@ namespace simple_ids_cam_view
             CropBtn.Enabled = enable;
             EditTextMenuItem.Enabled = enable;
             customPictureBox?.MakeEditTextVisible(enable);
-            SaveFinalImageBtn.Enabled = enable;
+            SaveExtraImgBtn.Enabled = enable;
             FindSimilarImgsBtn.Enabled = enable;
             SaveToDbBtn.Enabled = enable;
             UseCurrentImageCheckbox.Enabled = enable;

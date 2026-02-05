@@ -168,20 +168,6 @@ namespace simple_ids_cam_view
             //SaveFinalImage();
         }
 
-        private async void SaveOriginalImageMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // No camera image -→ skip
-                if (!IsImageAvailable()) return;
-                await imageStorageService.SaveExtraImage();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper.DisplayErrorMessage(ex.Message);
-            }
-        }
-
         private async void SaveToDbBtn_ClickAsync(object s, EventArgs e)
         {
             try
@@ -342,5 +328,19 @@ namespace simple_ids_cam_view
             return true;
         }
         #endregion
+
+        private async void SaveExtraImgBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // No camera image -→ skip
+                if (!IsImageAvailable()) return;
+                await imageStorageService.SaveExtraImage();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.DisplayErrorMessage(ex.Message);
+            }
+        }
     }
 }
