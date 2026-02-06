@@ -88,6 +88,7 @@ namespace ImageProcessingLibrary.Models
         public string ClipColor { get; set; }
         public string CapotAngle { get; set; }
         public int Family { get; set; }
+        public int ActualViaCount { get; set; }
     }
 
     public struct ComponentsDetails

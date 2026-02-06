@@ -36,6 +36,7 @@ namespace simple_ids_cam_view.UI.Forms
             btnSave = new Button();
             gbxVias = new GroupBox();
             comboBoxVias = new ComboBox();
+            numActualViaCount = new NumericUpDown();
             gbxCor = new GroupBox();
             comboBoxCor = new ComboBox();
             gbxDiameter = new GroupBox();
@@ -52,6 +53,7 @@ namespace simple_ids_cam_view.UI.Forms
             flowLayoutPanel1 = new FlowLayoutPanel();
             textBoxPosId = new TextBox();
             FLP_Main = new FlowLayoutPanel();
+            gbxVias_ExactNum = new GroupBox();
             gbxCapotAngle = new GroupBox();
             comboBoxCapotAngles = new ComboBox();
             gbxClipColor = new GroupBox();
@@ -95,6 +97,7 @@ namespace simple_ids_cam_view.UI.Forms
             checkBoxOlhal = new CheckBox();
             panel1.SuspendLayout();
             gbxVias.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numActualViaCount).BeginInit();
             gbxCor.SuspendLayout();
             gbxDiameter.SuspendLayout();
             FLP_Diameters.SuspendLayout();
@@ -108,6 +111,7 @@ namespace simple_ids_cam_view.UI.Forms
             gbxName.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             FLP_Main.SuspendLayout();
+            gbxVias_ExactNum.SuspendLayout();
             gbxCapotAngle.SuspendLayout();
             gbxClipColor.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -202,6 +206,16 @@ namespace simple_ids_cam_view.UI.Forms
             comboBoxVias.Name = "comboBoxVias";
             comboBoxVias.Size = new Size(187, 25);
             comboBoxVias.TabIndex = 0;
+            comboBoxVias.SelectedIndexChanged += ComboBoxVias_SelectedIndexChanged;
+            // 
+            // numActualViaCount
+            // 
+            numActualViaCount.Dock = DockStyle.Fill;
+            numActualViaCount.Location = new Point(12, 32);
+            numActualViaCount.Name = "numActualViaCount";
+            numActualViaCount.Size = new Size(135, 25);
+            numActualViaCount.TabIndex = 1;
+            numActualViaCount.TextAlign = HorizontalAlignment.Center;
             // 
             // gbxCor
             // 
@@ -234,7 +248,7 @@ namespace simple_ids_cam_view.UI.Forms
             // gbxDiameter
             // 
             gbxDiameter.Controls.Add(FLP_Diameters);
-            gbxDiameter.Location = new Point(10, 505);
+            gbxDiameter.Location = new Point(10, 582);
             gbxDiameter.Margin = new Padding(7, 6, 5, 6);
             gbxDiameter.Name = "gbxDiameter";
             gbxDiameter.Size = new Size(267, 103);
@@ -402,6 +416,7 @@ namespace simple_ids_cam_view.UI.Forms
             FLP_Main.Controls.Add(gbxType);
             FLP_Main.Controls.Add(gbxCor);
             FLP_Main.Controls.Add(gbxVias);
+            FLP_Main.Controls.Add(gbxVias_ExactNum);
             FLP_Main.Controls.Add(gbxCapotAngle);
             FLP_Main.Controls.Add(gbxClipColor);
             FLP_Main.Controls.Add(gbxDiameter);
@@ -410,14 +425,29 @@ namespace simple_ids_cam_view.UI.Forms
             FLP_Main.MinimumSize = new Size(200, 0);
             FLP_Main.Name = "FLP_Main";
             FLP_Main.Padding = new Padding(3);
-            FLP_Main.Size = new Size(289, 621);
+            FLP_Main.Size = new Size(289, 698);
             FLP_Main.TabIndex = 0;
             FLP_Main.WrapContents = false;
+            // 
+            // gbxVias_ExactNum
+            // 
+            gbxVias_ExactNum.Controls.Add(numActualViaCount);
+            gbxVias_ExactNum.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            gbxVias_ExactNum.ForeColor = Color.FromArgb(44, 62, 80);
+            gbxVias_ExactNum.Location = new Point(13, 361);
+            gbxVias_ExactNum.Margin = new Padding(10, 8, 8, 8);
+            gbxVias_ExactNum.Name = "gbxVias_ExactNum";
+            gbxVias_ExactNum.Padding = new Padding(12, 14, 12, 12);
+            gbxVias_ExactNum.Size = new Size(159, 61);
+            gbxVias_ExactNum.TabIndex = 8;
+            gbxVias_ExactNum.TabStop = false;
+            gbxVias_ExactNum.Text = "Exact Vias (Optional)";
+            gbxVias_ExactNum.Visible = false;
             // 
             // gbxCapotAngle
             // 
             gbxCapotAngle.Controls.Add(comboBoxCapotAngles);
-            gbxCapotAngle.Location = new Point(10, 359);
+            gbxCapotAngle.Location = new Point(10, 436);
             gbxCapotAngle.Margin = new Padding(7, 6, 5, 6);
             gbxCapotAngle.Name = "gbxCapotAngle";
             gbxCapotAngle.Padding = new Padding(7, 8, 7, 8);
@@ -442,7 +472,7 @@ namespace simple_ids_cam_view.UI.Forms
             // gbxClipColor
             // 
             gbxClipColor.Controls.Add(comboBoxClipColor);
-            gbxClipColor.Location = new Point(10, 432);
+            gbxClipColor.Location = new Point(10, 509);
             gbxClipColor.Margin = new Padding(7, 6, 5, 6);
             gbxClipColor.Name = "gbxClipColor";
             gbxClipColor.Padding = new Padding(7, 8, 7, 8);
@@ -627,7 +657,7 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox1.Margin = new Padding(15, 3, 15, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.RightToLeft = RightToLeft.No;
-            groupBox1.Size = new Size(298, 686);
+            groupBox1.Size = new Size(298, 763);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             // 
@@ -939,6 +969,7 @@ namespace simple_ids_cam_view.UI.Forms
             Text = "New connector";
             panel1.ResumeLayout(false);
             gbxVias.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numActualViaCount).EndInit();
             gbxCor.ResumeLayout(false);
             gbxDiameter.ResumeLayout(false);
             FLP_Diameters.ResumeLayout(false);
@@ -955,6 +986,7 @@ namespace simple_ids_cam_view.UI.Forms
             flowLayoutPanel1.PerformLayout();
             FLP_Main.ResumeLayout(false);
             FLP_Main.PerformLayout();
+            gbxVias_ExactNum.ResumeLayout(false);
             gbxCapotAngle.ResumeLayout(false);
             gbxClipColor.ResumeLayout(false);
             groupBox3.ResumeLayout(false);
@@ -1053,5 +1085,7 @@ namespace simple_ids_cam_view.UI.Forms
         private NumericUpDown numUpDownQty;
         private GroupBox groupBoxFamily;
         private NumericUpDown numUpDownFamily;
+        private NumericUpDown numActualViaCount;
+        private GroupBox gbxVias_ExactNum;
     }
 }

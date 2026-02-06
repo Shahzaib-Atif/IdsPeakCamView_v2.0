@@ -53,9 +53,9 @@ namespace ImageProcessingLibrary.Services.Database
                 // details query
                 string detailsQuery = @$"
                 INSERT INTO {DetailsTable} 
-                (ConnId, Designação, Fabricante, Refabricante, OBS, ClipColor, CapotAngle, Family)
+                (ConnId, Designação, Fabricante, Refabricante, OBS, ClipColor, CapotAngle, Family, ActualViaCount)
                 VALUES 
-                (@ConnId, @Designação, @Fabricante, @Refabricante, @OBS, @ClipColor, @CapotAngle, @Family)";
+                (@ConnId, @Designação, @Fabricante, @Refabricante, @OBS, @ClipColor, @CapotAngle, @Family, @ActualViaCount)";
 
                 var additionalDetails = sampleDetails.AdditionalDetails;
                 var detailsParameters = new Dictionary<string, object>
@@ -68,6 +68,7 @@ namespace ImageProcessingLibrary.Services.Database
                     {"@ClipColor", additionalDetails?.ClipColor ?? (object)DBNull.Value},
                     {"@CapotAngle", additionalDetails?.CapotAngle ?? (object)DBNull.Value},
                     {"@Family", additionalDetails?.Family ?? 1},
+                    {"@ActualViaCount", additionalDetails?.ActualViaCount ?? 0},
                 };
                 using var detailsCommand = new SqlCommand(detailsQuery, conn, tx);
                 foreach (var parameter in detailsParameters)

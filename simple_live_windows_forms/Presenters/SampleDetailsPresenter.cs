@@ -44,6 +44,7 @@ namespace simple_ids_cam_view.Presenters
             _view.ViewLoaded += OnViewLoaded;
             _view.SaveRequested += OnSaveRequested;
             _view.TipoChanged += OnTipoChanged;
+            _view.ViasChanged += OnViasChanged;
         }
 
         public void UnsubscribeFromViewEvents()
@@ -51,6 +52,7 @@ namespace simple_ids_cam_view.Presenters
             _view.ViewLoaded -= OnViewLoaded;
             _view.SaveRequested -= OnSaveRequested;
             _view.TipoChanged -= OnTipoChanged;
+            _view.ViasChanged -= OnViasChanged;
         }
 
         #endregion
@@ -111,6 +113,7 @@ namespace simple_ids_cam_view.Presenters
                 ClipColor = _view.ClipColor,
                 CapotAngle = _view.CapotAngle,
                 Family = _view.Family,
+                ActualViaCount = _view.ActualViaCount
             };
 
             var componentDetails = new ComponentsDetails
@@ -145,6 +148,14 @@ namespace simple_ids_cam_view.Presenters
             _view.ShowDiameterSection(tipo.ToLower() == "olhal");
             _view.ShowClipColorSection(tipo.ToLower() == "clip");
             _view.ShowCapotAngleSection(tipo.ToLower() == "capot");
+        }
+
+        private void OnViasChanged(object sender, EventArgs e)
+        {
+            var vias = _view.ViasValue;
+
+            // Show optional boxes depending on tipo
+            _view.ShowActualViasSection(vias.ToLower() == "x");
         }
 
         #endregion

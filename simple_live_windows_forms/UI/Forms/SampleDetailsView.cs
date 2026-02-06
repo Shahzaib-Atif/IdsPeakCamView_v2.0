@@ -11,6 +11,7 @@ namespace simple_ids_cam_view.UI.Forms
         public event EventHandler ViewLoaded;
         public event EventHandler SaveRequested;
         public event EventHandler TipoChanged;
+        public event EventHandler ViasChanged;
 
         #endregion
 
@@ -34,6 +35,8 @@ namespace simple_ids_cam_view.UI.Forms
         public string OBS => textBoxOBS.Text;
         public string ClipColor => comboBoxClipColor.SelectedValue?.ToString();
         public string CapotAngle => comboBoxCapotAngles.Text;
+        public int ActualViaCount => (int)numActualViaCount.Value;
+
 
         // Component Checkboxes
         public bool Clip => checkBoxClip.Checked;
@@ -134,6 +137,11 @@ namespace simple_ids_cam_view.UI.Forms
             gbxClipColor.Visible = state;
         }
 
+        public void ShowActualViasSection(bool state = true)
+        {
+            gbxVias_ExactNum.Visible = state;
+        }
+
         public void ShowCapotAngleSection(bool state = true)
         {
             gbxCapotAngle.Visible = state;
@@ -203,6 +211,7 @@ namespace simple_ids_cam_view.UI.Forms
             }
         }
 
+        // Handle Enter key for NumericDimensionBox controls
         private void NumericDimensionBox_KeyDown(object sender, KeyEventArgs e)
         {
             // Check if the Enter key is pressed
@@ -214,6 +223,11 @@ namespace simple_ids_cam_view.UI.Forms
             }
         }
 
+        private void ComboBoxVias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Just raise event - presenter handles logic
+            ViasChanged?.Invoke(this, EventArgs.Empty);
+        }
         #endregion
     }
 }

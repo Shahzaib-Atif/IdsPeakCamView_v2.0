@@ -14,6 +14,7 @@ namespace ImageProcessingLibrary.Interfaces
         event EventHandler ViewLoaded;
         event EventHandler SaveRequested;
         event EventHandler TipoChanged;
+        event EventHandler ViasChanged;
 
         #endregion
 
@@ -36,6 +37,7 @@ namespace ImageProcessingLibrary.Interfaces
         string CapotAngle { get; }
         int Quantity { get; }
         int Family { get; }
+        int ActualViaCount { get; }
 
 
         bool Clip { get; }
@@ -70,6 +72,7 @@ namespace ImageProcessingLibrary.Interfaces
         void ShowDiameterSection(bool status = true);
         void ShowClipColorSection(bool status = true);
         void ShowCapotAngleSection(bool status = true);
+        void ShowActualViasSection(bool status = true);
         void ShowWaitCursor();
         void ShowDefaultCursor();
 
