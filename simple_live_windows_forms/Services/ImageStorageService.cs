@@ -125,6 +125,10 @@ namespace simple_ids_cam_view.Services
 
         public void DeleteImage()
         {
+            string password = _promptService.PromptForPassword();
+            if (string.IsNullOrEmpty(password) || password != "786")
+                return;
+
             string filePath = FileHelper.SelectImageFilePath("Select the image you want to delete");
             if (string.IsNullOrEmpty(filePath))
                 return;

@@ -26,5 +26,43 @@ namespace simple_ids_cam_view.Services
             }
         }
 
+        internal string PromptForPassword()
+        {
+            using Form prompt = new();
+            prompt.Width = 300;
+            prompt.Height = 150;
+            prompt.Text = "Enter Password";
+            prompt.StartPosition = FormStartPosition.CenterParent;
+            prompt.FormBorderStyle = FormBorderStyle.FixedDialog;
+            prompt.MaximizeBox = false;
+            prompt.MinimizeBox = false;
+
+            TextBox textBox = new()
+            {
+                Left = 50,
+                Top = 20,
+                Width = 200,
+                UseSystemPasswordChar = true
+            };
+
+            Button confirmation = new()
+            {
+                Text = "OK",
+                Left = 100,
+                Width = 100,
+                Top = 50,
+                DialogResult = DialogResult.OK
+            };
+
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.AcceptButton = confirmation;
+
+            return prompt.ShowDialog() == DialogResult.OK
+                ? textBox.Text
+                : null;
+        }
+
+
     }
 }
