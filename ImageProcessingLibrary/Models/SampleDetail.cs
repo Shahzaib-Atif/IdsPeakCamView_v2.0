@@ -105,6 +105,7 @@ namespace ImageProcessingLibrary.Models
         public bool Outros { get; set; }
         public bool Amostra { get; set; }
         public bool Olhal { get; set; }
+        public bool CPA { get; set; }
     }
 
 

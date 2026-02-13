@@ -95,6 +95,7 @@ namespace simple_ids_cam_view.UI.Forms
             checkBoxOutros = new CheckBox();
             checkBoxSamplePanel = new CheckBox();
             checkBoxOlhal = new CheckBox();
+            checkBoxCPA = new CheckBox();
             panel1.SuspendLayout();
             gbxVias.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numActualViaCount).BeginInit();
@@ -600,7 +601,7 @@ namespace simple_ids_cam_view.UI.Forms
             groupBoxQty.Controls.Add(numUpDownQty);
             groupBoxQty.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             groupBoxQty.ForeColor = Color.FromArgb(44, 62, 80);
-            groupBoxQty.Location = new Point(10, 401);
+            groupBoxQty.Location = new Point(10, 422);
             groupBoxQty.Margin = new Padding(10, 8, 8, 8);
             groupBoxQty.Name = "groupBoxQty";
             groupBoxQty.Padding = new Padding(12, 14, 12, 12);
@@ -624,7 +625,7 @@ namespace simple_ids_cam_view.UI.Forms
             groupBoxFamily.Controls.Add(numUpDownFamily);
             groupBoxFamily.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             groupBoxFamily.ForeColor = Color.FromArgb(44, 62, 80);
-            groupBoxFamily.Location = new Point(127, 401);
+            groupBoxFamily.Location = new Point(127, 422);
             groupBoxFamily.Margin = new Padding(10, 8, 8, 8);
             groupBoxFamily.Name = "groupBoxFamily";
             groupBoxFamily.Padding = new Padding(12, 14, 12, 12);
@@ -785,7 +786,7 @@ namespace simple_ids_cam_view.UI.Forms
             groupBox9.Margin = new Padding(15, 3, 15, 3);
             groupBox9.Name = "groupBox9";
             groupBox9.RightToLeft = RightToLeft.No;
-            groupBox9.Size = new Size(248, 494);
+            groupBox9.Size = new Size(248, 515);
             groupBox9.TabIndex = 3;
             groupBox9.TabStop = false;
             // 
@@ -821,12 +822,13 @@ namespace simple_ids_cam_view.UI.Forms
             flowLayoutPanel7.Controls.Add(checkBoxOutros);
             flowLayoutPanel7.Controls.Add(checkBoxSamplePanel);
             flowLayoutPanel7.Controls.Add(checkBoxOlhal);
+            flowLayoutPanel7.Controls.Add(checkBoxCPA);
             flowLayoutPanel7.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel7.Location = new Point(3, 42);
             flowLayoutPanel7.MinimumSize = new Size(200, 0);
             flowLayoutPanel7.Name = "flowLayoutPanel7";
             flowLayoutPanel7.Padding = new Padding(20, 6, 20, 6);
-            flowLayoutPanel7.Size = new Size(200, 340);
+            flowLayoutPanel7.Size = new Size(200, 367);
             flowLayoutPanel7.TabIndex = 0;
             flowLayoutPanel7.WrapContents = false;
             // 
@@ -949,6 +951,16 @@ namespace simple_ids_cam_view.UI.Forms
             checkBoxOlhal.TabIndex = 18;
             checkBoxOlhal.Text = "OLHAL";
             checkBoxOlhal.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxCPA
+            // 
+            checkBoxCPA.AutoSize = true;
+            checkBoxCPA.Location = new Point(23, 333);
+            checkBoxCPA.Name = "checkBoxCPA";
+            checkBoxCPA.Size = new Size(49, 21);
+            checkBoxCPA.TabIndex = 19;
+            checkBoxCPA.Text = "CPA";
+            checkBoxCPA.UseVisualStyleBackColor = true;
             // 
             // SampleDetailsView
             // 
@@ -1087,5 +1099,6 @@ namespace simple_ids_cam_view.UI.Forms
         private NumericUpDown numUpDownFamily;
         private NumericUpDown numActualViaCount;
         private GroupBox gbxVias_ExactNum;
+        private CheckBox checkBoxCPA;
     }
 }

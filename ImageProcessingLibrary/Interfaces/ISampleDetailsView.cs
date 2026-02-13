@@ -52,6 +52,7 @@ namespace ImageProcessingLibrary.Interfaces
         bool Outros { get; }
         bool Amostra { get; }
         bool Olhal { get; }
+        bool CPA { get; }
 
         #endregion
 

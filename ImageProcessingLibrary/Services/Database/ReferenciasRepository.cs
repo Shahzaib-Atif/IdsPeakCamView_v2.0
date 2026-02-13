@@ -98,9 +98,9 @@ namespace ImageProcessingLibrary.Services.Database
                 // components query
                 string compsQuery = @$"
                 INSERT INTO {ComponentsTable} 
-                (ConnId,Clip,Spacer,Vedante,Tampa,Mola,Moldagem,Travão,Abracadeira,Linguetes,Outros,Amostra,Olhal)
+                (ConnId,Clip,Spacer,Vedante,Tampa,Mola,Moldagem,Travão,Abracadeira,Linguetes,Outros,Amostra,Olhal,CPA)
                 VALUES 
-                (@ConnId,@Clip,@Spacer,@Vedante,@Tampa,@Mola,@Moldagem,@Travão,@Abracadeira,@Linguetes,@Outros,@Amostra,@Olhal)";
+                (@ConnId,@Clip,@Spacer,@Vedante,@Tampa,@Mola,@Moldagem,@Travão,@Abracadeira,@Linguetes,@Outros,@Amostra,@Olhal,@CPA)";
 
                 var componentDetails = sampleDetails.ComponentsDetails;
                 var compsParameters = new Dictionary<string, object>
@@ -118,6 +118,7 @@ namespace ImageProcessingLibrary.Services.Database
                     { "@Outros", componentDetails?.Outros == true ? 1 : 0 },
                     { "@Amostra", componentDetails?.Amostra == true ? 1 : 0 },
                     { "@Olhal", componentDetails?.Olhal == true ? 1 : 0 },
+                    { "@CPA", componentDetails?.CPA == true ? 1 : 0 },
                 };
                 using var compsCommand = new SqlCommand(compsQuery, conn, tx);
                 foreach (var parameter in compsParameters)

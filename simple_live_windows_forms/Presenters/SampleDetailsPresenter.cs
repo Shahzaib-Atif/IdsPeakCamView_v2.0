@@ -130,6 +130,7 @@ namespace simple_ids_cam_view.Presenters
                 Outros = _view.Outros,
                 Amostra = _view.Amostra,
                 Olhal = _view.Olhal,
+                CPA = _view.CPA,
             };
 
             // Join PosId, Tipo & Cor to make CODIVMAC

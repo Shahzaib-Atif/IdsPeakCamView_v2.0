@@ -51,6 +51,7 @@ namespace simple_ids_cam_view.UI.Forms
         public bool Outros => checkBoxOutros.Checked;
         public bool Amostra => checkBoxSamplePanel.Checked;
         public bool Olhal => checkBoxOlhal.Checked;
+        public bool CPA => checkBoxCPA.Checked;
 
         #endregion
 
