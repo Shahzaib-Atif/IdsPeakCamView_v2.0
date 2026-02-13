@@ -133,7 +133,7 @@ namespace simple_ids_cam_view.Services
             FileHelper.DeleteImageFile(filePath);
 
             // delete from db
-            string fileName = Path.GetFileName(filePath);
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
             _ = _referenciasRepo.DeleteDataAsync(fileName);
 
             ExceptionHelper.ShowInformationMessage($"{fileName} deleted successfully!");

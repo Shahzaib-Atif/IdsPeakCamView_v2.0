@@ -53,7 +53,7 @@ namespace simple_ids_cam_view
             ImageSimilarityMenuItem = new ToolStripMenuItem();
             DefaultFolderMenuItem = new ToolStripMenuItem();
             AddImagesToDBMenuItem = new ToolStripMenuItem();
-            DeleteImagepMenuItem = new ToolStripMenuItem();
+            DeleteImageMenuItem = new ToolStripMenuItem();
             ModbusConfigMenuItem = new ToolStripMenuItem();
             changeDatabaseSettingsToolStripMenuItem = new ToolStripMenuItem();
             CameraSettingsMenuItem = new ToolStripMenuItem();
@@ -117,7 +117,7 @@ namespace simple_ids_cam_view
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Padding = new Padding(4, 4, 0, 4);
             toolStrip1.RenderMode = ToolStripRenderMode.System;
-            toolStrip1.Size = new Size(433, 34);
+            toolStrip1.Size = new Size(535, 34);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -220,7 +220,7 @@ namespace simple_ids_cam_view
             // 
             // ToolsBtn
             // 
-            ToolsBtn.DropDownItems.AddRange(new ToolStripItem[] { ImageQualityMenuItem, ImageSizeMenuItem, ImageSimilarityMenuItem, DefaultFolderMenuItem, AddImagesToDBMenuItem, DeleteImagepMenuItem, ModbusConfigMenuItem, changeDatabaseSettingsToolStripMenuItem, CameraSettingsMenuItem, hardwareSettingsMenuItem, EditTextMenuItem });
+            ToolsBtn.DropDownItems.AddRange(new ToolStripItem[] { ImageQualityMenuItem, ImageSizeMenuItem, ImageSimilarityMenuItem, DefaultFolderMenuItem, AddImagesToDBMenuItem, ModbusConfigMenuItem, changeDatabaseSettingsToolStripMenuItem, CameraSettingsMenuItem, hardwareSettingsMenuItem, EditTextMenuItem, DeleteImageMenuItem });
             ToolsBtn.Image = (Image)resources.GetObject("ToolsBtn.Image");
             ToolsBtn.ImageTransparentColor = Color.Magenta;
             ToolsBtn.Name = "ToolsBtn";
@@ -278,15 +278,15 @@ namespace simple_ids_cam_view
             AddImagesToDBMenuItem.Visible = false;
             AddImagesToDBMenuItem.Click += AddImagesToDBMenuItem_Click;
             // 
-            // DeleteImagepMenuItem
+            // DeleteImageMenuItem
             // 
-            DeleteImagepMenuItem.Image = (Image)resources.GetObject("DeleteImagepMenuItem.Image");
-            DeleteImagepMenuItem.Name = "DeleteImagepMenuItem";
-            DeleteImagepMenuItem.Size = new Size(287, 24);
-            DeleteImagepMenuItem.Text = "Delete an image";
-            DeleteImagepMenuItem.ToolTipText = "Delete from local folder & DB";
-            DeleteImagepMenuItem.Visible = false;
-            DeleteImagepMenuItem.Click += DeleteImageMenuItem_Click;
+            DeleteImageMenuItem.Enabled = false;
+            DeleteImageMenuItem.Image = (Image)resources.GetObject("DeleteImageMenuItem.Image");
+            DeleteImageMenuItem.Name = "DeleteImageMenuItem";
+            DeleteImageMenuItem.Size = new Size(287, 24);
+            DeleteImageMenuItem.Text = "Delete an image";
+            DeleteImageMenuItem.ToolTipText = "Delete from local folder & DB";
+            DeleteImageMenuItem.Click += DeleteImageMenuItem_Click;
             // 
             // ModbusConfigMenuItem
             // 
@@ -679,7 +679,7 @@ namespace simple_ids_cam_view
         private ToolStripMenuItem AddImagesToDBMenuItem;
         private FlowLayoutPanel Flp_Main;
         private AdjustSettings CameraSettingsPanel;
-        private ToolStripMenuItem DeleteImagepMenuItem;
+        private ToolStripMenuItem DeleteImageMenuItem;
         private ToolStripMenuItem ModbusConfigMenuItem;
         private ToolStripMenuItem changeDatabaseSettingsToolStripMenuItem;
         private ModbusControls ModbusControlsPanel;

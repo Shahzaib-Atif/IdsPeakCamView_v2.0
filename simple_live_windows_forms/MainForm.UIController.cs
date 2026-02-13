@@ -22,6 +22,7 @@ namespace simple_ids_cam_view
             SaveToDbBtn.Enabled = enable;
             UseCurrentImageCheckbox.Enabled = enable;
             AddAccessoryBtn.Enabled = enable;
+            DeleteImageMenuItem.Enabled = enable;
         }
 
         // manage text editing
