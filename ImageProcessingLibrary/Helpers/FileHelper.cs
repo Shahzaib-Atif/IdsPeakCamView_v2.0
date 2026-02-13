@@ -54,8 +54,8 @@ namespace ImageProcessingLibrary.Helpers
             };
 
             // Set the default folder if provided
-            if (!string.IsNullOrEmpty(DefaultFolder) && Directory.Exists(DefaultFolder))
-                openFileDialog.InitialDirectory = DefaultFolder;
+            if (!string.IsNullOrEmpty(ConnectorsDefaultFolder) && Directory.Exists(ConnectorsDefaultFolder))
+                openFileDialog.InitialDirectory = ConnectorsDefaultFolder;
 
             var result = openFileDialog.ShowDialog() == DialogResult.OK ?
                 openFileDialog.FileName :

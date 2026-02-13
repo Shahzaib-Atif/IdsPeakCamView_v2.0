@@ -6,7 +6,8 @@ namespace ImageProcessingLibrary
     {
         public static string DefaultFolder { get; private set; } = string.Empty;
         public static void SetDefaultFolderPath(string folder) => DefaultFolder = folder;
-
+        public static string ConnectorsDefaultFolder => Path.Combine(DefaultFolder, "_Connectors");
+        public static string AccessoriesDefaultFolder => Path.Combine(DefaultFolder, "_Accessories");
         #region -- Modbus TCP Settings
         public static string ModbusIpAddress { get; private set; } = "10.0.0.1";
         public static void SetModbusIpAddress(string newVal) => ModbusIpAddress = newVal;

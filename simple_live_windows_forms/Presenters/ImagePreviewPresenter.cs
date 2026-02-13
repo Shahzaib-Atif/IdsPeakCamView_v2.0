@@ -12,7 +12,7 @@ namespace simple_ids_cam_view.Presenters
     {
         #region -- Variables --
         private readonly IImagePreviewForm View;
-        private readonly string _ImagesDirectory = ProjectSettings.DefaultFolder;
+        private readonly string _ImagesDirectory = ProjectSettings.ConnectorsDefaultFolder;
         private string CurrentSorting { get; set; } = ImageRecognitionModelType.Resnet50;
         #endregion
 

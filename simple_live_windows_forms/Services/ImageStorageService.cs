@@ -93,7 +93,7 @@ namespace simple_ids_cam_view.Services
             if (accessoryDetails is null) return false;
 
             // check if \_Accessories folder path is correct 
-            string accessoriesFolderPath = ProjectSettings.DefaultFolder + @"\_Accessories";
+            string accessoriesFolderPath = ProjectSettings.AccessoriesDefaultFolder;
             if (!Directory.Exists(accessoriesFolderPath))
                 throw new Exception("_Accessories folder not found!");
 
@@ -284,7 +284,7 @@ namespace simple_ids_cam_view.Services
 
         private static string GetDefaultConnectorPath(string connectorName)
         {
-            string filePath = Path.Combine(ProjectSettings.DefaultFolder, $"{connectorName}.jpeg");
+            string filePath = Path.Combine(ProjectSettings.ConnectorsDefaultFolder, $"{connectorName}.jpeg");
 
             // Cancel the process if file already exists
             if (File.Exists(filePath))
