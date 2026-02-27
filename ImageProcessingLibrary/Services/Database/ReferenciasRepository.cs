@@ -23,87 +23,114 @@ namespace ImageProcessingLibrary.Services.Database
             try
             {
                 // main query
-                string mainQuery = @$"
-                INSERT INTO {MainReferenceTable} 
-                (PosId, Cor, Vias, CODIVMAC, Qty, ESTADO, Imagem, ConnType, LastChangeBy, LastUpdateDate)
-                OUTPUT INSERTED.CODIVMAC
-                VALUES 
-                (@PosId, @Cor, @Vias, @Codivmac, @Qty, @ESTADO, @Imagem, @ConnType, @LastChangeBy, @LastUpdateDate)";
-
-                var basicDetails = sampleDetails.BasicDetails;
-                var parameters = new Dictionary<string, object>
-                {
-                    {"@posId", basicDetails.PosId },
-                    {"@Cor", basicDetails.Cor },
-                    {"@Vias", basicDetails.Vias },
-                    {"@CODIVMAC", basicDetails.Codivmac },
-                    {"@Qty", basicDetails.Qty },
-                    {"@ESTADO", 1 },
-                    {"@Imagem", imagePath },
-                    {"@ConnType", basicDetails.Tipo},
-                    {"@LastChangeBy", Environment.UserName?.ToUpper() ?? (object)DBNull.Value},
-                    {"@LastUpdateDate", DateTime.Now},
-                };
-                using var mainCommand = new SqlCommand(mainQuery, conn, tx);
-                foreach (var parameter in parameters)
-                    mainCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
-
-                var insertedId = (string)mainCommand.ExecuteScalar();
+                var insertedId = PerformMainQuery(imagePath, sampleDetails.BasicDetails, tx, conn);
 
                 // details query
-                string detailsQuery = @$"
-                INSERT INTO {DetailsTable} 
-                (ConnId, Designação, Fabricante, Refabricante, OBS, ClipColor, CapotAngle, Family, ActualViaCount)
-                VALUES 
-                (@ConnId, @Designação, @Fabricante, @Refabricante, @OBS, @ClipColor, @CapotAngle, @Family, @ActualViaCount)";
-
-                var additionalDetails = sampleDetails.AdditionalDetails;
-                var detailsParameters = new Dictionary<string, object>
-                {
-                    {"@ConnId", insertedId },
-                    {"@Designação", additionalDetails?.Designação ?? (object)DBNull.Value},
-                    {"@Fabricante", additionalDetails?.Fabricante ?? (object)DBNull.Value},
-                    {"@Refabricante", additionalDetails?.Refabricante ?? (object)DBNull.Value},
-                    {"@OBS", additionalDetails?.OBS ?? (object)DBNull.Value},
-                    {"@ClipColor", additionalDetails?.ClipColor ?? (object)DBNull.Value},
-                    {"@CapotAngle", additionalDetails?.CapotAngle ?? (object)DBNull.Value},
-                    {"@Family", additionalDetails?.Family ?? 1},
-                    {"@ActualViaCount", additionalDetails?.ActualViaCount ?? 0},
-                };
-                using var detailsCommand = new SqlCommand(detailsQuery, conn, tx);
-                foreach (var parameter in detailsParameters)
-                    detailsCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
-                detailsCommand.ExecuteNonQuery();
+                PerformDetailsQuery(insertedId, sampleDetails.AdditionalDetails, tx, conn);
 
                 // dimensions query
-                string dimensionQuery = @$"
+                PerformDimensionsQuery(insertedId, sampleDetails.Dimensions, tx, conn);
+
+                // components query
+                PerformComponentsQuery(insertedId, sampleDetails.ComponentsDetails, tx, conn);
+
+                tx.Commit();
+            }
+            catch
+            {
+                tx.Rollback();
+                throw;
+            }
+        }
+
+        private string PerformMainQuery(string imagePath, BasicSampleDetails basicDetails, SqlTransaction tx, SqlConnection conn)
+        {
+            string mainQuery = @$"
+         INSERT INTO {MainReferenceTable} 
+         (PosId, Cor, Vias, CODIVMAC, Qty, ESTADO, Imagem, ConnType, LastChangeBy, LastUpdateDate)
+         OUTPUT INSERTED.CODIVMAC
+         VALUES 
+         (@PosId, @Cor, @Vias, @Codivmac, @Qty, @ESTADO, @Imagem, @ConnType, @LastChangeBy, @LastUpdateDate)";
+
+            var parameters = new Dictionary<string, object>
+         {
+             {"@posId", basicDetails.PosId },
+             {"@Cor", basicDetails.Cor },
+             {"@Vias", basicDetails.Vias },
+             {"@CODIVMAC", basicDetails.Codivmac },
+             {"@Qty", basicDetails.Qty },
+             {"@ESTADO", 1 },
+             {"@Imagem", imagePath },
+             {"@ConnType", basicDetails.Tipo},
+             {"@LastChangeBy", Environment.UserName?.ToUpper() ?? (object)DBNull.Value},
+             {"@LastUpdateDate", DateTime.Now},
+         };
+            using var mainCommand = new SqlCommand(mainQuery, conn, tx);
+            foreach (var parameter in parameters)
+                mainCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
+
+            return (string)mainCommand.ExecuteScalar();
+        }
+
+        private void PerformDetailsQuery(string insertedId, AdditionalDetails? additionalDetails, SqlTransaction tx, SqlConnection conn)
+        {
+            string detailsQuery = @$"
+         INSERT INTO {DetailsTable} 
+         (ConnId, Designação, Fabricante, Refabricante, OBS, ClipColor, CapotAngle, Family, ActualViaCount)
+         VALUES 
+         (@ConnId, @Designação, @Fabricante, @Refabricante, @OBS, @ClipColor, @CapotAngle, @Family, @ActualViaCount)";
+
+            var detailsParameters = new Dictionary<string, object>
+         {
+             {"@ConnId", insertedId },
+             {"@Designação", additionalDetails?.Designação ?? (object)DBNull.Value},
+             {"@Fabricante", additionalDetails?.Fabricante ?? (object)DBNull.Value},
+             {"@Refabricante", additionalDetails?.Refabricante ?? (object)DBNull.Value},
+             {"@OBS", additionalDetails?.OBS ?? (object)DBNull.Value},
+             {"@ClipColor", additionalDetails?.ClipColor ?? (object)DBNull.Value},
+             {"@CapotAngle", additionalDetails?.CapotAngle ?? (object)DBNull.Value},
+             {"@Family", additionalDetails?.Family ?? 1},
+             {"@ActualViaCount", additionalDetails?.ActualViaCount ?? 0},
+         };
+            using var detailsCommand = new SqlCommand(detailsQuery, conn, tx);
+            foreach (var parameter in detailsParameters)
+                detailsCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
+            detailsCommand.ExecuteNonQuery();
+        }
+
+        private void PerformDimensionsQuery(string insertedId, SampleDimensions dimensions, SqlTransaction tx, SqlConnection conn)
+        {
+            if (dimensions.InternalDiameter == null && dimensions.ExternalDiameter == null && dimensions.Thickness == null)
+                return;
+
+            string dimensionQuery = @$"
                 INSERT INTO {DimensionsTable} 
                 (ConnId,InternalDiameter,ExternalDiameter,Thickness)
                 VALUES 
                 (@ConnId, @InternalDiameter, @ExternalDiameter, @Thickness)";
 
-                var dimensions = sampleDetails.Dimensions;
-                var dimensionParameters = new Dictionary<string, object>
+            var dimensionParameters = new Dictionary<string, object>
                 {
                     {"@ConnId", insertedId },
                     {"@InternalDiameter", dimensions.InternalDiameter ?? (object)DBNull.Value},
                     {"@ExternalDiameter", dimensions.ExternalDiameter?? (object)DBNull.Value},
                     {"@Thickness", dimensions.Thickness?? (object)DBNull.Value },
                 };
-                using var dimensionCommand = new SqlCommand(dimensionQuery, conn, tx);
-                foreach (var parameter in dimensionParameters)
-                    dimensionCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
-                dimensionCommand.ExecuteNonQuery();
+            using var dimensionCommand = new SqlCommand(dimensionQuery, conn, tx);
+            foreach (var parameter in dimensionParameters)
+                dimensionCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
+            dimensionCommand.ExecuteNonQuery();
+        }
 
-                // components query
-                string compsQuery = @$"
+        private void PerformComponentsQuery(string insertedId, ComponentsDetails? componentDetails, SqlTransaction tx, SqlConnection conn)
+        {
+            string compsQuery = @$"
                 INSERT INTO {ComponentsTable} 
                 (ConnId,Clip,Spacer,Vedante,Tampa,Mola,Moldagem,Travão,Abracadeira,Linguetes,Outros,Amostra,Olhal,CPA)
                 VALUES 
                 (@ConnId,@Clip,@Spacer,@Vedante,@Tampa,@Mola,@Moldagem,@Travão,@Abracadeira,@Linguetes,@Outros,@Amostra,@Olhal,@CPA)";
 
-                var componentDetails = sampleDetails.ComponentsDetails;
-                var compsParameters = new Dictionary<string, object>
+            var compsParameters = new Dictionary<string, object>
                 {
                     {"@ConnId", insertedId },
                     {"@Clip", componentDetails?.Clip == true ? 1 : 0},
@@ -120,19 +147,12 @@ namespace ImageProcessingLibrary.Services.Database
                     { "@Olhal", componentDetails?.Olhal == true ? 1 : 0 },
                     { "@CPA", componentDetails?.CPA == true ? 1 : 0 },
                 };
-                using var compsCommand = new SqlCommand(compsQuery, conn, tx);
-                foreach (var parameter in compsParameters)
-                    compsCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
-                await compsCommand.ExecuteNonQueryAsync();
-
-                tx.Commit();
-            }
-            catch
-            {
-                tx.Rollback();
-                throw;
-            }
+            using var compsCommand = new SqlCommand(compsQuery, conn, tx);
+            foreach (var parameter in compsParameters)
+                compsCommand.Parameters.AddWithValue(parameter.Key, parameter.Value ?? DBNull.Value);
+            compsCommand.ExecuteNonQuery();
         }
+
 
         // Delete existing record from main referencias table
         public async Task DeleteDataAsync(string fileName)
