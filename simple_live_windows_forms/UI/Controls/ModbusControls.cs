@@ -7,6 +7,7 @@ namespace simple_ids_cam_view.UI.Controls
     public partial class ModbusControls : UserControl
     {
         private ModbusDeviceController modbusController;
+        public Action<string> MotorPositionChanged { get; internal set; }
 
         public ModbusControls()
         {
@@ -65,19 +66,25 @@ namespace simple_ids_cam_view.UI.Controls
         {
             // first check if motor is at home position
             if (modbusController.HomePosition)
+            {
                 textBoxCurrentPos.Text = "Home Position";
+                MotorPositionChanged?.Invoke("Home Position"); // notify mainform to clear the current position
+            }
 
             // otherwise find & display the actual motor position
             else
             {
                 int motorPosition = modbusController.MotorPosition;
-                textBoxCurrentPos.Text = motorPosition switch
+                string currentPos = motorPosition switch
                 {
                     1 => "Position 1",
                     4 => "Position 2",
                     16 => "Position 3",
                     _ => "Unkown",
                 };
+
+                textBoxCurrentPos.Text = currentPos; // update the text box to show the current position
+                MotorPositionChanged?.Invoke(currentPos); // notify mainform of the current motor position
             }
         }
 
@@ -91,7 +98,7 @@ namespace simple_ids_cam_view.UI.Controls
         {
             if (modbusController is null) return false;
 
-            else if (position.Contains(CameraPositions.Position_1))
+            if (position.Contains(CameraPositions.Position_1))
                 return modbusController.ChangeMotorPosition(1);
 
             else if (position.Contains(CameraPositions.Position_2))

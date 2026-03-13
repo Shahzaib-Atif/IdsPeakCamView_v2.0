@@ -117,7 +117,7 @@ namespace simple_ids_cam_view
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Padding = new Padding(4, 4, 0, 4);
             toolStrip1.RenderMode = ToolStripRenderMode.System;
-            toolStrip1.Size = new Size(433, 34);
+            toolStrip1.Size = new Size(535, 34);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -180,6 +180,8 @@ namespace simple_ids_cam_view
             // 
             // position1ToolStripMenuItem
             // 
+            position1ToolStripMenuItem.BackColor = SystemColors.Control;
+            position1ToolStripMenuItem.ForeColor = SystemColors.ControlText;
             position1ToolStripMenuItem.Name = "position1ToolStripMenuItem";
             position1ToolStripMenuItem.Size = new Size(190, 24);
             position1ToolStripMenuItem.Text = "Position 1 - far";

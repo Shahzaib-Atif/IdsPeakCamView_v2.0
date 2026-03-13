@@ -47,6 +47,8 @@ namespace simple_ids_cam_view
             backEnd.CounterChanged += BackEnd_CounterChanged;
             backEnd.MessageBoxTrigger += BackEnd_MessageBoxTrigger;
 
+            ModbusControlsPanel.MotorPositionChanged += OnMotorPositionChanged;
+
             // no need of staying at the top later on
             this.TopMost = false;
         }
@@ -312,6 +314,17 @@ namespace simple_ids_cam_view
 
             if (isSuccess)
                 ModbusControlsPanel.RefreshUI();
+        }
+
+        private void OnMotorPositionChanged(string pos)
+        {
+            foreach (ToolStripItem item in MotorPositionBtn.DropDownItems)
+            {
+                item.ForeColor = SystemColors.ControlText;
+
+                if (item.Text.Contains(pos))
+                    item.ForeColor = SystemColors.Highlight;
+            }
         }
 
         // Remove the Close button while keeping the title bar
