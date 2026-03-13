@@ -9,7 +9,7 @@ namespace simple_ids_cam_view
         {
             StopAcquisitionBtn.Enabled = !enable;
             CameraSettingsMenuItem.Enabled = !enable;
-            CrosshairBtn.Enabled = !enable;
+            AlignmentBtn.Enabled = !enable;
 
             hardwareSettingsMenuItem.Enabled = enable;
             StartAcquisitionBtn.Enabled = enable;
@@ -45,7 +45,7 @@ namespace simple_ids_cam_view
             bool isCrosshairDisplayed = this.customPictureBox.ToggleCrosshair(forcedOff);
 
             // change backcolor of button depending on the state of crosshair
-            CrosshairBtn.BackColor = isCrosshairDisplayed ? SystemColors.ButtonHighlight : SystemColors.ControlLight;
+            AlignmentBtn.BackColor = isCrosshairDisplayed ? SystemColors.ButtonHighlight : SystemColors.ControlLight;
         }
     }
 }

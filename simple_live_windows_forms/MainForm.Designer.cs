@@ -53,12 +53,12 @@ namespace simple_ids_cam_view
             ImageSimilarityMenuItem = new ToolStripMenuItem();
             DefaultFolderMenuItem = new ToolStripMenuItem();
             AddImagesToDBMenuItem = new ToolStripMenuItem();
-            DeleteImageMenuItem = new ToolStripMenuItem();
             ModbusConfigMenuItem = new ToolStripMenuItem();
             changeDatabaseSettingsToolStripMenuItem = new ToolStripMenuItem();
             CameraSettingsMenuItem = new ToolStripMenuItem();
             hardwareSettingsMenuItem = new ToolStripMenuItem();
             EditTextMenuItem = new ToolStripMenuItem();
+            DeleteImageMenuItem = new ToolStripMenuItem();
             toolStripSeparator14 = new ToolStripSeparator();
             gbxProgress = new GroupBox();
             progressBar = new ProgressBar();
@@ -66,7 +66,7 @@ namespace simple_ids_cam_view
             toolStrip2 = new ToolStrip();
             CropBtn = new ToolStripButton();
             toolStripSeparator11 = new ToolStripSeparator();
-            CrosshairBtn = new ToolStripButton();
+            AlignmentBtn = new ToolStripButton();
             SaveFinalImageBtn = new ToolStripButton();
             toolStripSeparator4 = new ToolStripSeparator();
             SaveToDbBtn = new ToolStripButton();
@@ -117,7 +117,7 @@ namespace simple_ids_cam_view
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Padding = new Padding(4, 4, 0, 4);
             toolStrip1.RenderMode = ToolStripRenderMode.System;
-            toolStrip1.Size = new Size(535, 34);
+            toolStrip1.Size = new Size(433, 34);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -278,16 +278,6 @@ namespace simple_ids_cam_view
             AddImagesToDBMenuItem.Visible = false;
             AddImagesToDBMenuItem.Click += AddImagesToDBMenuItem_Click;
             // 
-            // DeleteImageMenuItem
-            // 
-            DeleteImageMenuItem.Enabled = false;
-            DeleteImageMenuItem.Image = (Image)resources.GetObject("DeleteImageMenuItem.Image");
-            DeleteImageMenuItem.Name = "DeleteImageMenuItem";
-            DeleteImageMenuItem.Size = new Size(287, 24);
-            DeleteImageMenuItem.Text = "Delete an image";
-            DeleteImageMenuItem.ToolTipText = "Delete from local folder & DB";
-            DeleteImageMenuItem.Click += DeleteImageMenuItem_Click;
-            // 
             // ModbusConfigMenuItem
             // 
             ModbusConfigMenuItem.Image = (Image)resources.GetObject("ModbusConfigMenuItem.Image");
@@ -331,6 +321,16 @@ namespace simple_ids_cam_view
             EditTextMenuItem.Size = new Size(287, 24);
             EditTextMenuItem.Text = "Edit Text";
             EditTextMenuItem.Click += EditTextBtn_Click;
+            // 
+            // DeleteImageMenuItem
+            // 
+            DeleteImageMenuItem.Enabled = false;
+            DeleteImageMenuItem.Image = (Image)resources.GetObject("DeleteImageMenuItem.Image");
+            DeleteImageMenuItem.Name = "DeleteImageMenuItem";
+            DeleteImageMenuItem.Size = new Size(287, 24);
+            DeleteImageMenuItem.Text = "Delete an image";
+            DeleteImageMenuItem.ToolTipText = "Delete from local folder & DB";
+            DeleteImageMenuItem.Click += DeleteImageMenuItem_Click;
             // 
             // toolStripSeparator14
             // 
@@ -377,7 +377,7 @@ namespace simple_ids_cam_view
             toolStrip2.AutoSize = false;
             toolStrip2.BackColor = SystemColors.ControlLight;
             toolStrip2.Font = new Font("Segoe UI", 9.5F);
-            toolStrip2.Items.AddRange(new ToolStripItem[] { CropBtn, toolStripSeparator11, CrosshairBtn, SaveFinalImageBtn, toolStripSeparator4, SaveToDbBtn, toolStripSeparator7, AddAccessoryBtn, toolStripSeparator6, SaveExtraImgBtn, toolStripSeparator5, FindSimilarImgsBtn });
+            toolStrip2.Items.AddRange(new ToolStripItem[] { CropBtn, toolStripSeparator11, AlignmentBtn, SaveFinalImageBtn, toolStripSeparator4, SaveToDbBtn, toolStripSeparator7, AddAccessoryBtn, toolStripSeparator6, SaveExtraImgBtn, toolStripSeparator5, FindSimilarImgsBtn });
             toolStrip2.Location = new Point(0, 0);
             toolStrip2.Margin = new Padding(0, 2, 0, 0);
             toolStrip2.Name = "toolStrip2";
@@ -404,16 +404,17 @@ namespace simple_ids_cam_view
             toolStripSeparator11.Name = "toolStripSeparator11";
             toolStripSeparator11.Size = new Size(6, 29);
             // 
-            // CrosshairBtn
+            // AlignmentBtn
             // 
-            CrosshairBtn.BackColor = SystemColors.ControlLight;
-            CrosshairBtn.ForeColor = SystemColors.ControlText;
-            CrosshairBtn.Image = (Image)resources.GetObject("CrosshairBtn.Image");
-            CrosshairBtn.ImageTransparentColor = Color.Magenta;
-            CrosshairBtn.Name = "CrosshairBtn";
-            CrosshairBtn.Size = new Size(83, 26);
-            CrosshairBtn.Text = "Crosshair";
-            CrosshairBtn.Click += CrosshairBtn_Click;
+            AlignmentBtn.BackColor = SystemColors.ControlLight;
+            AlignmentBtn.ForeColor = SystemColors.ControlText;
+            AlignmentBtn.Image = (Image)resources.GetObject("AlignmentBtn.Image");
+            AlignmentBtn.ImageTransparentColor = Color.Magenta;
+            AlignmentBtn.Name = "AlignmentBtn";
+            AlignmentBtn.Size = new Size(86, 26);
+            AlignmentBtn.Text = "Alignment";
+            AlignmentBtn.ToolTipText = "crosshair that drank espresso and learned geometry";
+            AlignmentBtn.Click += CrosshairBtn_Click;
             // 
             // SaveFinalImageBtn
             // 
@@ -683,7 +684,7 @@ namespace simple_ids_cam_view
         private ToolStripMenuItem ModbusConfigMenuItem;
         private ToolStripMenuItem changeDatabaseSettingsToolStripMenuItem;
         private ModbusControls ModbusControlsPanel;
-        private ToolStripButton CrosshairBtn;
+        private ToolStripButton AlignmentBtn;
         private ToolStripButton LightsBtn;
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripDropDownButton MotorPositionBtn;

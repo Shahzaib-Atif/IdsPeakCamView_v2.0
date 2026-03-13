@@ -111,12 +111,13 @@ namespace simple_ids_cam_view.UI.Controls
                 centerY = base.Height / 2;
             }
 
-            // Create a pen for drawing
+            // draw lines
             using Pen pen = new(Color.White, 1);
-            // Draw horizontal line
-            e.Graphics.DrawLine(pen, 0, centerY, base.Width, centerY);
-            // Draw vertical line
-            e.Graphics.DrawLine(pen, centerX, 0, centerX, base.Height);
+            e.Graphics.DrawLine(pen, 0, centerY, base.Width, centerY); // horizontal 
+            e.Graphics.DrawLine(pen, centerX, 0, centerX, centerY); // vertical (half)
+            // diagonals
+            e.Graphics.DrawLine(pen, 0, 0, centerX, centerY);
+            e.Graphics.DrawLine(pen, base.Width, 0, centerX, centerY);
         }
 
         private void MyPanel_Paint(object sender, PaintEventArgs e)
