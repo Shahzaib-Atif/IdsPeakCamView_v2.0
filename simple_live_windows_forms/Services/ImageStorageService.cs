@@ -55,6 +55,7 @@ namespace simple_ids_cam_view.Services
             // Get connector details
             var newSample = GetConnectorDetails();
             string connectorName = newSample?.BasicDetails.Codivmac;
+            string connectorType = newSample?.BasicDetails.Tipo;
 
             if (string.IsNullOrEmpty(connectorName)) return false;
 
@@ -62,7 +63,7 @@ namespace simple_ids_cam_view.Services
             this.GbxShowLoading.Visible = true;
 
             // Generate file path using connector name.
-            string filePath = GetDefaultConnectorPath(connectorName);
+            string filePath = GetDefaultConnectorPath(connectorName, connectorType);
 
             // show error if same file already exists and exit
             if (File.Exists(filePath))
@@ -286,9 +287,15 @@ namespace simple_ids_cam_view.Services
             return true;
         }
 
-        private static string GetDefaultConnectorPath(string connectorName)
+        private static string GetDefaultConnectorPath(string connectorName, string connectorType)
         {
-            string filePath = Path.Combine(ProjectSettings.ConnectorsDefaultFolder, $"{connectorName}.jpeg");
+            // folder path is based on the connector type
+            string folderPath = Path.Combine(ProjectSettings.ConnectorsDefaultFolder, connectorType);
+            if (!Directory.Exists(folderPath))
+                throw new Exception($"Folder: '{folderPath} not found'! Process cancelled.");
+
+            // filename is based on the connector name (codivmac)
+            string filePath = Path.Combine(folderPath, $"{connectorName}.jpeg");
 
             // Cancel the process if file already exists
             if (File.Exists(filePath))
